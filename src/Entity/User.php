@@ -63,12 +63,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $messageRecus;
 
     #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'amis')]
+    #[ORM\JoinTable(name: 'user_amis')]
     private Collection $amis;
 
     #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'myfollowers')]
+    #[ORM\JoinTable(name: 'user_follows')]
     private Collection $followers;
 
     #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'followers')]
+    #[ORM\JoinTable(name: 'user_followers')]
     private Collection $myfollowers;
 
     public function __construct()
