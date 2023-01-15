@@ -74,6 +74,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinTable(name: 'user_followers')]
     private Collection $myfollowers;
 
+    /**
+     * faciliter la creation utilisateur
+     *
+     * @param string email
+     * @param string password
+     * @param string nom
+     * @param string prenom
+     * @return self
+     */
+    public static function create(string $email, string $nom, string $prenom): self
+    {
+        $user = new self();
+        $user->email = $email;
+        $user->nom = $nom;
+        $user->prenom = $prenom;
+
+        return $user;
+    }
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();

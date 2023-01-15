@@ -2,15 +2,22 @@
 
 namespace App\Entity;
 
-use App\Repository\PublicationRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\PreUpdate;
+use App\Entity\Trait\CreatedAtTrait;
+use Doctrine\ORM\Mapping\PrePersist;
+use App\Repository\PublicationRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\Common\Collections\ArrayCollection;
 
+#[HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: PublicationRepository::class)]
 class Publication
 {
+    use CreatedAtTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -21,15 +28,6 @@ class Publication
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $contenu = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $editedAt = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $slug = null;
 
     #[ORM\ManyToOne(inversedBy: 'publications')]
     #[ORM\JoinColumn(nullable: false)]
@@ -53,6 +51,17 @@ class Publication
         $this->reactionPublications = new ArrayCollection();
         $this->mediaPublication = new ArrayCollection();
         $this->tagsPublication = new ArrayCollection();
+    }
+    
+    #[PrePersist]
+    public function prepesist(){
+        $this->createdAt = new \DateTimeImmutable();
+        $this->editedAt = new \DateTimeImmutable();
+    }
+
+    #[PreUpdate]
+    public function prepUp(){
+        $this->editedAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -80,42 +89,6 @@ class Publication
     public function setContenu(string $contenu): self
     {
         $this->contenu = $contenu;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getEditedAt(): ?\DateTimeImmutable
-    {
-        return $this->editedAt;
-    }
-
-    public function setEditedAt(\DateTimeImmutable $editedAt): self
-    {
-        $this->editedAt = $editedAt;
-
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
 
         return $this;
     }
