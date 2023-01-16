@@ -25,7 +25,7 @@ class Publication
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $editedAt = null;
 
     #[ORM\Column(length: 255)]
@@ -53,6 +53,7 @@ class Publication
         $this->reactionPublications = new ArrayCollection();
         $this->mediaPublication = new ArrayCollection();
         $this->tagsPublication = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
