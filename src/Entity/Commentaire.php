@@ -22,7 +22,7 @@ class Commentaire
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $editedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'commentaires')]
