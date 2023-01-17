@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page d'accueil{% endblock %}
+
+{% block container %}
+    {% for user in users %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div>
+                    {{ user.nom }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor%}
+{% endblock %}

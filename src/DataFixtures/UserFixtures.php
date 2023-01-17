@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+
 use App\Entity\User;
 use Faker\Factory as Faker;
 use Doctrine\Persistence\ObjectManager;
@@ -31,14 +32,18 @@ class UserFixtures extends Fixture
             $user = new User;
             $user
                 ->setEmail($faker->email())
-                ->setNom($faker->name())
+                ->setNom($faker->lastName())
                 ->setPrenom($faker->firstName())
-                ->setPassword($this->passwordHasher->hashPassword($user, 'mdpUser'))
+                ->setPassword($this->passwordHasher->hashPassword($user, '123456789'))
+                ->setImage($faker->imageUrl(360, 360, 'user', true, ($user->getNom().' '.$user->getPrenom()), false, 'png'))
             ;
+            //  1er user avec role admin
+            if ($i == 1) $user->setRoles(['ROLE_SUPER_ADMIN']);
             $manager->persist($user);
                 
         }
 
         $manager->flush();
+
     }
 }

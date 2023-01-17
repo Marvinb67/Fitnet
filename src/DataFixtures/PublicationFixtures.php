@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -22,6 +23,7 @@ class PublicationFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
+
         $users = $this->userRepo->findAll();
 
         $faker = Faker::create('fr_FR');
@@ -52,5 +54,6 @@ class PublicationFixtures extends Fixture implements DependentFixtureInterface
         return array(
             UserFixtures::class,
         );
+
     }
 }
