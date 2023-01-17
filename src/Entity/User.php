@@ -6,10 +6,12 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields: ['email'], message: "Cet e-mail est déjà utiliser..!")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -73,6 +75,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'followers')]
     #[ORM\JoinTable(name: 'user_followers')]
     private Collection $myfollowers;
+
+    /**
+     * faciliter la creation utilisateur
+     *
+     * @param string email
+     * @param string password
+     * @param string nom
+     * @param string prenom
+     * @return self
+     */
+    public static function create(string $email, string $nom, string $prenom): self
+    {
+        $user = new self();
+        $user->email = $email;
+        $user->nom = $nom;
+        $user->prenom = $prenom;
+
+        return $user;
+    }
 
     public function __construct()
     {
