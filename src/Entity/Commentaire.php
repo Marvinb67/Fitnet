@@ -22,9 +22,6 @@ class Commentaire
     #[ORM\Column(type: Types::TEXT)]
     private ?string $contenu = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $editedAt = null;
-
     #[ORM\ManyToOne(inversedBy: 'commentaires')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
@@ -57,18 +54,6 @@ class Commentaire
     public function setContenu(string $contenu): self
     {
         $this->contenu = $contenu;
-
-        return $this;
-    }
-
-    public function getEditedAt(): ?\DateTimeImmutable
-    {
-        return $this->editedAt;
-    }
-
-    public function setEditedAt(\DateTimeImmutable $editedAt): self
-    {
-        $this->editedAt = $editedAt;
 
         return $this;
     }
