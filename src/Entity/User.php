@@ -37,6 +37,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $prenom = null;
 
+    #[ORM\Column(type: 'boolean')]
+    private $isVerified = false;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
@@ -64,7 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: MessageRecu::class, orphanRemoval: true)]
     private Collection $messageRecus;
 
-    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'amis')]
+    #[ORM\ManyToMany(targetEntity: self::class)]
     #[ORM\JoinTable(name: 'user_amis')]
     private Collection $amis;
 
@@ -527,6 +530,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->myfollowers->removeElement($myfollower)) {
             $myfollower->removeFollower($this);
         }
+
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }
