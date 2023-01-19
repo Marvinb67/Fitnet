@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Security\EmailVerifier;
+use App\Service\SendMailService;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
+use App\Service\JWTService;
 use Symfony\Component\Mime\Address;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -13,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
@@ -27,7 +30,9 @@ class RegistrationController extends AbstractController
     public function register(
         Request $request, 
         UserPasswordHasherInterface $userPasswordHasher, 
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        SendMailService $mail,
+        JWTService $jwt
     ): Response
     {
 
@@ -48,12 +53,33 @@ class RegistrationController extends AbstractController
             // do anything else you need here, like send an email
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('admin@fitnet.fr', 'FitNet Mail'))
-                    ->to($user->getEmail())
-                    ->subject('Activation du compte FitNet')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+            // $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            //     (new TemplatedEmail())
+            //         ->from(new Address('admin@fitnet.fr', 'FitNet Mail'))
+            //         ->to($user->getEmail())
+            //         ->subject('Activation du compte FitNet')
+            //         ->htmlTemplate('emails/confirmation_email.html.twig')
+            // );
+               // On génère le JWT de l'utilisateur
+            // On crée le Header
+            $header = [
+                'typ' => 'JWT',
+                'alg' => 'HS256'
+            ];
+
+            // On crée le Payload
+            $payload = [
+                'user_id' => $user->getId()
+            ];
+            // On génère le token
+            $token = $jwt->generate($header, $payload, $this->getParameter('app.jwtsecret'));
+            // Envoi du mail
+            $mail->send(
+                $this->getParameter('app.admin_email'),
+                $user->getEmail(),
+                'Activation de votre compte FitNet',
+                'confirmation_email',
+                compact('user', 'token')
             );
             // do anything else you need here, like send an email
             return $this->redirectToRoute('app_login');
@@ -64,33 +90,36 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/verify', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
+    #[Route('/verify/{token}', name: 'app_verify_email')]
+    /**
+     * Undocumented function
+     *
+     * @param [type] $token
+     * @param JWTService $jwt
+     * @param UserRepository $user
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    public function verifyUserEmail($token, JWTService $jwt, UserRepository $usersRepository, EntityManagerInterface $em): Response
     {
-        $id = $request->get('id');
+        //On vérifie si le token est valide, n'a pas expiré et n'a pas été modifié
+        if($jwt->isValid($token) && !$jwt->isExpired($token) && $jwt->check($token, $this->getParameter('app.jwtsecret'))){
+            // On récupère le payload
+            $payload = $jwt->getPayload($token);
 
-        if (null === $id) {
-            return $this->redirectToRoute('app_register');
+            // On récupère le user du token
+            $user = $usersRepository->find($payload['user_id']);
+
+            //On vérifie que l'utilisateur existe et n'a pas encore activé son compte
+            if($user && !$user->isVerified()){
+                $user->setIsVerified(true);
+                $em->flush($user);
+                $this->addFlash('success', 'Utilisateur activé');
+                return $this->redirectToRoute('home');
+            }
         }
-
-        $user = $userRepository->find($id);
-
-        if (null === $user) {
-            return $this->redirectToRoute('app_register');
-        }
-
-        // validate email confirmation link, sets User::isVerified=true and persists
-        try {
-            $this->emailVerifier->handleEmailConfirmation($request, $user);
-        } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
-
-            return $this->redirectToRoute('app_register');
-        }
-
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Votre compte est activé. Merci.');
-
+        // Ici un problème se pose dans le token
+        $this->addFlash('danger', 'Le token est invalide ou a expiré');
         return $this->redirectToRoute('app_login');
     }
 }
