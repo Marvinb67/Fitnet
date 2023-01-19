@@ -1,0 +1,5 @@
+<h1>Activez votre compte</h1>
+<p>Bonjour {{ user.nom }},</p>
+<p>Votre inscription sur FitNet est à valider en cliquant sur le lien ci-dessous :</p>
+<p><a href="{{ absolute_url(path('app_verify_email', {token: token})) }}">{{ absolute_url(path('app_verify_email', {token: token})) }}</a></p>
+<p>Ce lien expirera dans 4 heures</p>
