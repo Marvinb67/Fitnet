@@ -1,0 +1,33 @@
+<div class="flash">
+	{% for key, messages in app.flashes %}
+		{% if key == "success" %}
+			{% for message in messages %}
+				<div class="alert alert-success">
+					{{ message }}
+				</div>
+			{% endfor %}
+
+		{% elseif key == "danger" %}
+			{% for message in messages %}
+				<div class="alert alert-danger">
+					{{ message }}
+				</div>
+			{% endfor %}
+
+		{% elseif key == "warning" %}
+			{% for message in messages %}
+				<div class="alert alert-warning" role="alert">
+					{{ message }}
+				</div>
+			{% endfor %}
+
+		{% else %}
+			{% for message in messages %}
+				<div class="alert alert-info">
+					{{ message }}
+				</div>
+			{% endfor %}
+
+		{% endif %}
+	{% endfor %}
+</div>
