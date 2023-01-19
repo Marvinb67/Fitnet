@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Publication;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: "Cet e-mail est déjà utiliser..!")]
@@ -39,6 +40,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $resetToken;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
@@ -467,7 +471,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->amis;
     }
 
-    public function addAmi(self $ami): self
+    public function addAmi(self$ami): self
     {
         if (!$this->amis->contains($ami)) {
             $this->amis->add($ami);
@@ -476,7 +480,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeAmi(self $ami): self
+    public function removeAmi(self$ami): self
     {
         $this->amis->removeElement($ami);
 
@@ -491,7 +495,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->followers;
     }
 
-    public function addFollower(self $follower): self
+    public function addFollower(self$follower): self
     {
         if (!$this->followers->contains($follower)) {
             $this->followers->add($follower);
@@ -500,7 +504,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeFollower(self $follower): self
+    public function removeFollower(self$follower): self
     {
         $this->followers->removeElement($follower);
 
@@ -515,7 +519,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->myfollowers;
     }
 
-    public function addMyfollower(self $myfollower): self
+    public function addMyfollower(self$myfollower): self
     {
         if (!$this->myfollowers->contains($myfollower)) {
             $this->myfollowers->add($myfollower);
@@ -525,7 +529,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeMyfollower(self $myfollower): self
+    public function removeMyfollower(self$myfollower): self
     {
         if ($this->myfollowers->removeElement($myfollower)) {
             $myfollower->removeFollower($this);
@@ -542,6 +546,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
 
         return $this;
     }

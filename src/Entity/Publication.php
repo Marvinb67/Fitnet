@@ -52,15 +52,17 @@ class Publication
         $this->mediaPublication = new ArrayCollection();
         $this->tagsPublication = new ArrayCollection();
     }
-    
+
     #[PrePersist]
-    public function prepesist(){
+    public function prepesist()
+    {
         $this->createdAt = new \DateTimeImmutable();
         $this->editedAt = new \DateTimeImmutable();
     }
 
     #[PreUpdate]
-    public function prepUp(){
+    public function prepUp()
+    {
         $this->editedAt = new \DateTimeImmutable();
     }
 
