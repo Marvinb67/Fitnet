@@ -85,6 +85,7 @@ class PublicationController extends AbstractController
 
     #[Route('publication/{id}', name:'app_publication_delete')]
     #[Security("is_granted('ROLE_SUPER_ADMIN') or (is_granted('ROLE_USER') and publication.getUser() == user")]
+    public function delete(Publication $publication, ManagerRegistry $doctrine): Response
     {
         $em = $doctrine->getManager();
         $em->remove($publication);
