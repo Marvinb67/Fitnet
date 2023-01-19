@@ -51,6 +51,7 @@ class Publication
         $this->reactionPublications = new ArrayCollection();
         $this->mediaPublication = new ArrayCollection();
         $this->tagsPublication = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     #[PrePersist]
