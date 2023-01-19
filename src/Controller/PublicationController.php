@@ -4,10 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Publication;
 use App\Form\PublicationType;
-use App\Repository\PublicationRepository;
 use App\Repository\UserRepository;
+use App\Repository\PublicationRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -62,6 +63,7 @@ class PublicationController extends AbstractController
     }
 
     #[Route('publication/{id}/edit', name:'app_publication_edit')]
+    #[Security("is_granted('ROLE_SUPER_ADMIN' or (is_granted('ROLE_USER') and publication.getUser() == user")]
     public function edit(Publication $publication, Request $request, ManagerRegistry $doctrine): Response
     {
         $form = $this->createForm(PublicationType::class, $publication);
@@ -82,7 +84,7 @@ class PublicationController extends AbstractController
     }
 
     #[Route('publication/{id}', name:'app_publication_delete')]
-    public function delete(Publication $publication, ManagerRegistry $doctrine): Response
+    #[Security("is_granted('ROLE_SUPER_ADMIN') or (is_granted('ROLE_USER') and publication.getUser() == user")]
     {
         $em = $doctrine->getManager();
         $em->remove($publication);
