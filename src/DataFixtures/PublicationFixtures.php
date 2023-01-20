@@ -36,8 +36,8 @@ class PublicationFixtures extends Fixture implements DependentFixtureInterface
                 ->setTitre($faker->words(3, true))
                 ->setContenu($faker->sentences(3, true))
                 ->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTime($max = 'now')))
-                ->setSlug($this->slugger->slug($publication->getTitre()))
                 ->setEditedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween($max = 'now')))
+                ->setSlug($this->slugger->slug($publication->getTitre()))
             ;
 
             $manager->persist($publication);
