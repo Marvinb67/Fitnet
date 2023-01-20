@@ -36,16 +36,16 @@ class Media
     #[ORM\ManyToMany(targetEntity: Evenement::class, inversedBy: 'mediaEvenement')]
     private Collection $evenement;
 
-    public function __construct(private SluggerInterface $slugger)
+    public function __construct()
     {
         $this->publication = new ArrayCollection();
         $this->evenement = new ArrayCollection();
     }
 
     #[PrePersist]
-    public function prepesist()
+    public function prepesist(SluggerInterface $slugger)
     {
-        $this->slugger->slug($this->titre);
+        $slugger->slug($this->titre);
     }
 
     public function getId(): ?int
