@@ -70,26 +70,6 @@ class RegistrationFormType extends AbstractType
             ]),
             'required' => true
         ))
-        // ->add('plainPassword', PasswordType::class, [
-        //     // instead of being set onto the object directly,
-        //     // this is read and encoded in the controller
-        //     'mapped' => false,
-        //     'attr' => [
-        //         'autocomplete' => 'new-password',
-        //         'class' => 'form-control'
-        //     ],
-        //     'constraints' => [
-        //         new NotBlank([
-        //             'message' => 'Veuillez saisir le mot de passe!',
-        //         ]),
-        //             new Length([
-        //                 'min' => 8,
-        //                 'minMessage' => 'Votre mot de passe devera contenir au moins {{ limit }} characters!',
-        //                 // max length allowed by Symfony for security reasons
-        //                 'max' => 96,
-        //             ]),
-        //         ],
-        //     ])
         ;
     }
 
