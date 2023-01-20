@@ -8,15 +8,13 @@ use Doctrine\Persistence\ObjectManager;
 use App\Repository\UserRepository;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Faker\Factory as Faker;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class GroupFixtures extends Fixture implements DependentFixtureInterface
 {
-    private $userRepository;
 
-    public function __construct(UserRepository $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
+    public function __construct(private UserRepository $userRepository, private SluggerInterface $slugger)
+    {}
 
     public function load(ObjectManager $manager): void
     {
@@ -29,10 +27,11 @@ class GroupFixtures extends Fixture implements DependentFixtureInterface
             $randomKey = array_rand($users);
             $user = $users[$randomKey];
 
-            $groupe = new Groupe();
+            $groupe = new Groupe($this->slugger);
             $groupe
                 ->setUser($user)
                 ->setIntitule($faker->words(3, true))
+                ->setSlug($this->slugger->slug($groupe->getIntitule()))
             ;
 
             $manager->persist($groupe);
