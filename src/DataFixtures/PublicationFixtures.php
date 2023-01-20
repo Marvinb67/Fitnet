@@ -2,43 +2,55 @@
 
 namespace App\DataFixtures;
 
-use Faker\Factory;
+
+use DateTimeImmutable;
 use App\Entity\Publication;
+use Faker\Factory as Faker;
+use App\DataFixtures\UserFixtures;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class PublicationFixtures extends Fixture implements DependentFixtureInterface
 {
     public function __construct(private UserRepository $userRepo, private SluggerInterface $slugger)
-    {
-    }
+    {}
 
     public function load(ObjectManager $manager): void
     {
-        $faker = Factory::create('fr_FR');
+
         $users = $this->userRepo->findAll();
-        /**
-         * Creation des publications
-         */
-        for ($i = 0; $i < 50; $i++) {
-            $publication = new Publication();
-            $publication->setTitre($faker->words(5, true));
-            $publication->setContenu($faker->text);
-            $publication->setSlug($this->slugger->slug($publication->getTitre()));
-            $publication->setUser($users[rand(0, count($users) - 1)]);
-            
+
+        $faker = Faker::create('fr_FR');
+
+        for($i = 0; $i < 30; $i ++)
+        {    
+            $randomKey = array_rand($users);
+            $user = $users[$randomKey];
+
+            $publication = new Publication($this->slugger);
+            $publication
+                ->setUser($user)
+                ->setTitre($faker->words(3, true))
+                ->setContenu($faker->sentences(3, true))
+                ->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTime($max = 'now')))
+                ->setSlug($this->slugger->slug($publication->getTitre()))
+                ->setEditedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween($max = 'now')))
+            ;
+
             $manager->persist($publication);
         }
 
         $manager->flush();
     }
+        
     public function getDependencies()
     {
-        return [
-            UserFixtures::class
-        ];
+        return array(
+            UserFixtures::class,
+        );
+
     }
 }

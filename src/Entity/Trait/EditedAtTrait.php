@@ -4,7 +4,7 @@ namespace App\Entity\Trait;
 
 use Doctrine\ORM\Mapping as ORM;
 
-Trait CreatedAtTrait
+Trait EditedAtTrait
 {
     /**
      * Generation automatique du proriété createdAt pour l'utiliser dans les entites.
@@ -12,17 +12,18 @@ Trait CreatedAtTrait
      * @var \DateTimeImmutable|null
      */
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?\DateTimeImmutable $editedAt = null;
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getEditedAt(): ?\DateTimeImmutable
     {
-        return $this->createdAt;
+        return $this->editedAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setEditedAt(\DateTimeImmutable $editedAt): self
     {
-        $this->createdAt = $createdAt;
+        $this->editedAt = $editedAt;
 
         return $this;
     }
+
 }
