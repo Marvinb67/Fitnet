@@ -4,15 +4,21 @@ namespace App\Entity;
 
 use App\Entity\Trait\SlugTrait;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Trait\EditedAtTrait;
+use Doctrine\ORM\Mapping\PreUpdate;
 use App\Entity\Trait\CreatedAtTrait;
 use App\Repository\GroupeRepository;
+use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: GroupeRepository::class)]
 class Groupe
 {
     use CreatedAtTrait;
+    use EditedAtTrait;
+    use SlugTrait;
     
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,6 +32,25 @@ class Groupe
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\JoinTable(name: 'adherent_group')]
     private ?User $user = null;
+
+    public function __construct(private SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
+
+    #[PrePersist]
+    public function prepesist()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->editedAt = new \DateTimeImmutable();
+        $this->slugger->slug($this->intitule);
+    }
+
+    #[PreUpdate]
+    public function prepUp()
+    {
+        $this->editedAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {

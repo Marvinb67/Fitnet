@@ -2,15 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\MediaRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use App\Entity\Trait\SlugTrait;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MediaRepository;
+use Doctrine\ORM\Mapping\PrePersist;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
 class Media
 {
+    use SlugTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -31,10 +36,16 @@ class Media
     #[ORM\ManyToMany(targetEntity: Evenement::class, inversedBy: 'mediaEvenement')]
     private Collection $evenement;
 
-    public function __construct()
+    public function __construct(private SluggerInterface $slugger)
     {
         $this->publication = new ArrayCollection();
         $this->evenement = new ArrayCollection();
+    }
+
+    #[PrePersist]
+    public function prepesist()
+    {
+        $this->slugger->slug($this->titre);
     }
 
     public function getId(): ?int

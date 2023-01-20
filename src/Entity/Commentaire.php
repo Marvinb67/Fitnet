@@ -2,17 +2,23 @@
 
 namespace App\Entity;
 
-use App\Entity\Trait\CreatedAtTrait;
-use App\Repository\CommentaireRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use App\Entity\Trait\SlugTrait;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Trait\EditedAtTrait;
+use Doctrine\ORM\Mapping\PreUpdate;
+use App\Entity\Trait\CreatedAtTrait;
+use Doctrine\ORM\Mapping\PrePersist;
+use App\Repository\CommentaireRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: CommentaireRepository::class)]
 class Commentaire
 {
     use CreatedAtTrait;
+    use EditedAtTrait;
+    use SlugTrait;
     
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -39,6 +45,19 @@ class Commentaire
     public function __construct()
     {
         $this->reponse = new ArrayCollection();
+    }
+
+    #[PrePersist]
+    public function prepesist()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->editedAt = new \DateTimeImmutable();
+    }
+
+    #[PreUpdate]
+    public function prepUp()
+    {
+        $this->editedAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
