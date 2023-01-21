@@ -5,17 +5,23 @@ namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use App\Entity\Trait\SlugTrait;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Trait\EditedAtTrait;
+use Doctrine\ORM\Mapping\PreUpdate;
 use App\Entity\Trait\CreatedAtTrait;
+use Doctrine\ORM\Mapping\PrePersist;
 use App\Repository\EvenementRepository;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: EvenementRepository::class)]
 class Evenement
 {
     use CreatedAtTrait;
+    use EditedAtTrait;
+    use SlugTrait;
     
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -46,6 +52,20 @@ class Evenement
         $this->historiqueEvenements = new ArrayCollection();
         $this->mediaEvenement = new ArrayCollection();
         $this->tagsEvenement = new ArrayCollection();
+    }
+
+    #[PrePersist]
+    public function prepesist(SluggerInterface $slugger)
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->editedAt = new \DateTimeImmutable();
+        $slugger->slug($this->intitule);
+    }
+
+    #[PreUpdate]
+    public function prepUp()
+    {
+        $this->editedAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int

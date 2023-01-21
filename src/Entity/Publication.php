@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
+use App\Entity\Trait\SlugTrait;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Trait\EditedAtTrait;
 use Doctrine\ORM\Mapping\PreUpdate;
 use App\Entity\Trait\CreatedAtTrait;
 use Doctrine\ORM\Mapping\PrePersist;
@@ -11,12 +13,15 @@ use App\Repository\PublicationRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: PublicationRepository::class)]
 class Publication
 {
     use CreatedAtTrait;
+    use EditedAtTrait;
+    use SlugTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -55,10 +60,11 @@ class Publication
     }
 
     #[PrePersist]
-    public function prepesist()
+    public function prepesist(SluggerInterface $slugger)
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->editedAt = new \DateTimeImmutable();
+        $slugger->slug($this->titre);
     }
 
     #[PreUpdate]
