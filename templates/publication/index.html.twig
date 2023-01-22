@@ -8,17 +8,44 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
+<div>
+    <img src="{{ asset('build/images/fitnet-logo.png') }}" alt="image logo" />
+</div>
+
+<div class="example-wrapper ">
     <h1>Liste des publications</h1>
     {% for publication in publications %}
-        <div>
-            <p>{{publication.user.nom}} {{publication.user.prenom}}</p>
+        <div class="publication-card">
+            <div class="user-publication">
+                <div class="futur-pp"></div>
+                <p>{{publication.user.nom}} {{publication.user.prenom}}</p>
+            </div>
             <h2><a href="{{ path('app_publication_show', {id: publication.id, slug: publication.slug})}}">{{publication.titre}}</a></h2>
             <p>{{publication.contenu}}</p>
             <p>Posté le : {{publication.createdAt | date('Y/m/d')}}</p>
             <a href="{{ path('app_publication_edit', {id: publication.id})}}">Modifier la publication</a> <a href="{{ path('app_publication_delete', {id: publication.id})}}">Supprimer la publication</a>
         </div>
-        <hr>
     {% endfor %}
 </div>
+    
+    <footer>
+        <nav>
+            <ul class="d-flex">
+                <li><i class="fa-solid fa-house"></i></li>
+                <li><i class="fa-solid fa-user-group"></i></li>
+                <li><i class="fa-solid fa-paper-plane"></i></li>
+                <li><i class="fa-solid fa-user"></i></li>
+            </ul>
+        </nav>
+    </footer>
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('publication') }}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('publication') }}
+{% endblock %}
+
