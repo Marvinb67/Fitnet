@@ -59,7 +59,7 @@ class Evenement
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->editedAt = new \DateTimeImmutable();
-        $slugger->slug($this->intitule);
+        $this->slug = str_replace(' ', '-',trim(strtolower($this->intitule)));
     }
 
     #[PreUpdate]

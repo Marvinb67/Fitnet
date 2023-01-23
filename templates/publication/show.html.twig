@@ -1,6 +1,11 @@
-<div>
-    <p>{{publication.user.nom}} {{publication.user.prenom}}</p>
-    <h2>{{publication.titre}}</h2>
+{% extends 'base.html.twig' %} 
+{% block title %}Article : {{publication.titre}}  {% endblock %} 
+{% block container %}
+<div class="container my-3">
+  <div class="row">
+    <h1>{{publication.titre}}</h1>
     <p>{{publication.contenu}}</p>
-    <p>Posté le : {{publication.createdAt | date('Y/m/d')}}</p>
+    <p>{{publication.user.nom}} {{publication.user.prenom}}<span>Posté le : {{publication.createdAt | date('d/m/Y H:m')}}</span></p>
 </div>
+</div>
+{% endblock %}
