@@ -10,7 +10,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Faker\Factory as Faker;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-class GroupFixtures extends Fixture implements DependentFixtureInterface
+class GroupeFixtures extends Fixture implements DependentFixtureInterface
 {
 
     public function __construct(private UserRepository $userRepository, private SluggerInterface $slugger)
