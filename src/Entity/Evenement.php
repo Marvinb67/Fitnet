@@ -47,7 +47,7 @@ class Evenement
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'evenement')]
     private Collection $tagsEvenement;
 
-    public function __construct(private SluggerInterface $slugger)
+    public function __construct()
     {
         $this->historiqueEvenements = new ArrayCollection();
         $this->mediaEvenement = new ArrayCollection();
@@ -55,11 +55,11 @@ class Evenement
     }
 
     #[PrePersist]
-    public function prepesist()
+    public function prepesist(SluggerInterface $slugger)
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->editedAt = new \DateTimeImmutable();
-        $this->slugger->slug($this->intitule);
+        $this->slug = str_replace(' ', '-',trim(strtolower($this->intitule)));
     }
 
     #[PreUpdate]

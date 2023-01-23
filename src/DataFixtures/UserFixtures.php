@@ -36,6 +36,7 @@ class UserFixtures extends Fixture
                 ->setPrenom($faker->firstName())
                 ->setPassword($this->passwordHasher->hashPassword($user, '123456789'))
                 ->setImage($faker->imageUrl(360, 360, 'user', true, ($user->getNom().' '.$user->getPrenom()), false, 'png'))
+                ->setIsVerified(rand(0, 1))
             ;
             //  1er user avec role admin
             if ($i == 1) $user->setRoles(['ROLE_SUPER_ADMIN']);

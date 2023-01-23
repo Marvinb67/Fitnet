@@ -32,18 +32,13 @@ class Groupe
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\JoinTable(name: 'adherent_group')]
     private ?User $user = null;
-
-    public function __construct(private SluggerInterface $slugger)
-    {
-        $this->slugger = $slugger;
-    }
-
+    
     #[PrePersist]
     public function prepesist()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->editedAt = new \DateTimeImmutable();
-        $this->slugger->slug($this->intitule);
+        $this->slug = str_replace(' ', '-',trim(strtolower($this->intitule)));
     }
 
     #[PreUpdate]

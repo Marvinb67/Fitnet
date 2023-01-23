@@ -9,7 +9,6 @@ use App\Repository\MediaRepository;
 use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
 class Media
@@ -36,7 +35,7 @@ class Media
     #[ORM\ManyToMany(targetEntity: Evenement::class, inversedBy: 'mediaEvenement')]
     private Collection $evenement;
 
-    public function __construct(private SluggerInterface $slugger)
+    public function __construct()
     {
         $this->publication = new ArrayCollection();
         $this->evenement = new ArrayCollection();
@@ -45,7 +44,7 @@ class Media
     #[PrePersist]
     public function prepesist()
     {
-        $this->slugger->slug($this->titre);
+        $this->slug = str_replace(' ', '-',trim(strtolower($this->titre)));
     }
 
     public function getId(): ?int

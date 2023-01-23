@@ -1,0 +1,14 @@
+<div class="card px-1">
+	<img src="{#{ publication.image }#}" alt="" srcset="">
+	<div class="card-body">
+		<h5 class="card-title text-primary text-capitalize">{{ publication.titre }}</h5>
+		<p class="text-start">{{ publication.contenu }}<a  class="link-secondary float-end text-decoration-none" href="{{ path('app_publication_show', {id: publication.id, slug: publication.slug})}}">Plus >></a></p>
+		
+	</div>
+
+	<a class="btn btn-warning" href="{{ path('app_publication_edit', {slug: publication.slug}) }}">Modifier la publication</a>
+	<a class="btn btn-danger mt-1" href="{{ path('app_publication_delete', {id: publication.id})}}">Supprimer la publication</a>
+	<p>Posté le :
+		{{publication.createdAt | date('d/m/Y H:m')}} par : <span class="text text-muted">{{publication.user.nom}}
+		{{publication.user.prenom}}</span></p>
+</div>

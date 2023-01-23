@@ -18,7 +18,6 @@ class Commentaire
 {
     use CreatedAtTrait;
     use EditedAtTrait;
-    use SlugTrait;
     
     #[ORM\Id]
     #[ORM\GeneratedValue]

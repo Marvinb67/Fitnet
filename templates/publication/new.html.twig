@@ -1,2 +1,12 @@
-<h1>Nouvelle publication</h1>
-{{form(formPublication)}}
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des publications
+{% endblock %}
+{% block container %}
+	<div class="container my-3">
+		<div class="row">
+			<h1>Nouvelle publication</h1>
+			{{form(formPublication)}}
+        </div>
+    </div>
+{% endblock %}
