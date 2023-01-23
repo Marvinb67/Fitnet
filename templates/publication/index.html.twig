@@ -6,18 +6,23 @@
 		<div class="row">
 			<h1>Liste des publications</h1>
 			<div class="col-md-3 my-2">
-        {% include 'publication/_filter.html.twig' with {form:form} only %}
-      </div>
+				{% include 'publication/_filter.html.twig' with {form:form} only %}
+			</div>
 
 			<div class="col-md-9 my-2">
 				<div class="grid">
 					{% for publication in publications %}
 						{% include 'publication/_card.html.twig' with {publication: publication}
       only %}
+	  <a  class="link-secondary float-end text-decoration-none" href="{{ path('app_publication_show', {id: publication.id, slug: publication.slug})}}">Plus >></a>
+
+	<a class="btn btn-warning" href="{{ path('app_publication_edit', {slug: publication.slug}) }}">Modifier la publication</a>
+	<a class="btn btn-danger mt-1" href="{{ path('app_publication_delete', {id: publication.id})}}">Supprimer la publication</a>
+	</div>
 					{% endfor %}
 				</div>
 			</div>
-				<hr/>
+			<hr/>
 
 		</div>
 	</div>
