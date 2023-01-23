@@ -50,7 +50,7 @@ class Publication
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'publication')]
     private Collection $tagsPublication;
 
-    public function __construct(private SluggerInterface $slugger)
+    public function __construct()
     {
         $this->commentaires = new ArrayCollection();
         $this->reactionPublications = new ArrayCollection();
@@ -64,7 +64,6 @@ class Publication
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->editedAt = new \DateTimeImmutable();
-        $this->slugger->slug($this->titre);
     }
 
     #[PreUpdate]
