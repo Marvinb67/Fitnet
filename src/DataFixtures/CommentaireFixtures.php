@@ -4,7 +4,6 @@ namespace App\DataFixtures;
 
 
 use App\Entity\Commentaire;
-use App\Entity\Publication;
 use Faker\Factory as Faker;
 use App\DataFixtures\UserFixtures;
 use App\Repository\UserRepository;
