@@ -38,7 +38,6 @@ class Groupe
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->editedAt = new \DateTimeImmutable();
-        $this->slug = str_replace(' ', '-',trim(strtolower($this->intitule)));
     }
 
     #[PreUpdate]
