@@ -18,19 +18,18 @@
 		{% endblock %}
 	</head>
 	<body>
-	{{ include('./_partials/_flash.html.twig ') }}
-		{% block body %}
-			{% if app.user and app.user.isVerified == false %}
-				<div class="alert alert-warning alert-dismissible" role="alert">
-					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-					<div class="alert-message">
-						<strong>Votre compte n'est pas activé</strong>,
-						<a href="{#{ path('resend_verif') }#}">renvoyer le lien d'activation</a>
-					</div>
+		{{ include('./_partials/_flash.html.twig ') }}
+		{% if app.user and app.user.isVerified == false %}
+			<div class="alert alert-warning alert-dismissible" role="alert">
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				<div class="alert-message">
+					<strong>Votre compte n'est pas activé</strong>,
+					<a href="{#{ path('resend_verif') }#}">renvoyer le lien d'activation</a>
 				</div>
-			{% endif %}
-				{% block container %}{% endblock %}
-			{% endblock %}
-		</body>
+			</div>
+		{% endif %}
+		{% block body %}
+			{% block container %}{% endblock %}
+		{% endblock %}
 	</body>
-</html>
+</html></body></html>
