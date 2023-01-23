@@ -60,11 +60,10 @@ class Publication
     }
 
     #[PrePersist]
-    public function prepesist(SluggerInterface $slugger)
+    public function prepesist()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->editedAt = new \DateTimeImmutable();
-        $slugger->slug($this->titre);
     }
 
     #[PreUpdate]
