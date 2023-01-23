@@ -29,9 +29,9 @@ class MediaFixtures extends Fixture
             $media = new Media($this->slugger);
             $media
                 ->setTitre($faker->words(3, true))
-                ->setDescription($faker->words(6, true))
-                ->setLien($faker->imageUrl(640, 480, 'animals', true))
                 ->setSlug($this->slugger->slug($media->getTitre()))
+                ->setDescription($faker->words(6, true))
+                ->setLien($faker->imageUrl(640, 480, $media->getSlug(), true))
             ;
 
             $manager->persist($media);
