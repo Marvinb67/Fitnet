@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Evenement;
-use App\Entity\InscriptionEvenement;
-use App\Entity\Publication;
 use App\Form\EvenementType;
 use App\Repository\EvenementRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -36,7 +34,7 @@ class EvenementController extends AbstractController
         if($form->isSubmitted() && $form->isValid())
         {
             $evenement->setUser($this->getUser());
-            $evenement->setSlug($slugger->slug($evenement->getIntitule()));
+            $evenement->setSlug(strtolower($slugger->slug($evenement->getIntitule())));
             $em = $doctrine->getManager();
             $em->persist($evenement);
             $em->flush();
@@ -50,11 +48,42 @@ class EvenementController extends AbstractController
         ]);
     }
 
-    #[Route('evenement/{slug}-{id}', requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], name:'app_evenement_show')]
-    public function show(Evenement $evenement): Response
+    #[Route('evenement/{slug}',requirements: ['slug' => '[a-z0-9\-]*'], name:'app_evenement_show')]
+    public function show(Evenement $evenement)
     {
-        return $this->render('evenement/show.html.twig',[
+        return $this->render('evenement/show.html.twig', [
             'evenement' => $evenement
         ]);
     }
+
+    #[Route('evenement/{id}/edit', requirements: ['id' => '\d+'], name:'app_evenement_edit')]
+    public function edit(Evenement $evenement, Request $request, ManagerRegistry $doctrine): Response
+    {
+        $form = $this->createForm(EvenementType::class, $evenement);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $em = $doctrine->getManager();
+            $em->flush();
+
+            return $this->redirectToRoute('app_evenement');
+        }
+
+        return $this->render('evenement/edit.html.twig', [
+            'publictaion' => $evenement,
+            'formEvenement' => $form->createView()
+        ]);
+    }
+
+    #[Route('evenement/{id}/delete', name: 'app_evenement_delete')]
+    public function delete(Evenement $evenement, ManagerRegistry $doctrine)
+    {
+        $em = $doctrine->getManager();
+        $em->remove($evenement);
+        $em->flush();
+
+        return $this->redirectToRoute('app_evenement');
+    }
+
 }

@@ -13,10 +13,10 @@
         {% for event in evenements %}
             <div>
                 <p>{{event.user.nom}} {{event.user.prenom}}</p>
-                <h2><a href="{{ path('app_evenement_show', {id: event.id, slug: event.slug}) }}">{{event.intitule}}</a></h2>
+                <h2><a href="{{ path('app_evenement_show', {slug: event.slug}) }}">{{event.intitule}}</a></h2>
                 <p>{{event.description}}</p>
                 <p>Posté le : {{event.createdAt | date('Y/m/d')}}</p>
-                <a href="">Modifier la publication</a> <a href="">Supprimer la publication</a>
+                <a href="{{ path('app_evenement_edit', {id: event.id}) }}">Modifier l'évènement</a> <a href="{{ path('app_evenement_delete', {id: event.id}) }}">Supprimer l'évènement</a>
             </div>
             <hr>
         {% endfor %}
