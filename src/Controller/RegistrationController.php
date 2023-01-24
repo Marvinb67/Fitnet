@@ -18,17 +18,18 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class RegistrationController extends AbstractController
 {
-    public function __construct(private EmailVerifier $emailVerifier){}
+    public function __construct(private EmailVerifier $emailVerifier)
+    {
+    }
 
     #[Route('/inscription', name: 'app_register')]
     public function register(
-        Request $request, 
-        UserPasswordHasherInterface $userPasswordHasher, 
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
         EntityManagerInterface $entityManager,
         SendMailService $mail,
         JWTService $jwt
-    ): Response
-    {
+    ): Response {
 
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -44,9 +45,8 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
 
-               // On génère le JWT de l'utilisateur
+            // On génère le JWT de l'utilisateur
             // On crée le Header
             $header = [
                 'typ' => 'JWT',
@@ -89,7 +89,7 @@ class RegistrationController extends AbstractController
     public function verifyUserEmail($token, JWTService $jwt, UserRepository $usersRepository, EntityManagerInterface $em): Response
     {
         //On vérifie si le token est valide, n'a pas expiré et n'a pas été modifié
-        if($jwt->isValid($token) && !$jwt->isExpired($token) && $jwt->check($token, $this->getParameter('app.jwtsecret'))){
+        if ($jwt->isValid($token) && !$jwt->isExpired($token) && $jwt->check($token, $this->getParameter('app.jwtsecret'))) {
             // On récupère le payload
             $payload = $jwt->getPayload($token);
 
@@ -97,7 +97,7 @@ class RegistrationController extends AbstractController
             $user = $usersRepository->find($payload['user_id']);
 
             //On vérifie que l'utilisateur existe et n'a pas encore activé son compte
-            if($user && !$user->isVerified()){
+            if ($user && !$user->isVerified()) {
                 $user->setIsVerified(true);
                 $em->flush($user);
                 $this->addFlash('success', 'Utilisateur activé');
@@ -106,6 +106,52 @@ class RegistrationController extends AbstractController
         }
         // Ici un problème se pose dans le token
         $this->addFlash('danger', 'Le token est invalide ou a expiré');
+        return $this->redirectToRoute('app_login');
+    }
+
+    /**
+     * Renvoi d'email d'activation de compte
+     *
+     * @param JWTService $jwt
+     * @param SendMailService $mail
+     * @param UserRepository $userRepository
+     * @return Response
+     */
+    #[Route('/regenereverif', name: 'resend_verif')]
+    public function resendVerif(JWTService $jwt, SendMailService $mail, UserRepository $userRepository): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            $this->addFlash('danger', 'Utilisateur non connecté!');
+            return $this->redirectToRoute('app_login');
+        }
+        
+        if ($user->isVerified()) {
+            $this->addFlash('danger', 'Ce compte est déjà activé!');
+            return $this->redirectToRoute('app_login');
+        }
+        // On génère le JWT de l'utilisateur
+        // On crée le Header
+        $header = [
+            'typ' => 'JWT',
+            'alg' => 'HS256'
+        ];
+
+        // On crée le Payload
+        $payload = [
+            'user_id' => $user->getId()
+        ];
+        // On génère le token
+        $token = $jwt->generate($header, $payload, $this->getParameter('app.jwtsecret'));
+        // Envoi du mail
+        $mail->send(
+            $this->getParameter('app.admin_email'),
+            $user->getEmail(),
+            'Activation de votre compte FitNet',
+            'confirmation_email',
+            compact('user', 'token')
+        );
+        // do anything else you need here, like send an email
         return $this->redirectToRoute('app_login');
     }
 }

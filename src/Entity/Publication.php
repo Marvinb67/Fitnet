@@ -13,7 +13,6 @@ use App\Repository\PublicationRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: PublicationRepository::class)]
@@ -34,6 +33,9 @@ class Publication
     #[ORM\Column(type: Types::TEXT)]
     private ?string $contenu = null;
 
+    #[ORM\Column(type: 'boolean')]
+    private $isActive = false;
+
     #[ORM\ManyToOne(inversedBy: 'publications')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
@@ -50,6 +52,8 @@ class Publication
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'publication')]
     private Collection $tagsPublication;
 
+
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
@@ -59,11 +63,18 @@ class Publication
         $this->createdAt = new \DateTimeImmutable();
     }
 
+    public function __toString()
+    {
+        $date = $this->getCreatedAt();
+        return $date->format('Y');
+    }
+
     #[PrePersist]
     public function prepesist()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->editedAt = new \DateTimeImmutable();
+        //$this->slug = str_replace(' ', '-',trim(strtolower($this->titre)));
     }
 
     #[PreUpdate]
@@ -226,4 +237,17 @@ class Publication
 
         return $this;
     }
+    
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
 }

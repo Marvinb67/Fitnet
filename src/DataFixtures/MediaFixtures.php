@@ -2,15 +2,14 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Groupe;
+use App\Entity\Media;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Repository\UserRepository;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Faker\Factory as Faker;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-class GroupFixtures extends Fixture implements DependentFixtureInterface
+class MediaFixtures extends Fixture
 {
 
     public function __construct(private UserRepository $userRepository, private SluggerInterface $slugger)
@@ -22,28 +21,22 @@ class GroupFixtures extends Fixture implements DependentFixtureInterface
 
         $users = $this->userRepository->findAll();
 
-        for($i = 0; $i < 10; $i++)
+        for($i = 0; $i < 50; $i++)
         {
             $randomKey = array_rand($users);
             $user = $users[$randomKey];
 
-            $groupe = new Groupe($this->slugger);
-            $groupe
-                ->setUser($user)
-                ->setIntitule($faker->words(3, true))
-                ->setSlug($this->slugger->slug($groupe->getIntitule()))
+            $media = new Media($this->slugger);
+            $media
+                ->setTitre($faker->words(3, true))
+                ->setSlug($this->slugger->slug($media->getTitre()))
+                ->setDescription($faker->words(6, true))
+                ->setLien($faker->imageUrl(640, 480, $media->getSlug(), true))
             ;
 
-            $manager->persist($groupe);
+            $manager->persist($media);
         }
 
         $manager->flush();
-    }
-   
-    public function getDependencies()
-    {
-        return array(
-            UserFixtures::class,
-        );
     }
 }

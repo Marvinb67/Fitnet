@@ -1,0 +1,11 @@
+<div class="card px-1">
+	<img src="{#{ publication.image }#}" alt="" srcset="">
+	<div class="card-body">
+		<h5 class="card-title text-primary text-capitalize">{{ publication.titre }}</h5>
+		<p class="text-start">{{ publication.contenu }}</p>
+		
+	</div>
+	<p>Posté le :
+		{{publication.createdAt | date('d/m/Y H:m')}} par : <span class="text text-muted">{{publication.user.nom}}
+		{{publication.user.prenom}}</span></p>
+

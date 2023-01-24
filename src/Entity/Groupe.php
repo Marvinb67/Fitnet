@@ -32,12 +32,13 @@ class Groupe
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\JoinTable(name: 'adherent_group')]
     private ?User $user = null;
-
+    
     #[PrePersist]
     public function prepesist()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->editedAt = new \DateTimeImmutable();
+        //$this->slug = str_replace(' ', '-',trim(strtolower($this->titre)));
     }
 
     #[PreUpdate]
