@@ -9,7 +9,6 @@ use App\Repository\MediaRepository;
 use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
 class Media
@@ -43,9 +42,9 @@ class Media
     }
 
     #[PrePersist]
-    public function prepesist(SluggerInterface $slugger)
+    public function prepesist()
     {
-        $slugger->slug($this->titre);
+        $this->slug = str_replace(' ', '-',trim(strtolower($this->titre)));
     }
 
     public function getId(): ?int
