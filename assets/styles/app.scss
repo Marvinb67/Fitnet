@@ -1,7 +1,6 @@
-@import "../../node_modules/bootstrap/scss/bootstrap";
-body {
-    background-color: rgba(218, 165, 32, 0.6);
-}
+@import "variables";
+@import "~bootstrap/scss/bootstrap";
+
 .grid{
     display: grid;
     grid-template-columns: repeat(3, 1fr);

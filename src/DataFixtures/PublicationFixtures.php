@@ -15,7 +15,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class PublicationFixtures extends Fixture implements DependentFixtureInterface
 {
-    public function __construct(private UserRepository $userRepo)
+    public function __construct(private UserRepository $userRepo, private SluggerInterface $sluggerInterface)
     {}
 
     public function load(ObjectManager $manager): void
@@ -34,6 +34,7 @@ class PublicationFixtures extends Fixture implements DependentFixtureInterface
             $publication
                 ->setUser($user)
                 ->setTitre($faker->words(3, true))
+                ->setSlug($this->sluggerInterface->slug($publication->getTitre()))
                 ->setContenu($faker->sentences(3, true))
                 ->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTime($max = 'now')))
                 ->setEditedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween($max = 'now')))

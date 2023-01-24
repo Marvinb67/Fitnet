@@ -2,23 +2,45 @@
 {% block title %}Liste des publications
 {% endblock %}
 {% block container %}
-	<div class="container my-3">
-		<div class="row">
-			<h1>Liste des publications</h1>
-			<div class="col-md-3 my-2">
-        {% include 'publication/_filter.html.twig' with {form:form} only %}
-      </div>
 
-			<div class="col-md-9 my-2">
-				<div class="grid">
-					{% for publication in publications %}
-						{% include 'publication/_card.html.twig' with {publication: publication}
-      only %}
-					{% endfor %}
-				</div>
-			</div>
-				<hr/>
+<div>
+    <img src="{{ asset('build/images/fitnet-logo.png') }}" alt="image logo" />
+</div>
 
-		</div>
-	</div>
+<div class="example-wrapper ">
+    <h1>Liste des publications</h1>
+    {% for publication in publications %}
+        <div class="publication-card">
+            <div class="user-publication">
+                <div class="futur-pp"></div>
+                <p>{{publication.user.nom}} {{publication.user.prenom}}</p>
+            </div>
+            <h2><a href="{{ path('app_publication_show', {id: publication.id, slug: publication.slug})}}">{{publication.titre}}</a></h2>
+            <p>{{publication.contenu}}</p>
+            <p>Posté le : {{publication.createdAt | date('Y/m/d')}}</p>
+            <a href="{{ path('app_publication_edit', {id: publication.id})}}">Modifier la publication</a> <a href="{{ path('app_publication_delete', {id: publication.id})}}">Supprimer la publication</a>
+        </div>
+    {% endfor %}
+</div>
+    
+    <footer>
+        <nav>
+            <ul class="d-flex">
+                <li><i class="fa-solid fa-house"></i></li>
+                <li><i class="fa-solid fa-user-group"></i></li>
+                <li><i class="fa-solid fa-paper-plane"></i></li>
+                <li><i class="fa-solid fa-user"></i></li>
+            </ul>
+        </nav>
+    </footer>
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('publication') }}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('publication') }}
+{% endblock %}
+

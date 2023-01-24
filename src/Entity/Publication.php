@@ -13,7 +13,6 @@ use App\Repository\PublicationRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: PublicationRepository::class)]
@@ -75,7 +74,7 @@ class Publication
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->editedAt = new \DateTimeImmutable();
-        $this->slug = str_replace(' ', '-',trim(strtolower($this->titre)));
+        //$this->slug = str_replace(' ', '-',trim(strtolower($this->titre)));
     }
 
     #[PreUpdate]
