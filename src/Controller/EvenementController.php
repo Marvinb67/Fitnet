@@ -56,7 +56,7 @@ class EvenementController extends AbstractController
         ]);
     }
 
-    #[Route('evenement/{id}/edit', requirements: ['id' => '\d+'], name:'app_evenement_edit')]
+    #[Route('evenement/edit/{id}', requirements: ['id' => '\d+'], name:'app_evenement_edit')]
     public function edit(Evenement $evenement, Request $request, ManagerRegistry $doctrine): Response
     {
         $form = $this->createForm(EvenementType::class, $evenement);
@@ -76,7 +76,7 @@ class EvenementController extends AbstractController
         ]);
     }
 
-    #[Route('evenement/{id}/delete', name: 'app_evenement_delete')]
+    #[Route('evenement/delete/{id}', name: 'app_evenement_delete')]
     public function delete(Evenement $evenement, ManagerRegistry $doctrine)
     {
         $em = $doctrine->getManager();
