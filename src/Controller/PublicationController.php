@@ -29,11 +29,6 @@ class PublicationController extends AbstractController
 
         $data->setPage($request->get('page', 1));
         if (!$user) throw new Exception('Vous n\'êtes pas connecté(e)! ');
-        
-        foreach ($user->getAmis() as $ami) {
-            $amis = $ami->getNom().' '.$ami->getPrenom();
-            $data->setAmis($amis);
-        }
 // dd($data);
         $publications = $publicationRepository->findSearch($data);
 
@@ -135,7 +130,7 @@ class PublicationController extends AbstractController
         ]);
     }
 
-    #[Route('publication/{slug}-{id}', requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], name: 'app_publication_delete')]
+    #[Route('publication/suppression/{slug}-{id}', requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], name: 'app_publication_delete')]
     public function delete(Publication $publication, ManagerRegistry $doctrine): Response
     {
         $em = $doctrine->getManager();

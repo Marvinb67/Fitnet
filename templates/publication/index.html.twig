@@ -8,7 +8,7 @@ endblock %} {% block container %}
     alt="image logo"
   />
   <div class="search-and-menu">
-    <input class="search-input" type="search" />
+    <div class="container">{% include 'publication/_filter.html.twig' %}</div>
     <a href="#"><i class="fa-solid fa-bars"></i></a>
   </div>
   <div class="filter-menu">
@@ -18,54 +18,54 @@ endblock %} {% block container %}
 </header>
 
 <div class="header-margin"></div>
-<div class="container">
-    <div class="row">
-        <div class="col-3">
-            {% include 'publication/_filter.html.twig' %}
+
+  <div class="publication-wrapper">
+    {% for publication in publications %}
+    <div class="publication-card">
+      <div class="user-publication">
+        <div class="futur-pp"></div>
+        <div class="infos-user-publication">
+          <p>{{ publication.user.nom }} {{ publication.user.prenom }}</p>
+          <p>Posté le : {{publication.createdAt | date('d/m/Y H:s')}}</p>
         </div>
-    </div>
-</div>
-<div class="container">
-  <div class="row">
-    <div class="col-9">
-      <div class="publication-wrapper">
-        {% for publication in publications %}
-        <div class="publication-card">
-          <div class="user-publication">
-            <div class="futur-pp"></div>
-            <div class="infos-user-publication">
-              <p>{{ publication.user.nom }} {{ publication.user.prenom }}</p>
-              <p>Posté le : {{publication.createdAt | date('d/m/Y H:s')}}</p>
-            </div>
-          </div>
-          <h2>
-            <a
-              href="{{
-                path('app_publication_show', {
-                  id: publication.id,
-                  slug: publication.slug
-                })
-              }}"
-              >{{ publication.titre }}</a
-            >
-          </h2>
-          <p>{{ publication.contenu }}</p>
-          <div class="reaction-publication">
-            <i class="fa-solid fa-thumbs-up"></i>
-            <i class="fa-solid fa-comment-dots"></i>
-          </div>
-          
-          <a href="{{ path('app_publication_edit', {  id: publication.id, slug: publication.slug}) }}"
-            >Modifier la publication</a
-          >
-          <a href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug}) }}"
-            >Supprimer la publication</a
-          >
-        </div>
-        {% endfor %}
       </div>
+      <h2>
+        <a
+          href="{{
+            path('app_publication_show', {
+              id: publication.id,
+              slug: publication.slug
+            })
+          }}"
+          >{{ publication.titre }}</a
+        >
+      </h2>
+      <p>{{ publication.contenu }}</p>
+      <div class="reaction-publication">
+        <i class="fa-solid fa-thumbs-up"></i>
+        <i class="fa-solid fa-comment-dots"></i>
+      </div>
+
+      <a
+        href="{{
+          path('app_publication_edit', {
+            id: publication.id,
+            slug: publication.slug
+          })
+        }}"
+        >Modifier la publication</a
+      >
+      <a
+        href="{{
+          path('app_publication_delete', {
+            id: publication.id,
+            slug: publication.slug
+          })
+        }}"
+        >Supprimer la publication</a
+      >
     </div>
-  </div>
+    {% endfor %}
 </div>
 
 <footer>

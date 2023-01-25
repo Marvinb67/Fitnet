@@ -40,7 +40,7 @@ class Publication
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Commentaire::class)]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Commentaire::class, cascade: ['persist', 'remove'])]
     private Collection $commentaires;
 
     #[ORM\OneToMany(mappedBy: 'Publication', targetEntity: ReactionPublication::class, orphanRemoval: true)]

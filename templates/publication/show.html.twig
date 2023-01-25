@@ -7,8 +7,8 @@
 		<div class="row">
     {% include 'publication/_card.html.twig' %}
     <div class="d-flex flex-row-reverse my-3">
-    <a class="btn btn-warning mt-1 ml-1" href="{{ path('app_publication_edit', {slug: publication.slug}) }}">Modifier la publication</a>
-	<a class="btn btn-danger mt-1 mr-1" href="{{ path('app_publication_delete', {id: publication.id})}}">Supprimer la publication</a></div>
+    <a class="btn btn-warning mt-1 ml-1" href="{{ path('app_publication_edit', {id: publication.id, slug: publication.slug}) }}">Modifier la publication</a>
+	<a class="btn btn-danger mt-1 mr-1" href="{{ path('app_publication_delete', {id: publication.id, slug: publication.slug})}}">Supprimer la publication</a></div>
 		</div>
 		</div>
 	</div>
