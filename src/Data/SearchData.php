@@ -36,6 +36,7 @@ class SearchData
     public function setQ(?string $q): self { $this->q = $q; return $this; }
 
     public function getAmis(){ return $this->Amis; }
+    public function setAmis($Amis): self { $this->Amis = $Amis; return $this; }
 
     public function getDates(){ return $this->dates; }
 

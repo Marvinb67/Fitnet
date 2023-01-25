@@ -18,7 +18,7 @@
             <h2><a href="{{ path('app_publication_show', {id: publication.id, slug: publication.slug})}}">{{publication.titre}}</a></h2>
             <p>{{publication.contenu}}</p>
             <p>Posté le : {{publication.createdAt | date('Y/m/d')}}</p>
-            <a href="{{ path('app_publication_edit', {id: publication.id})}}">Modifier la publication</a> <a href="{{ path('app_publication_delete', {id: publication.id})}}">Supprimer la publication</a>
+            <a href="{{ path('app_publication_edit', {slug: publication.slug, id: publication.id})}}">Modifier la publication</a> <a href="{{ path('app_publication_delete', {id: publication.id})}}">Supprimer la publication</a>
         </div>
     {% endfor %}
 </div>
@@ -34,13 +34,3 @@
         </nav>
     </footer>
 {% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    {{ encore_entry_script_tags('publication') }}
-{% endblock %}
-{% block stylesheets %}
-    {{ parent() }}
-    {{ encore_entry_link_tags('publication') }}
-{% endblock %}
-
