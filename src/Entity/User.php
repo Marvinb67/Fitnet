@@ -83,10 +83,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinTable(name: 'user_follows')]
     private Collection $myfollowers;
 
-    public function __toString()
-    {
-        return '' .$this->getNom().' '.$this->getPrenom();
-    }
+    // public function __toString()
+    // {
+    //     return '' .$this->getNom().' '.$this->getPrenom();
+    // }
     
     /**
      * faciliter la creation utilisateur

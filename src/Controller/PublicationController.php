@@ -31,9 +31,10 @@ class PublicationController extends AbstractController
         if (!$user) throw new Exception('Vous n\'êtes pas connecté(e)! ');
         
         foreach ($user->getAmis() as $ami) {
-            $data->setAmis($ami);
+            $amis = $ami->getNom().' '.$ami->getPrenom();
+            $data->setAmis($amis);
         }
-
+// dd($data);
         $publications = $publicationRepository->findSearch($data);
 
         return $this->render('publication/index.html.twig', [
@@ -94,7 +95,7 @@ class PublicationController extends AbstractController
         ]);
     }
 
-    #[Route('publication/edit/{slug}', name: 'app_publication_edit')]
+    #[Route('publication/edit/{slug}-{id}', requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], name: 'app_publication_edit')]
     /**
      * Modification d'une publication
      *
@@ -134,7 +135,7 @@ class PublicationController extends AbstractController
         ]);
     }
 
-    #[Route('publication/{id}', name: 'app_publication_delete')]
+    #[Route('publication/{slug}-{id}', requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], name: 'app_publication_delete')]
     public function delete(Publication $publication, ManagerRegistry $doctrine): Response
     {
         $em = $doctrine->getManager();

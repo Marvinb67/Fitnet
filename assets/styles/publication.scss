@@ -55,13 +55,12 @@ body {
 
   footer nav ul{
     justify-content: space-between;
-    padding: 2rem;
+    padding: 1rem 2rem 1rem 2rem;
   background-color: #262626;
   }
 
     ul li i{
     font-size: 1.5rem;
-    font-size: 2rem;
     color: white;
     }
 
@@ -92,7 +91,7 @@ body {
     }
 
     header{
-      padding: 0 2rem 1rem 2rem;
+      padding: 1rem 2rem 1rem 2rem;
       background-color: #262626;
       display: grid;
     }
@@ -115,12 +114,12 @@ body {
     }
 
     .fa-bars{
-      font-size: 1.7rem;
+      font-size: 1.5rem;
       color: white;
     }
 
     .logo-black{
-      width: 200px;
+      width: 150px;
       margin: auto;
     }
 

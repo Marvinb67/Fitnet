@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class SearchFormType extends AbstractType
 {
@@ -24,10 +25,9 @@ class SearchFormType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
-            ->add('amis', EntityType::class, [
+            ->add('amis', ChoiceType::class, [
                 'label' => false,
                 'required' => false,
-                'class' => User::class,
                 'expanded' => true,
                 'multiple' => true,
             ])
