@@ -80,7 +80,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $followers;
 
     #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'followers')]
-    #[ORM\JoinTable(name: 'user_followers')]
+    #[ORM\JoinTable(name: 'user_follows')]
     private Collection $myfollowers;
 
     public function __toString()
