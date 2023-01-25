@@ -1,62 +1,81 @@
-{% extends 'base.html.twig' %}
-{% block title %}Liste des publications
-{% endblock %}
+{% extends 'base.html.twig' %} {% block title %}Liste des publications {%
+endblock %} {% block container %}
 
-{% block container %}
+<header>
+  <img
+    class="logo-black"
+    src="{{ asset('build/images/fitnet-logo.png') }}"
+    alt="image logo"
+  />
+  <div class="search-and-menu">
+    <div class="container">{% include 'publication/_filter.html.twig' %}</div>
+    <a href="#"><i class="fa-solid fa-bars"></i></a>
+  </div>
+  <div class="filter-menu">
+    <i class="fa-solid fa-shuffle"></i>
+    <div class="bottom-line"></div>
+  </div>
+</header>
 
-    <header>
-        <img class="logo-black" src="{{ asset('build/images/fitnet-logo.png') }}" alt="image logo" />
-        <div class="search-and-menu">
-            <input class="search-input" type="search">
-            <a href="#"><i class="fa-solid fa-bars"></i></a>
+<div class="header-margin"></div>
+
+  <div class="publication-wrapper">
+    {% for publication in publications %}
+    <div class="publication-card">
+      <div class="user-publication">
+        <div class="futur-pp"></div>
+        <div class="infos-user-publication">
+          <p>{{ publication.user.nom }} {{ publication.user.prenom }}</p>
+          <p>Posté le : {{publication.createdAt | date('d/m/Y H:s')}}</p>
         </div>
-        <div class="filter-menu">
-            <i class="fa-solid fa-shuffle"></i>
-            <div class="bottom-line"></div>
-        </div>
-    </header>
+      </div>
+      <h2>
+        <a
+          href="{{
+            path('app_publication_show', {
+              id: publication.id,
+              slug: publication.slug
+            })
+          }}"
+          >{{ publication.titre }}</a
+        >
+      </h2>
+      <p>{{ publication.contenu }}</p>
+      <div class="reaction-publication">
+        <i class="fa-solid fa-thumbs-up"></i>
+        <i class="fa-solid fa-comment-dots"></i>
+      </div>
 
-{#    <div class="header-margin"></div>#}
-
-    <div class="publication-wrapper">
-        {% for publication in publications %}
-            <div class="publication-card">
-                <div class="user-publication">
-                    <div class="futur-pp"></div>
-                    <div class="infos-user-publication">
-                        <p>{{publication.user.nom}} {{publication.user.prenom}}</p>
-                        <p>Posté le : {{publication.createdAt | date('Y/m/d')}}</p>
-                    </div>
-                </div>
-                <h2><a href="{{ path('app_publication_show', {id: publication.id, slug: publication.slug})}}">{{publication.titre}}</a></h2>
-                <p>{{publication.contenu}}</p>
-                <div class="reaction-publication">
-                    <i class="fa-solid fa-thumbs-up"></i>
-                    <i class="fa-solid fa-comment-dots"></i>
-                </div>
-                {#            <a href="{{ path('app_publication_edit', {id: publication.id})}}">Modifier la publication</a> <a href="{{ path('app_publication_delete', {id: publication.id})}}">Supprimer la publication</a>#}
-            </div>
-        {% endfor %}
+      <a
+        href="{{
+          path('app_publication_edit', {
+            id: publication.id,
+            slug: publication.slug
+          })
+        }}"
+        >Modifier la publication</a
+      >
+      <a
+        href="{{
+          path('app_publication_delete', {
+            id: publication.id,
+            slug: publication.slug
+          })
+        }}"
+        >Supprimer la publication</a
+      >
     </div>
+    {% endfor %}
+</div>
 
-
-    <footer>
-        <nav>
-            <ul class="d-flex mb-0">
-                <li><i class="fa-solid fa-house"></i></li>
-                <li><i class="fa-solid fa-user-group"></i></li>
-                <li><i class="fa-solid fa-paper-plane"></i></li>
-                <li><i class="fa-solid fa-user"></i></li>
-            </ul>
-        </nav>
-    </footer>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    {{ encore_entry_script_tags('publication') }}
-{% endblock %}
-{% block stylesheets %}
-    {{ parent() }}
-    {{ encore_entry_link_tags('publication') }}
+<footer>
+  <nav>
+    <ul class="d-flex mb-0">
+      <li><i class="fa-solid fa-house"></i></li>
+      <li><i class="fa-solid fa-user-group"></i></li>
+      <li><i class="fa-solid fa-paper-plane"></i></li>
+      <li><i class="fa-solid fa-user"></i></li>
+    </ul>
+  </nav>
+</footer>
 {% endblock %}

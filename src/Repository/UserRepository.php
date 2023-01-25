@@ -80,4 +80,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 //            ->getOneOrNullResult()
 //        ;
 //    }
+/**
+     * @return User[]
+     */
+    public function findAllFriendsUser()
+    {
+        return $this->createQueryBuilder('u')
+            ->select('CONCAT(u.nom, " ", u.prenom) as amis')
+            ->getQuery()
+            ->execute()
+        ;
+    }
 }

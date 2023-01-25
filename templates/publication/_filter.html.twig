@@ -1,13 +1,10 @@
 {{ form_start(form, {attr: {class : 'filter'}}) }}
 {{ form_row(form.q) }}
 
-<h4>Amis</h4>
+{# <h4>Amis</h4>
 {{ form_row(form.amis, {attr: {class : 'form-check form-switch'}}) }}
-
 <h4>Date</h4>
-{{ form_row(form.dates, {attr: {class : 'form-check form-switch'}}) }}
-
-
-  <button type="submit" name="" id="btn-filter" class="btn btn-primary w-100 my-2">Filtrer</button>
+{{ form_row(form.dates, {attr: {class : 'form-check form-switch'}}) }} #}
+{# <button type="submit" name="" id="btn-filter" class="btn btn-primary w-100 my-2">Filtrer</button> #}
 
 {{ form_end(form) }}
