@@ -1,31 +1,48 @@
 {% extends 'base.html.twig' %}
 {% block title %}Liste des publications
 {% endblock %}
+
 {% block container %}
 
-<div>
-    <img src="{{ asset('build/images/fitnet-logo.png') }}" alt="image logo" />
-</div>
-
-<div class="example-wrapper ">
-    <h1>Liste des publications</h1>
-    {% for publication in publications %}
-        <div class="publication-card">
-            <div class="user-publication">
-                <div class="futur-pp"></div>
-                <p>{{publication.user.nom}} {{publication.user.prenom}}</p>
-            </div>
-            <h2><a href="{{ path('app_publication_show', {id: publication.id, slug: publication.slug})}}">{{publication.titre}}</a></h2>
-            <p>{{publication.contenu}}</p>
-            <p>Posté le : {{publication.createdAt | date('Y/m/d')}}</p>
-            <a href="{{ path('app_publication_edit', {id: publication.id})}}">Modifier la publication</a> <a href="{{ path('app_publication_delete', {id: publication.id})}}">Supprimer la publication</a>
+    <header>
+        <img class="logo-black" src="{{ asset('build/images/fitnet-logo.png') }}" alt="image logo" />
+        <div class="search-and-menu">
+            <input class="search-input" type="search">
+            <a href="#"><i class="fa-solid fa-bars"></i></a>
         </div>
-    {% endfor %}
-</div>
-    
+        <div class="filter-menu">
+            <i class="fa-solid fa-shuffle"></i>
+            <div class="bottom-line"></div>
+        </div>
+    </header>
+
+{#    <div class="header-margin"></div>#}
+
+    <div class="publication-wrapper">
+        {% for publication in publications %}
+            <div class="publication-card">
+                <div class="user-publication">
+                    <div class="futur-pp"></div>
+                    <div class="infos-user-publication">
+                        <p>{{publication.user.nom}} {{publication.user.prenom}}</p>
+                        <p>Posté le : {{publication.createdAt | date('Y/m/d')}}</p>
+                    </div>
+                </div>
+                <h2><a href="{{ path('app_publication_show', {id: publication.id, slug: publication.slug})}}">{{publication.titre}}</a></h2>
+                <p>{{publication.contenu}}</p>
+                <div class="reaction-publication">
+                    <i class="fa-solid fa-thumbs-up"></i>
+                    <i class="fa-solid fa-comment-dots"></i>
+                </div>
+                {#            <a href="{{ path('app_publication_edit', {id: publication.id})}}">Modifier la publication</a> <a href="{{ path('app_publication_delete', {id: publication.id})}}">Supprimer la publication</a>#}
+            </div>
+        {% endfor %}
+    </div>
+
+
     <footer>
         <nav>
-            <ul class="d-flex">
+            <ul class="d-flex mb-0">
                 <li><i class="fa-solid fa-house"></i></li>
                 <li><i class="fa-solid fa-user-group"></i></li>
                 <li><i class="fa-solid fa-paper-plane"></i></li>
@@ -43,4 +60,3 @@
     {{ parent() }}
     {{ encore_entry_link_tags('publication') }}
 {% endblock %}
-
