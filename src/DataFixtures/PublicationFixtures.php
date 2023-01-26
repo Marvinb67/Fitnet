@@ -49,7 +49,6 @@ class PublicationFixtures extends Fixture implements DependentFixtureInterface
                 ->setContenu($faker->sentences(3, true))
                 ->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTime($max = 'now')))
                 ->setEditedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween($max = 'now')))
-                ->setIsActive(rand(0, 1))
             ;
 
             $manager->persist($publication);
