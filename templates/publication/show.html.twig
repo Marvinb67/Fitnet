@@ -5,6 +5,10 @@
 {% block container %}
 	<div class="container my-3">
 		<div class="row">
+      {% for img in publication.mediaPublication %}
+      <a href="{{ path('app_show_media', {'slug': img.slug}) }}">
+     <img class="card-img-top" src="{{img.lien}}" alt="{{img.titre}}"></a>
+      {% endfor %}
     {% include 'publication/_card.html.twig' %}
     <div class="d-flex flex-row-reverse my-3">
     <a class="btn btn-warning mt-1 ml-1" href="{{ path('app_publication_edit', {id: publication.id, slug: publication.slug}) }}">Modifier la publication</a>
