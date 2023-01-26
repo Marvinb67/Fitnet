@@ -9,8 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MediaController extends AbstractController
 {
-
-    #[Route('/{slug}', name: 'app_show_media')]
+    #[Route('/media/{slug}', name: 'app_show_media')]
     public function show(Media $media): Response
     {
         return $this->render('media/show.html.twig', [

@@ -16,4 +16,7 @@
 		</div>
 		</div>
 	</div>
+  {% for tag in publication.tagsPublication %}
+      {{ tag.intitule }}
+      {% endfor %}
 {% endblock %}
