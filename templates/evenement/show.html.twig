@@ -3,4 +3,7 @@
     <h2>{{evenement.intitule}}</h2>
     <p>{{evenement.description}}</p>
     <p>Posté le : {{evenement.createdAt | date('Y/m/d')}}</p>
+    {% for tag in evenement.tagsEvenement %}
+      {{ tag.intitule }}
+      {% endfor %}
 </div>
