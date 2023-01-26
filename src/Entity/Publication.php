@@ -34,7 +34,7 @@ class Publication
     private ?string $contenu = null;
 
     #[ORM\Column(type: 'boolean')]
-    private $isActive = false;
+    private $isActive = true;
 
     #[ORM\ManyToOne(inversedBy: 'publications')]
     #[ORM\JoinColumn(nullable: false)]
