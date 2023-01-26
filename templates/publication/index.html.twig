@@ -22,6 +22,12 @@ endblock %} {% block container %}
   <div class="publication-wrapper">
     {% for publication in publications %}
     <div class="publication-card">
+      {% for key, img in publication.mediaPublication %}
+      {% if key == 0 %}
+      <a href="{{ path('app_show_media', {'slug': img.slug}) }}">
+     <img class="card-img-top img-fluid" src="{{img.lien}}" alt="{{img.titre}}"></a>
+     {% endif %}
+      {% endfor %}
       <div class="user-publication">
         <div class="futur-pp"></div>
         <div class="infos-user-publication">
