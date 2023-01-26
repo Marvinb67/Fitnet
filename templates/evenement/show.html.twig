@@ -6,4 +6,8 @@
     {% for tag in evenement.tagsEvenement %}
       {{ tag.intitule }}
       {% endfor %}
+      {% for img in evenement.mediaEvenement %}
+      <a href="{{ path('app_show_media', {'slug': img.slug}) }}">
+     <img class="card-img-top" src="{{img.lien}}" alt="{{img.titre}}"></a>
+      {% endfor %}
 </div>
