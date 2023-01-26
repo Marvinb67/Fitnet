@@ -27,7 +27,7 @@ class InscriptionEvenement
 
     #[ORM\ManyToOne(inversedBy: 'mesEvenements')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $users = null;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'historiqueEvenements')]
     #[ORM\JoinColumn(nullable: false)]
@@ -86,14 +86,14 @@ class InscriptionEvenement
         return $this;
     }
 
-    public function getUsers(): ?User
+    public function getuser(): ?User
     {
-        return $this->users;
+        return $this->user;
     }
 
-    public function setUsers(?User $users): self
+    public function setuser(?User $user): self
     {
-        $this->users = $users;
+        $this->user = $user;
 
         return $this;
     }
