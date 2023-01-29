@@ -38,13 +38,13 @@ class Evenement
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'evenement', targetEntity: InscriptionEvenement::class)]
+    #[ORM\OneToMany(mappedBy: 'evenement', cascade: ['remove'], targetEntity: InscriptionEvenement::class)]
     private Collection $historiqueEvenements;
 
-    #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'evenement')]
+    #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'evenement', cascade: ['persist'])]
     private Collection $mediaEvenement;
 
-    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'evenement')]
+    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'evenement', cascade: ['persist', 'remove'])]
     private Collection $tagsEvenement;
 
     public function __construct()
