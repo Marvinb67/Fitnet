@@ -1,28 +1,16 @@
-{% extends 'base.html.twig' %} {% block title %}Liste des publications {%
-endblock %} {% block container %}
+{% extends 'base.html.twig' %} 
+{% block title %}Liste des publications {% endblock %} 
 
-<header>
-  <img class="logo-black" src="{{ asset('build/images/fitnet-logo.png') }}" alt="image logo"/>
-  <div class="search-and-menu">
-    <div class="container">{% include 'publication/_filter.html.twig' %}</div>
-    <a href="#"><i class="fa-solid fa-bars"></i></a>
-  </div>
-  <div class="filter-menu">
-    <i class="fa-solid fa-shuffle"></i>
-    <div class="bottom-line"></div>
-  </div>
-</header>
+
+{% block container %}
+
+{% include '_layout/_mobile_nav_bar.html.twig' %}
+
 <div class="header-margin"></div>
 
   <div class="publication-wrapper">
     {% for publication in publications %}
     <div class="publication-card">
-      {% for key, img in publication.mediaPublication %}
-      {% if key == 0 %}
-      <a href="{{ path('app_show_media', {'slug': img.slug}) }}">
-     <img class="card-img-top img-fluid" src="{{img.lien}}" alt="{{img.titre}}"></a>
-     {% endif %}
-      {% endfor %}
       <div class="user-publication">
         <div class="futur-pp"></div>
         <div class="infos-user-publication">
@@ -47,6 +35,13 @@ endblock %} {% block container %}
         <i class="fa-solid fa-comment-dots"></i>
       </div>
 
+      {% for key, img in publication.mediaPublication %}
+      {% if key == 0 %}
+      <a href="{{ path('app_show_media', {'slug': img.slug}) }}">
+     <img class="card-img-top img-fluid" src="{{img.lien}}" alt="{{img.titre}}"></a>
+     {% endif %}
+      {% endfor %}
+      
       <a
         href="{{
           path('app_publication_edit', {
@@ -69,14 +64,6 @@ endblock %} {% block container %}
     {% endfor %}
 </div>
 
-<footer>
-  <nav>
-    <ul class="d-flex mb-0">
-      <li><i class="fa-solid fa-house"></i></li>
-      <li><i class="fa-solid fa-user-group"></i></li>
-      <li><i class="fa-solid fa-paper-plane"></i></li>
-      <li><i class="fa-solid fa-user"></i></li>
-    </ul>
-  </nav>
-</footer>
+{% include '_layout/_mobileFooter.html.twig' %}
+
 {% endblock %}

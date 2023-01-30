@@ -25,6 +25,7 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('publication', './assets/entries/publication.js')
+    .addEntry('social', './assets/entries/social.js')
 
     .copyFiles({
         from: './assets/images',
