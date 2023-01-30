@@ -112,11 +112,13 @@ class PublicationController extends AbstractController
 
             // on cherche le commentaire correspondant
 
-            $parent = $em->getRepository(Commentaire::class)->find($parentId);
+            if($parentId != null){
+                $parent = $em->getRepository(Commentaire::class)->find($parentId);
+            }
 
             // On definit le parent
 
-            $commentaire->setParent($parent);
+            $commentaire->setParent($parent ?? null);
             
             $em->persist($commentaire);
             $em->flush();
