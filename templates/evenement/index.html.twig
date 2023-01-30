@@ -1,10 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PublicationController!{% endblock %}
+{% block title %}Evénements{% endblock %}
 
 {% block container %}
+
     {% include '_layout/_mobile_nav_bar.html.twig' %}
 
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    </style>
+
+
+<div class="container my-3">
+		<div class="row">
     <div class="example-wrapper">
         {% for event in evenements %}
             <div></div>
@@ -13,11 +21,22 @@
                 <p>Posté le : {{event.createdAt | date('Y/m/d')}}</p>
                 <h2><a href="{{ path('app_evenement_show', {slug: event.slug}) }}">{{event.intitule}}</a></h2>
                 <p>{{event.description}}</p>
+
                 {# <a href="{{ path('app_evenement_edit', {id: event.id}) }}">Modifier l'évènement</a> <a href="{{ path('app_evenement_delete', {id: event.id}) }}">Supprimer l'évènement</a> #}
+
+                <p>Posté le : {{event.createdAt | date('Y/m/d')}}</p>
+                <a href="{{ path('app_evenement_edit', {slug: event.slug}) }}">Modifier l'évènement</a> 
+                <a href="{{ path('app_evenement_delete', {slug: event.slug}) }}">Supprimer l'évènement</a>
+
             </div>
             <hr>
         {% endfor %}
     </div>
 
+
     {% include '_layout/_mobileFooter.html.twig' %}
+
+		</div>
+	</div>
+
 {% endblock %}

@@ -15,12 +15,10 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class EvenementController extends AbstractController
 {
     #[Route('/evenement', name: 'app_evenement')]
-    public function index(EvenementRepository $evenementRepository): Response
+    public function index(EvenementRepository $evenements): Response
     {
-        $evenements = $evenementRepository->findAll();
-
         return $this->render('evenement/index.html.twig', [
-            'evenements' => $evenements,
+            'evenements' => $evenements->findAll(),
         ]);
     }
 
@@ -56,7 +54,7 @@ class EvenementController extends AbstractController
         ]);
     }
 
-    #[Route('evenement/edit/{id}', requirements: ['id' => '\d+'], name:'app_evenement_edit')]
+    #[Route('evenement/edit/{slug}', requirements: ['slug' => '[a-z0-9\-]*'], name:'app_evenement_edit')]
     public function edit(Evenement $evenement, Request $request, ManagerRegistry $doctrine): Response
     {
         $form = $this->createForm(EvenementType::class, $evenement);
@@ -76,7 +74,7 @@ class EvenementController extends AbstractController
         ]);
     }
 
-    #[Route('evenement/delete/{id}', name: 'app_evenement_delete')]
+    #[Route('evenement/delete/{slug}', requirements: ['slug' => '[a-z0-9\-]*'], name: 'app_evenement_delete')]
     public function delete(Evenement $evenement, ManagerRegistry $doctrine)
     {
         $em = $doctrine->getManager();
