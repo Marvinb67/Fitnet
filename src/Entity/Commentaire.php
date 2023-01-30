@@ -39,7 +39,7 @@ class Commentaire
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'reponse')]
     private ?self $parent = null;
 
-    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class, cascade: ['persist', 'remove'])]
     private Collection $reponse;
 
     public function __construct()

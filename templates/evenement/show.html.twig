@@ -1,6 +1,23 @@
-<div>
+{% extends 'base.html.twig' %}
+
+{% block title %}Evénements{% endblock %}
+
+{% block container %}
+<div class="container my-3">
+		<div class="row">
+    <div>
     <p>{{evenement.user.nom}} {{evenement.user.prenom}}</p>
     <h2>{{evenement.intitule}}</h2>
     <p>{{evenement.description}}</p>
     <p>Posté le : {{evenement.createdAt | date('Y/m/d')}}</p>
+    {% for tag in evenement.tagsEvenement %}
+      {{ tag.intitule }}
+      {% endfor %}
+      {% for img in evenement.mediaEvenement %}
+      <a href="{{ path('app_show_media', {'slug': img.slug}) }}">
+     <img class="card-img-top" src="{{img.lien}}" alt="{{img.titre}}"></a>
+      {% endfor %}
 </div>
+		</div>
+	</div>
+{% endblock %}

@@ -56,7 +56,7 @@ class PublicationRepository extends ServiceEntityRepository
             ->join('p.user', 'u');
         if (!empty($search->getQ())) {
             $query = $query
-                ->andWhere('p.titre LIKE :q')
+                ->andWhere('p.titre LIKE :q OR p.contenu LIKE :q')
                 ->setParameter('q', "%{$search->getQ()}%");
         }
         // if (!empty($search->getAmis())) {

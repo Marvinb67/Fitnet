@@ -34,19 +34,19 @@ class Publication
     private ?string $contenu = null;
 
     #[ORM\Column(type: 'boolean')]
-    private $isActive = false;
+    private $isActive = true;
 
     #[ORM\ManyToOne(inversedBy: 'publications')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Commentaire::class)]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Commentaire::class, cascade: ['remove'])]
     private Collection $commentaires;
 
     #[ORM\OneToMany(mappedBy: 'Publication', targetEntity: ReactionPublication::class, orphanRemoval: true)]
     private Collection $reactionPublications;
 
-    #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'publication')]
+    #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'publication', cascade: ['persist'])]
     private Collection $mediaPublication;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'publication')]

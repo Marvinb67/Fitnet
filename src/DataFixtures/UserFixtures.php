@@ -27,24 +27,49 @@ class UserFixtures extends Fixture
     {
         $faker = Faker::create('fr_FR');
 
-        for($i=0; $i <20; $i++)
-        {
+        for ($i = 0; $i < 20; $i++) {
             $user = new User;
             $user
                 ->setEmail($faker->email())
                 ->setNom($faker->lastName())
                 ->setPrenom($faker->firstName())
                 ->setPassword($this->passwordHasher->hashPassword($user, '123456789'))
-                ->setImage($faker->imageUrl(360, 360, 'user', true, ($user->getNom().' '.$user->getPrenom()), false, 'png'))
-                ->setIsVerified(rand(0, 1))
-            ;
+                ->setImage($faker->imageUrl(360, 360, 'user', true, ($user->getNom() . ' ' . $user->getPrenom()), false, 'png'))
+                ->setIsVerified(rand(0, 1));
             //  1er user avec role admin
             if ($i == 1) $user->setRoles(['ROLE_SUPER_ADMIN']);
             $manager->persist($user);
-                
+            $users[] = $user;
+            shuffle($users);
         }
+        // pour chaque user on ajout une list d'amis
+        foreach ($users as $user) {
+            $amis = $this->randUsers($users);
+            $follows =  $this->randUsers($users);
+            $myFollows =  $this->randUsers($users);
 
+            foreach($amis as $ami){
+                if ($ami !== $user) $user->addAmi($ami);
+            }
+
+            foreach($follows as $follow){
+                if ($follow !== $user) $user->addFollower($follow);
+            }
+
+            foreach($myFollows as $myFollow){
+                if ($myFollow !== $user) $user->addMyfollower($myFollow);
+            }
+
+        }
         $manager->flush();
+    }
 
+    private function randUsers(array $arr)
+    {
+        for($i=0; $i<5; $i++){
+            $amis[] = $arr[$i];
+            shuffle($arr);
+        }
+        return $amis;
     }
 }
