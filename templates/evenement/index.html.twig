@@ -2,11 +2,13 @@
 
 {% block title %}Evénements{% endblock %}
 
-{% block body %}
+{% block container %}
     <style>
         .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     </style>
 
+<div class="container my-3">
+		<div class="row">
     <div class="example-wrapper">
         <h1>Liste des évènements</h1>
         {% for event in evenements %}
@@ -21,4 +23,6 @@
             <hr>
         {% endfor %}
     </div>
+		</div>
+	</div>
 {% endblock %}
