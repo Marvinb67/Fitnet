@@ -21,7 +21,7 @@ class SearchFormType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Rechercher',
-                    'class' => 'form-control'
+                    'class' => 'form-control search-input'
                 ]
             ])
             // ->add('amis', EntityType::class, [
