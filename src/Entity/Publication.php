@@ -40,13 +40,13 @@ class Publication
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Commentaire::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Commentaire::class, cascade: ['remove'])]
     private Collection $commentaires;
 
     #[ORM\OneToMany(mappedBy: 'Publication', targetEntity: ReactionPublication::class, orphanRemoval: true)]
     private Collection $reactionPublications;
 
-    #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'publication')]
+    #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'publication', cascade: ['persist'])]
     private Collection $mediaPublication;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'publication')]

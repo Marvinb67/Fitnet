@@ -47,7 +47,6 @@ class PublicationController extends AbstractController
     public function new(
         ManagerRegistry $doctrine,
         Request $request,
-        UserRepository $userRepository,
         SluggerInterface $sluggerInterface
     ): Response {
         $publication = new Publication();
@@ -75,15 +74,12 @@ class PublicationController extends AbstractController
     /**
      * Affiche une publication par son id et slug
      *
-     * @param int $id
-     * @param string $slug
-     * @param PublicationRepository $publicationRepository
+     * @param Publication $publication
      * @return Response
      */
     #[Route('publication/{slug}-{id}', requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], methods: ['GET', 'POST'], name: 'app_publication_show')]
     public function show(int $id, string $slug, PublicationRepository $publicationRepository, Request $request, EntityManagerInterface $em): Response
     {
-        $publication = $publicationRepository->findOneBy(['id' => $id, 'slug' => $slug]);
         if (!$publication) {
             throw $this->createNotFoundException(
                 'Cet Article n\'est exist plus!'
@@ -141,26 +137,21 @@ class PublicationController extends AbstractController
     /**
      * Modification d'une publication
      *
-     * @param string $slug
      * @param Publication $publication
-     * @param PublicationRepository $repo
      * @param Request $request
-     * @param ManagerRegistry $doctrine
      * @return Response
      */
     public function edit(
-        string $slug,
-        PublicationRepository $repo,
+        ManagerRegistry $doctrine,
+        Publication $publication,
         Request $request,
-        ManagerRegistry $doctrine
     ): Response {
-        $publication = $repo->findOneBy(['slug' => $slug]);
         if (!$publication) {
             throw $this->createNotFoundException(
                 'Cet Article n\'est exist plus!'
             );
         }
-        // dd($publication);
+        
         $form = $this->createForm(PublicationType::class, $publication);
         $form->handleRequest($request);
 
