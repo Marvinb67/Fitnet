@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Data\SearchData;
+use App\Entity\Commentaire;
 use App\Entity\Publication;
+use App\Form\CommentaireType;
 use App\Form\SearchFormType;
 use App\Form\PublicationType;
 use App\Repository\UserRepository;
 use App\Repository\PublicationRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -74,8 +77,8 @@ class PublicationController extends AbstractController
      * @param Publication $publication
      * @return Response
      */
-    #[Route('publication/{slug}-{id}', requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], methods: ['GET'], name: 'app_publication_show')]
-    public function show(Publication $publication): Response
+    #[Route('publication/{slug}-{id}', requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], methods: ['GET', 'POST'], name: 'app_publication_show')]
+    public function show(int $id, string $slug, PublicationRepository $publicationRepository, Request $request, EntityManagerInterface $em): Response
     {
         if (!$publication) {
             throw $this->createNotFoundException(
@@ -83,8 +86,50 @@ class PublicationController extends AbstractController
             );
         }
 
+        // On crée un commentaire
+
+        $commentaire = new Commentaire;
+
+        // Géneration du formulaire
+
+        $formCommentaire = $this->createForm(CommentaireType::class, $commentaire);
+
+        $formCommentaire->handleRequest($request);
+
+        // Traitement du fromulaire
+
+        if($formCommentaire->isSubmitted() && $formCommentaire->isValid())
+        {
+            $commentaire->setUser($this->getUser());
+            $commentaire->setPublication($publication);
+
+            // Récupere le contenu du champ parentId
+            $parentId = $formCommentaire->get("parentId")->getData();
+
+            // on cherche le commentaire correspondant
+
+            if($parentId != null){
+                $parent = $em->getRepository(Commentaire::class)->find($parentId);
+            }
+
+            // On definit le parent
+
+            $commentaire->setParent($parent ?? null);
+            
+            $em->persist($commentaire);
+            $em->flush();
+
+            // dd($commentaire);
+
+            return $this->redirectToRoute('app_publication_show', [
+                'slug' => $publication->getSlug(),
+                'id' => $publication->getId()
+            ]);
+        }
+
         return $this->render('publication/show.html.twig', [
-            'publication' => $publication
+            'publication' => $publication,
+            'formCommentaire' => $formCommentaire->createView()
         ]);
     }
 
