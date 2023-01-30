@@ -78,7 +78,7 @@ class PublicationController extends AbstractController
      * @return Response
      */
     #[Route('publication/{slug}-{id}', requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], methods: ['GET', 'POST'], name: 'app_publication_show')]
-    public function show(int $id, string $slug, PublicationRepository $publicationRepository, Request $request, EntityManagerInterface $em): Response
+    public function show(int $id, string $slug, Publication $publication, Request $request, EntityManagerInterface $em): Response
     {
         if (!$publication) {
             throw $this->createNotFoundException(
