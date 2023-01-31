@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Data\SearchData;
 use App\Entity\Commentaire;
 use App\Entity\Publication;
+use App\Entity\ReactionPublication;
 use App\Form\CommentaireType;
 use App\Form\SearchFormType;
 use App\Form\PublicationType;
@@ -19,6 +20,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class PublicationController extends AbstractController
 {
@@ -33,8 +36,11 @@ class PublicationController extends AbstractController
 
         $data->setPage($request->get('page', 1));
         if (!$user) throw new Exception('Vous n\'êtes pas connecté(e)! ');
-// dd($data);
         $publications = $publicationRepository->findSearch($data);
+
+        // foreach( $publications as $publication){
+        // $isPublicationLiked [] = $em->getRepository(ReactionPublication::class)->countByPublicationAndUser($user, $publication);
+        // }
 
         return $this->render('publication/index.html.twig', [
             'publications' => $publications,
@@ -78,26 +84,25 @@ class PublicationController extends AbstractController
      * @return Response
      */
     #[Route('publication/{slug}-{id}', requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], methods: ['GET', 'POST'], name: 'app_publication_show')]
-    public function show(int $id, string $slug, Publication $publication, Request $request, EntityManagerInterface $em): Response
+    public function show(Publication $publication, Request $request, EntityManagerInterface $em): Response
     {
+        $user = $this->getUser();
+        
         if (!$publication) {
             throw $this->createNotFoundException(
                 'Cet Article n\'est exist plus!'
             );
         }
-
+        $isPublicationLiked = $em->getRepository(ReactionPublication::class)->countByPublicationAndUser($user, $publication);
         // On crée un commentaire
-
         $commentaire = new Commentaire;
 
         // Géneration du formulaire
-
         $formCommentaire = $this->createForm(CommentaireType::class, $commentaire);
 
         $formCommentaire->handleRequest($request);
 
         // Traitement du fromulaire
-
         if($formCommentaire->isSubmitted() && $formCommentaire->isValid())
         {
             $commentaire->setUser($this->getUser());
@@ -122,14 +127,14 @@ class PublicationController extends AbstractController
             // dd($commentaire);
 
             return $this->redirectToRoute('app_publication_show', [
-                'slug' => $publication->getSlug(),
-                'id' => $publication->getId()
+                'publication' => $publication,
             ]);
         }
-
+        
         return $this->render('publication/show.html.twig', [
             'publication' => $publication,
-            'formCommentaire' => $formCommentaire->createView()
+            'formCommentaire' => $formCommentaire->createView(),
+            'isPublicationLiked ' => $isPublicationLiked 
         ]);
     }
 
@@ -177,5 +182,34 @@ class PublicationController extends AbstractController
         $em->flush();
 
         return $this->redirectToRoute('app_publication');
+    }
+
+    #[Route('publication/like')]
+    public function likePublication(EntityManagerInterface $em, SerializerInterface $serializer):Response
+    {
+        
+        $user = $this->getUser();
+
+        $publications = $em->getRepository(Publication::class)->findAll();
+
+        if(!$user){
+            $this->addFlash('danger', 'vous n\'êtes pas connecté!');
+                return $this->redirectToRoute('app_login');
+        }
+
+        foreach( $publications as $publication){
+            $isLikedPublication = $em->getRepository(ReactionPublication::class)->myReactionToPublication($user, $publication);
+            $isReactedPublication = $em->getRepository(ReactionPublication::class)->countByPublicationAndUser($user, $publication);
+            $publicationId = $publication->getId();
+            $data[] = [
+                'isPost' => $publicationId, 
+                'status' => $isLikedPublication,
+                'isExistRection' => $isReactedPublication,
+                // 'publication' => $serializer->normalize($publication, null, ['groups' => 'publication:read'])
+            ];
+        }
+        dd($data);
+       return new JsonResponse(['data' => $data], Response::HTTP_OK);
+
     }
 }

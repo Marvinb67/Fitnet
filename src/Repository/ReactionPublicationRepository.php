@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Publication;
 use App\Entity\ReactionPublication;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,6 +41,28 @@ class ReactionPublicationRepository extends ServiceEntityRepository
         }
     }
 
+    public function countByPublicationAndUser(User $user, Publication $publication)
+    {
+        $query = $this->createQueryBuilder('r')
+            ->select('COUNT(r)')
+            ->where('r.publication = :publication')
+            ->andWhere('r.user = :user')
+            ->setParameter('user', $user)
+            ->setParameter('publication', $publication);
+            return $query->getQuery()->getSingleScalarResult();
+
+    }
+
+    public function myReactionToPublication(User $user, Publication $publication)
+    {
+        $query = $this->createQueryBuilder('r')
+            ->select('etat_like_dislike')
+            ->where('r.publication = :publication')
+            ->andWhere('r.user = :user')
+            ->setParameter('user', $user)
+            ->setParameter('publication', $publication);
+            return $query->getQuery()->getSingleScalarResult();
+    }
 //    /**
 //     * @return ReactionPublication[] Returns an array of ReactionPublication objects
 //     */
