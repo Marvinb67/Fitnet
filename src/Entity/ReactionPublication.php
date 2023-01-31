@@ -22,7 +22,7 @@ class ReactionPublication
 
     #[ORM\ManyToOne(inversedBy: 'reactionPublications')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Publication $Publication = null;
+    private ?Publication $publication = null;
 
     public function getId(): ?int
     {
@@ -55,12 +55,12 @@ class ReactionPublication
 
     public function getPublication(): ?Publication
     {
-        return $this->Publication;
+        return $this->publication;
     }
 
-    public function setPublication(?Publication $Publication): self
+    public function setPublication(?Publication $publication): self
     {
-        $this->Publication = $Publication;
+        $this->publication = $publication;
 
         return $this;
     }
