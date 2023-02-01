@@ -61,7 +61,7 @@ class ReactionPublicationRepository extends ServiceEntityRepository
             ->andWhere('r.user = :user')
             ->setParameter('user', $user)
             ->setParameter('publication', $publication);
-            return $query->getQuery()->getOneOrNullResult();
+            return $query->getQuery()->getResult();
     }
 
     public function countByPublicationLikes($publication){
