@@ -56,10 +56,18 @@ class ReactionPublicationRepository extends ServiceEntityRepository
     public function myReactionToPublication(User $user, Publication $publication)
     {
         $query = $this->createQueryBuilder('r')
-            ->select('etat_like_dislike')
+            ->select('r.etatLikeDislike')->distinct()
             ->where('r.publication = :publication')
             ->andWhere('r.user = :user')
             ->setParameter('user', $user)
+            ->setParameter('publication', $publication);
+            return $query->getQuery()->getOneOrNullResult();
+    }
+
+    public function countByPublicationLikes($publication){
+        $query = $this->createQueryBuilder('r')
+            ->select('COUNT(r)')->distinct()
+            ->where('r.publication = :publication')
             ->setParameter('publication', $publication);
             return $query->getQuery()->getSingleScalarResult();
     }

@@ -26,24 +26,16 @@ class ReactionPublicationFixtures extends Fixture implements DependentFixtureInt
         $users = $this->userRepo->findAll();
         $publications = $this->publicationRepo->findAll();
 
-        $reactions = [];
-
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 200; $i++) {
             $randomKey = array_rand($users);
             $user = $users[$randomKey];
             $randomKey = array_rand($publications);
             $publication = $publications[$randomKey];
 
-            if ($i < 2) {
-                $reactionPublication = new ReactionPublication();
-                $reactionPublication
-                    ->setUser($user)
-                    ->setPublication($publication)
-                    ->setEtatLikeDislike(rand(0, 1));
-            }
-            if ($i >= 2) {
+
+            if (!empty($reactions)) {
                 foreach ($reactions as $reaction) {
-                    if (!property_exists($reaction, $user->getId()) && !property_exists($reaction, $publication->getId())) {
+                    if ($reaction->getUser()->getId() != $user->getId() && $reaction->getPublication()->getId() != $publication->getId()) {
                         $reactionPublication = new ReactionPublication();
                         $reactionPublication
                             ->setUser($user)
@@ -52,11 +44,16 @@ class ReactionPublicationFixtures extends Fixture implements DependentFixtureInt
                     }
                 }
             }
+            $reactionPublication = new ReactionPublication();
+            $reactionPublication
+                ->setUser($user)
+                ->setPublication($publication)
+                ->setEtatLikeDislike(rand(0, 1));
 
-            $manager->persist($reactionPublication);
             $reactions[] = $reactionPublication;
         }
-        // var_dump($reactions[0]->getUser());
+        foreach ($reactions as $reaction) $manager->persist($reaction);
+
         $manager->flush();
     }
 
