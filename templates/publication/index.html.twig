@@ -1,70 +1,73 @@
-{% extends 'base.html.twig' %} 
-{% block title %}Liste des publications {% endblock %} 
-
-
-{% block container %}
-
-{% include '_layout/_mobile_nav_bar.html.twig' %}
+{% extends 'base.html.twig' %} {% block title %}Liste des publications {%
+endblock %} {% block container %} {% include '_layout/_mobile_nav_bar.html.twig'
+%}
 
 <div class="example-wrapper ">
 <div class="header-margin"></div>
 
-  <div class="publication-wrapper">
-    {% for publication in publications %}
-    <div class="publication-card">
-      <div class="user-publication">
-        <div class="futur-pp"></div>
-        <div class="infos-user-publication">
-          <p>{{ publication.user.nom }} {{ publication.user.prenom }}</p>
-          <p>Posté le : {{publication.createdAt | date('d/m/Y H:s')}}</p>
+      <div class="publication-wrapper">
+        {% for publication in publications %}
+
+        <div class="publication-card">
+          <div class="user-publication">
+            <div class="futur-pp"></div>
+            <div class="infos-user-publication">
+              <p>{{ publication.user.nom }} {{ publication.user.prenom }}</p>
+              <p>Posté le : {{publication.createdAt | date('d/m/Y à H:i')}}</p>
+              {% if publication.editedAt | date('d/m/Y à H:i') >
+              publication.createdAt | date('d/m/Y à H:i') %}
+              <p>
+                Modifié le : {{publication.editedAt | date('d/m/Y à H:i')
+                }}<small> Par {{ app.user.nom }} {{ app.user.prenom }}</small>
+              </p>
+              {% endif %}
+            </div>
+          </div>
+          <h2>
+            <a
+              href="{{
+                path('app_publication_show', {
+                  id: publication.id,
+                  slug: publication.slug
+                })
+              }}"
+              >{{ publication.titre }}</a
+            >
+          </h2>
+          <p>{{ publication.contenu }}</p>
+          <div class="reaction-publication">
+            <i class="fa-solid fa-thumbs-up" data-id="{{ publication.id }}"></i>
+            <i class="fa-solid fa-comment-dots"></i>
+          </div>
+
+          {% for key, img in publication.mediaPublication %} {% if key == 0 %}
+          <a href="{{ path('app_show_media', { slug: img.slug }) }}">
+            <img
+              class="card-img-top img-fluid"
+              src="{{ img.lien }}"
+              alt="{{ img.titre }}"
+          /></a>
+          {% endif %} {% endfor %}
+
+          <a
+            href="{{
+              path('app_publication_edit', {
+                id: publication.id,
+                slug: publication.slug
+              })
+            }}"
+            >Modifier la publication</a
+          >
+          <a
+            href="{{
+              path('app_publication_delete', {
+                id: publication.id,
+                slug: publication.slug
+              })
+            }}"
+            >Supprimer la publication</a
+          >
         </div>
+        {% endfor %}
       </div>
-      <h2>
-        <a
-          href="{{
-            path('app_publication_show', {
-              id: publication.id,
-              slug: publication.slug
-            })
-          }}"
-          >{{ publication.titre }}</a
-        >
-      </h2>
-      <p>{{ publication.contenu }}</p>
-      <div class="reaction-publication">
-        <i class="fa-solid fa-thumbs-up"></i>
-        <i class="fa-solid fa-comment-dots"></i>
-      </div>
-
-      {% for key, img in publication.mediaPublication %}
-      {% if key == 0 %}
-      <a href="{{ path('app_show_media', {'slug': img.slug}) }}">
-     <img class="card-img-top img-fluid" src="{{img.lien}}" alt="{{img.titre}}"></a>
-     {% endif %}
-      {% endfor %}
-      
-      <a
-        href="{{
-          path('app_publication_edit', {
-            id: publication.id,
-            slug: publication.slug
-          })
-        }}"
-        >Modifier la publication</a
-      >
-      <a
-        href="{{
-          path('app_publication_delete', {
-            id: publication.id,
-            slug: publication.slug
-          })
-        }}"
-        >Supprimer la publication</a
-      >
-    </div>
-    {% endfor %}
-</div>
-
-{% include '_layout/_mobileFooter.html.twig' %}
-
-{% endblock %}
+{% include '_layout/_mobileFooter.html.twig' %} {% endblock %}

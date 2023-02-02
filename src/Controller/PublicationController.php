@@ -3,11 +3,15 @@
 namespace App\Controller;
 
 use App\Data\SearchData;
+use App\Entity\Commentaire;
 use App\Entity\Publication;
+use App\Entity\ReactionPublication;
+use App\Form\CommentaireType;
 use App\Form\SearchFormType;
 use App\Form\PublicationType;
 use App\Repository\UserRepository;
 use App\Repository\PublicationRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +20,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class PublicationController extends AbstractController
 {
@@ -29,9 +35,15 @@ class PublicationController extends AbstractController
         $form->handleRequest($request);
 
         $data->setPage($request->get('page', 1));
-        if (!$user) throw new Exception('Vous n\'êtes pas connecté(e)! ');
-// dd($data);
+        if (!$user) {
+            $this->addFlash('danger', 'vous n\'êtes pas connecté!');
+            return $this->redirectToRoute('app_login');
+        }
         $publications = $publicationRepository->findSearch($data);
+
+        // foreach( $publications as $publication){
+        // $isPublicationLiked [] = $em->getRepository(ReactionPublication::class)->countByPublicationAndUser($user, $publication);
+        // }
 
         return $this->render('publication/index.html.twig', [
             'publications' => $publications,
@@ -74,17 +86,54 @@ class PublicationController extends AbstractController
      * @param Publication $publication
      * @return Response
      */
-    #[Route('publication/{slug}-{id}', requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], methods: ['GET'], name: 'app_publication_show')]
-    public function show(Publication $publication): Response
+    #[Route('publication/{slug}-{id}', requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], methods: ['GET', 'POST'], name: 'app_publication_show')]
+    public function show(Publication $publication, Request $request, EntityManagerInterface $em): Response
     {
-        if (!$publication) {
-            throw $this->createNotFoundException(
-                'Cet Article n\'est exist plus!'
-            );
+        $user = $this->getUser();
+        if (!$user) return $this->redirectToRoute('app_login');
+        if (!$publication) throw $this->createNotFoundException('Cet Article n\'est exist plus!');
+
+        $isPublicationLiked = $em->getRepository(ReactionPublication::class)->countByPublicationAndUser($user, $publication);
+        // On crée un commentaire
+        $commentaire = new Commentaire;
+
+        // Géneration du formulaire
+        $formCommentaire = $this->createForm(CommentaireType::class, $commentaire);
+
+        $formCommentaire->handleRequest($request);
+
+        // Traitement du fromulaire
+        if ($formCommentaire->isSubmitted() && $formCommentaire->isValid()) {
+            $commentaire->setUser($this->getUser());
+            $commentaire->setPublication($publication);
+
+            // Récupere le contenu du champ parentId
+            $parentId = $formCommentaire->get("parentId")->getData();
+
+            // on cherche le commentaire correspondant
+
+            if ($parentId != null) {
+                $parent = $em->getRepository(Commentaire::class)->find($parentId);
+            }
+
+            // On definit le parent
+
+            $commentaire->setParent($parent ?? null);
+
+            $em->persist($commentaire);
+            $em->flush();
+
+            // dd($commentaire);
+
+            return $this->redirectToRoute('app_publication_show', [
+                'publication' => $publication,
+            ]);
         }
 
         return $this->render('publication/show.html.twig', [
-            'publication' => $publication
+            'publication' => $publication,
+            'formCommentaire' => $formCommentaire->createView(),
+            'isPublicationLiked ' => $isPublicationLiked
         ]);
     }
 
@@ -106,7 +155,7 @@ class PublicationController extends AbstractController
                 'Cet Article n\'est exist plus!'
             );
         }
-        
+
         $form = $this->createForm(PublicationType::class, $publication);
         $form->handleRequest($request);
 
@@ -132,5 +181,36 @@ class PublicationController extends AbstractController
         $em->flush();
 
         return $this->redirectToRoute('app_publication');
+    }
+
+    #[Route('publication/like')]
+    public function likePublication(EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+
+        $user = $this->getUser();
+
+        $publications = $em->getRepository(Publication::class)->findAll();
+
+        if (!$user) {
+            $this->addFlash('danger', 'vous n\'êtes pas connecté!');
+            return $this->redirectToRoute('app_login');
+        }
+
+        foreach ($publications as $publication) {
+            $count = 
+            $isReactedPublication = $em->getRepository(ReactionPublication::class)->countByPublicationLikes($publication);
+            $isLikedPublication = $em->getRepository(ReactionPublication::class)->myReactionToPublication($user, $publication);
+            $isReactedPublication = $em->getRepository(ReactionPublication::class)->countByPublicationAndUser($user, $publication);
+            $publicationId = $publication->getId();
+            $data[] = [
+                'idPost' => $publicationId,
+                'isExistRection' => $isReactedPublication,
+                'status' => $isLikedPublication,
+                'likesCount' => $count,
+                // 'publication' => $serializer->normalize($publication, null, ['groups' => 'publication:read'])
+            ];
+        }
+        // dd($data);
+        return new JsonResponse(['data' => $data], Response::HTTP_OK);
     }
 }

@@ -16,7 +16,45 @@
 		</div>
 		</div>
 	</div>
+
+  <div>
+    <div>
+      <h2>Commentaires</h2>
+        {% for commentaire in publication.commentaires %}
+          {% if commentaire.parent == null %}
+              <strong>Publié par : {{commentaire.user}} le {{ commentaire.createdAt | date('d/m/Y H:i')}}</strong>
+              <p>{{ commentaire.contenu }}</p>
+              <p><a href="#" data-reply data-id="{{commentaire.id}}">Répondre</a></p>
+              {# affichage réponse #}
+              {% for reponse in commentaire.reponse %}
+                <strong>Réponse de : {{reponse.user}} le {{ reponse.createdAt | date('d/m/Y H:i')}}</strong>
+                <p>{{ reponse.contenu }}</p>
+              {% endfor %}
+              <hr>
+          {% endif %}
+        {% endfor %}
+    </div>
+    <div id="ajout-com">
+      <h2>Ajouter un commentaire</h2>
+      {{form(formCommentaire)}}
+    </div>
+  </div>
   {% for tag in publication.tagsPublication %}
       {{ tag.intitule }}
-      {% endfor %}
+  {% endfor %}
+
+  {% block javascript %}
+    <script>
+      window.onload = () => {
+        document.querySelector(".card-title").value = "{{ publication.titre }}"
+
+        document.querySelectorAll("[data-reply]").forEach(element => {
+          element.addEventListener("click", function(){
+            document.querySelector("#commentaire_parentId").value = this.dataset.id
+
+          })
+        })
+      }
+    </script>
+  {% endblock %}
 {% endblock %}
