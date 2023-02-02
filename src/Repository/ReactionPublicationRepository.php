@@ -68,6 +68,7 @@ class ReactionPublicationRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('r')
             ->select('COUNT(r)')->distinct()
             ->where('r.publication = :publication')
+            ->andWhere('r.etatLikeDislike = 1')
             ->setParameter('publication', $publication);
             return $query->getQuery()->getSingleScalarResult();
     }

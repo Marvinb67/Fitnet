@@ -1,11 +1,32 @@
-{% extends 'base.html.twig' %} {% block title %}Liste des publications {%
-endblock %} {% block container %} {% include '_layout/_mobile_nav_bar.html.twig'
-%}
-
-<div class="header-margin"></div>
-
+{% extends 'base.html.twig' %} {% block title %}Liste des publications {% endblock %} 
+{% block container %}
+{% include '_layout/_mobile_nav_bar.html.twig' %}
+  {% set aime = '' %} 
+  {% set aimePas = '' %} 
+  {% for reaction in app.user.reactionPublications %}
+    {% if reaction.etatLikeDislike == 1 %}
+      {% set aime = "j-aime" %}
+    {% elseif reaction.etatLikeDislike == 0  %}
+      {% set aimePas = "j-aime-pas" %}
+    {% elseif reaction.etatLikeDislike == null %}
+      {% set rien = '' %} 
+    {% endif %}
+  {% endfor %}
+    {# {% if reaction.etatLikeDislike is not null %} #}
+  <div class="header-margin"></div>
+      
       <div class="publication-wrapper">
         {% for publication in publications %}
+
+          {% set sum = 0%} 
+          {% set sum1 = 0 %} 
+           {% for coll in publication.reactionPublications %}
+            {% if coll.etatLikeDislike == true %}
+              {% set sum = sum + coll|length %}
+            {% elseif coll.etatLikeDislike == false  %}
+              {% set sum1 = sum1 + coll|length %}
+            {% endif %}
+           {% endfor %}
 
         <div class="publication-card">
           <div class="user-publication">
@@ -13,8 +34,8 @@ endblock %} {% block container %} {% include '_layout/_mobile_nav_bar.html.twig'
             <div class="infos-user-publication">
               <p>{{ publication.user.nom }} {{ publication.user.prenom }}</p>
               <p>Posté le : {{publication.createdAt | date('d/m/Y à H:i')}}</p>
-              {% if publication.editedAt | date('d/m/Y à H:i') >
-              publication.createdAt | date('d/m/Y à H:i') %}
+              {% if (publication.editedAt | date('d/m/Y à H:i') >
+              publication.createdAt | date('d/m/Y à H:i')) and (app.user) %}
               <p>
                 Modifié le : {{publication.editedAt | date('d/m/Y à H:i')
                 }}<small> Par {{ app.user.nom }} {{ app.user.prenom }}</small>
@@ -35,8 +56,9 @@ endblock %} {% block container %} {% include '_layout/_mobile_nav_bar.html.twig'
           </h2>
           <p>{{ publication.contenu }}</p>
           <div class="reaction-publication">
-            <i class="fa-solid fa-thumbs-up" data-id="{{ publication.id }}"></i>
-            <i class="fa-solid fa-comment-dots"></i>
+            <div><i class="fa-solid fa-thumbs-down {{ aimePas }}" data-id="{{ publication.id }}"></i> {{ sum1 }}</div>
+            <div><i class="fa-solid fa-thumbs-up {{ aime }}" data-id="{{ publication.id }}"></i> {{ sum }}</div>
+            <div><i class="fa-solid fa-comment-dots"></i></div>
           </div>
 
           {% for key, img in publication.mediaPublication %} {% if key == 0 %}
