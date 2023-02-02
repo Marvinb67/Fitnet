@@ -1,4 +1,4 @@
-import axios from "axios";
+// import axios from "axios";
 
 const btn_close = document.querySelector('.btn-close')
 if(btn_close) btn_close.addEventListener('click', () => btn_close.parentNode.remove());
