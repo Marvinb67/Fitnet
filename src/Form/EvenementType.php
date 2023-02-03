@@ -19,9 +19,10 @@ class EvenementType extends AbstractType
             ->add('intitule', TextType::class)
             ->add('description', TextareaType::class)
             ->add('historiqueEvenements', CollectionType::class, [
-                'label' => 'Programmation',
+                'label' => false,
                 'entry_type' => ProgrammationEvenementType::class,
-                'allow_add' => true
+                'allow_add' => true,
+                'prototype' => true
             ])
             ->add('envoyer', SubmitType::class)
         ;

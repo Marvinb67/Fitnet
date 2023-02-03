@@ -38,7 +38,7 @@ class Evenement
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'evenement', cascade: ['remove'], targetEntity: ProgrammationEvenement::class)]
+    #[ORM\OneToMany(mappedBy: 'evenement', cascade: ['persist','remove'], targetEntity: ProgrammationEvenement::class)]
     private Collection $historiqueEvenements;
 
     #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'evenement', cascade: ['persist'])]

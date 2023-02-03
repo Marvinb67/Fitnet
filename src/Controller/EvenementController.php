@@ -34,6 +34,10 @@ class EvenementController extends AbstractController
         {
             $evenement->setUser($this->getUser());
             $evenement->setSlug(strtolower($slugger->slug($evenement->getIntitule())));
+            foreach ($evenement->getHistoriqueEvenements() as $historiqueEvenement)
+            {
+                $historiqueEvenement->setEvenement($evenement);
+            }
             $em = $doctrine->getManager();
             $em->persist($evenement);
             $em->flush();

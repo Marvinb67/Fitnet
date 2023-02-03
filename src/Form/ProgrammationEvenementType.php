@@ -17,8 +17,12 @@ class ProgrammationEvenementType extends AbstractType
         $builder
             ->add('lieu', TextType::class)
             ->add('nbPlaces', NumberType::class)
-            ->add('startAt', DateTimeType::class)
-            ->add('endAt', DateTimeType::class)
+            ->add('startAt', DateTimeType::class, [
+                'input' => 'datetime_immutable'
+            ])
+            ->add('endAt', DateTimeType::class, [
+                'input' => 'datetime_immutable'
+            ])
         ;
     }
 

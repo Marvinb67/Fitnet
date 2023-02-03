@@ -19,6 +19,9 @@
             <div>
                 {# <p>{{event.user.nom}} {{event.user.prenom}}</p> #}
                 <p>Posté le : {{event.evenement.createdAt | date('Y/m/d')}}</p>
+                <p>Début : {{ event.startAt | date('Y/m/d H:m') }}</p>
+                <p>Fin : {{ event.endAt | date('Y/m/d H:m') }}</p>
+                <p>Lieu de l'évènement : {{ event.lieu }}</p>
                 <h2><a href="{{ path('app_evenement_show', {slug: event.evenement.slug, id: event.evenement.id}) }}">{{event.evenement.intitule}}</a></h2>
                 <p>{{event.evenement.description}}</p>
 
@@ -31,6 +34,7 @@
 
             </div>
             <hr>
+            <a href="">S'inscrire</a>
         {% endfor %}
     </div>
 
