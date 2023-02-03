@@ -22,7 +22,6 @@ class EvenementType extends AbstractType
                 'label' => false,
                 'entry_type' => ProgrammationEvenementType::class,
                 'allow_add' => true,
-                'prototype' => true
             ])
             ->add('envoyer', SubmitType::class)
         ;

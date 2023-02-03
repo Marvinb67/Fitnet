@@ -6,11 +6,11 @@
 <div class="container my-3">
 		<div class="row">
         <h1>Ajouter un évènement</h1>
-{{ form_start(formEvenement) }}
-			{{ form_row(formEvenement.intitule) }}
-			{{ form_row(formEvenement.description) }}
-			{{ form_row(formEvenement.historiqueEvenements.vars.prototype) }}
-{{ form_end(formEvenement) }}
+		{{ form_start(formEvenement) }}
+					{{ form_row(formEvenement.intitule) }}
+					{{ form_row(formEvenement.description) }}
+					{{ form_widget(formEvenement.historiqueEvenements.vars.prototype) }}
+		{{ form_end(formEvenement) }}
 		</div>
 	</div>
 {% endblock %}
