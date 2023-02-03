@@ -31,10 +31,10 @@
                 <p>Nombre de participants : {{event.inscritEvenement | length}}</p>
                 <a href="{{ path('app_evenement_edit', {slug: event.evenement.slug}) }}">Modifier l'évènement</a>
                 <a href="{{ path('app_evenement_delete', {slug: event.evenement.slug}) }}">Supprimer l'évènement</a>
-
+                <a href="{{ path('app_inscription_evenement_add', {id: event.id}) }}" class="btn btn-primary">S'inscrire</a>
+                <a href="{{ path('app_inscription_evenement_remove', {id: event.id}) }}" class="btn btn-danger">Désinscrire</a>
             </div>
             <hr>
-            <a href="">S'inscrire</a>
         {% endfor %}
     </div>
 
