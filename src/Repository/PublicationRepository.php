@@ -79,7 +79,8 @@ class PublicationRepository extends ServiceEntityRepository
     private function findActivePublicationQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.isActive = true');
+            ->andWhere('p.isActive = true')
+            ->orderBy('p.createdAt','DESC');
     }
     /**
      * Trouver tous les Publications actives
