@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Evenement;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -17,6 +18,11 @@ class EvenementType extends AbstractType
         $builder
             ->add('intitule', TextType::class)
             ->add('description', TextareaType::class)
+            ->add('historiqueEvenements', CollectionType::class, [
+                'label' => false,
+                'entry_type' => ProgrammationEvenementType::class,
+                'allow_add' => true,
+            ])
             ->add('envoyer', SubmitType::class)
         ;
     }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Evenement;
 use App\Form\EvenementType;
 use App\Repository\EvenementRepository;
+use App\Repository\ProgrammationEvenementRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +16,10 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class EvenementController extends AbstractController
 {
     #[Route('/evenement', name: 'app_evenement')]
-    public function index(EvenementRepository $evenements): Response
+    public function index(ProgrammationEvenementRepository $peRepo): Response
     {
         return $this->render('evenement/index.html.twig', [
-            'evenements' => $evenements->findAll(),
+            'peRepo' => $peRepo->findAll(),
         ]);
     }
 
@@ -33,6 +34,10 @@ class EvenementController extends AbstractController
         {
             $evenement->setUser($this->getUser());
             $evenement->setSlug(strtolower($slugger->slug($evenement->getIntitule())));
+            foreach ($evenement->getHistoriqueEvenements() as $historiqueEvenement)
+            {
+                $historiqueEvenement->setEvenement($evenement);
+            }
             $em = $doctrine->getManager();
             $em->persist($evenement);
             $em->flush();
@@ -46,7 +51,7 @@ class EvenementController extends AbstractController
         ]);
     }
 
-    #[Route('evenement/{slug}',requirements: ['slug' => '[a-z0-9\-]*'], name:'app_evenement_show')]
+    #[Route('evenement/{slug}-{id}',requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], methods: ['GET'], name:'app_evenement_show')]
     public function show(Evenement $evenement)
     {
         return $this->render('evenement/show.html.twig', [
@@ -69,7 +74,7 @@ class EvenementController extends AbstractController
         }
 
         return $this->render('evenement/edit.html.twig', [
-            'publictaion' => $evenement,
+            'evenement' => $evenement,
             'formEvenement' => $form->createView()
         ]);
     }
