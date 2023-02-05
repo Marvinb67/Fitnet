@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\InscriptionEvenementRepository;
+use App\Repository\ProgrammationEvenementRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: InscriptionEvenementRepository::class)]
-class InscriptionEvenement
+#[ORM\Entity(repositoryClass: ProgrammationEvenementRepository::class)]
+class ProgrammationEvenement
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -25,13 +27,17 @@ class InscriptionEvenement
     #[ORM\Column]
     private ?\DateTimeImmutable $endAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'mesEvenements')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
-
     #[ORM\ManyToOne(inversedBy: 'historiqueEvenements')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Evenement $evenement = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'programmationEvenements')]
+    private Collection $inscritEvenement;
+
+    public function __construct()
+    {
+        $this->inscritEvenement = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -86,17 +92,6 @@ class InscriptionEvenement
         return $this;
     }
 
-    public function getuser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setuser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
 
     public function getEvenement(): ?Evenement
     {
@@ -106,6 +101,30 @@ class InscriptionEvenement
     public function setEvenement(?Evenement $evenement): self
     {
         $this->evenement = $evenement;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getInscritEvenement(): Collection
+    {
+        return $this->inscritEvenement;
+    }
+
+    public function addInscritEvenement(User $inscritEvenement): self
+    {
+        if (!$this->inscritEvenement->contains($inscritEvenement)) {
+            $this->inscritEvenement->add($inscritEvenement);
+        }
+
+        return $this;
+    }
+
+    public function removeInscritEvenement(User $inscritEvenement): self
+    {
+        $this->inscritEvenement->removeElement($inscritEvenement);
 
         return $this;
     }

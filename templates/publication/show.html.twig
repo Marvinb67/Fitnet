@@ -24,7 +24,7 @@
           {% if commentaire.parent == null %}
               <strong>Publié par : {{commentaire.user}} le {{ commentaire.createdAt | date('d/m/Y H:i')}}</strong>
               <p>{{ commentaire.contenu }}</p>
-              <p><a href="#" data-reply data-id="{{commentaire.id}}">Répondre</a></p>
+              <p><a href="#commentaire_contenu" data-reply data-id="{{commentaire.id}}">Répondre</a></p>
               {# affichage réponse #}
               {% for reponse in commentaire.reponse %}
                 <strong>Réponse de : {{reponse.user}} le {{ reponse.createdAt | date('d/m/Y H:i')}}</strong>

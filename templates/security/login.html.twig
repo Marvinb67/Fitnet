@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %} {% block title %}Connexion!{% endblock %} {%
 block container %}
-<section class="container my-3">
+{% include '_layout/_authentification/headerAuthentification.html.twig' %}
+
+<section class="container my-3 authentification-form">
   <div class="row">
     <div class="col">
-      <form method="post">
+      <form  method="post">
         {% if error %}
         <div class="alert alert-danger">
           {{ error.messageKey|trans(error.messageData, 'security') }}
@@ -18,14 +20,14 @@ block container %}
         </div>
         {% endif %}
 
-        <h1 class="h3 mb-3 font-weight-normal">Me connecter</h1>
+        <h1 class="h3 mb-3 font-weight-normal text-center">Connexion</h1>
         <label for="inputEmail">Email</label>
         <input
           type="email"
           value="{{ lastUsername }}"
           name="email"
           id="inputEmail"
-          class="form-control"
+          class="form-control authentification-input"
           autocomplete="email"
           required
           autofocus
@@ -35,7 +37,7 @@ block container %}
           type="password"
           name="password"
           id="inputPassword"
-          class="form-control"
+          class="form-control authentification-input"
           autocomplete="current-password"
           required
         />
@@ -57,17 +59,20 @@ block container %}
         </div>
         #}
 
-        <button class="btn btn-lg btn-primary mt-3" type="submit">
-          Me connecter
-        </button>
+        <div class="authentification-button">
+          <button class="btn btn-lg btn-primary mt-3 btn-authentification" type="submit">
+            Je me connecte
+          </button>
+        </div>
       </form>
   <div class="float-end">
-    <a href="{{ path('forgotten_password') }}" class="btn btn-secondary mt-3"
+    <a href="{{ path('forgotten_password') }}" class=""
       >Mot de passe oublié?</a
     >
   </div>
     </div>
   </div>
 </section>
+{% include '_layout/_authentification/footerAuthentification.html.twig' %}
 
 {% endblock %}
