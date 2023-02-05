@@ -197,8 +197,7 @@ class PublicationController extends AbstractController
         }
 
         foreach ($publications as $publication) {
-            $count = 
-            $isReactedPublication = $em->getRepository(ReactionPublication::class)->countByPublicationLikes($publication);
+            $count = $em->getRepository(ReactionPublication::class)->countByPublicationLikes($publication);
             $isLikedPublication = $em->getRepository(ReactionPublication::class)->myReactionToPublication($user, $publication);
             $isReactedPublication = $em->getRepository(ReactionPublication::class)->countByPublicationAndUser($user, $publication);
             $publicationId = $publication->getId();
