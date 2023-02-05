@@ -13,7 +13,7 @@ class ReactionPublication
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable: false)]
     private ?bool $etatLikeDislike = null;
 
     #[ORM\ManyToOne(inversedBy: 'reactionPublications')]

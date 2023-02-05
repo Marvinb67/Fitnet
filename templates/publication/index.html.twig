@@ -3,19 +3,6 @@
 {% endblock %}
 {% block container %}
 	{% include '_layout/_mobile_nav_bar.html.twig' %}
-		{% set aime = '' %}
-		{% set aimePas = '' %}
-	{% if app.user %}
-		{% for reaction in app.user.reactionPublications %}
-			{% if reaction.etatLikeDislike == true %}
-				{% set aime = "j-aime" %}
-			{% elseif reaction.etatLikeDislike == false  %}
-				{% set aimePas = "j-aime-pas" %}
-			{% elseif reaction.etatLikeDislike == null %}
-				{% set rien = '' %}
-			{% endif %}
-		{% endfor %}
-	{% endif %}
 	{# {% if reaction.etatLikeDislike is not null %} #}
 	<div class="header-margin"></div>
 
@@ -58,14 +45,17 @@
 				</h2>
 				<p>{{ publication.contenu }}</p>
 				<div class="reaction-publication">
+					<div class="popup">
+						<span class="popuptext" id="myPopup"></span>
+					</div>
 					<div>
 						<i class="fa-solid fa-thumbs-down reactions" data-id="{{ publication.id }}"></i>
-            <span id="j-aimePas-{{publication.id}}">{{ sum1 }}</span>
-						</div>
+						<span id="j-aimePas-{{publication.id}}">{{ sum1 }}</span>
+					</div>
 					<div>
-						<i class="fa-solid fa-thumbs-up reactions" data-id="{{ publication.id }}"></i> 
-            <span id="j-aime-{{publication.id}}">{{ sum }}</span>
-						</div>
+						<i class="fa-solid fa-thumbs-up reactions" data-id="{{ publication.id }}"></i>
+						<span id="j-aime-{{publication.id}}">{{ sum }}</span>
+					</div>
 					<div>
 						<i class="fa-solid fa-comment-dots"></i>
 					</div>
