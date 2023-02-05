@@ -26,6 +26,9 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('publication', './assets/entries/publication.js')
     .addEntry('social', './assets/entries/social.js')
+    .addEntry('authentification', './assets/entries/authentification.js')
+    .addEntry('mobileFooter', './assets/entries/mobileFooter.js')
+    .addEntry('mobileHeader', './assets/entries/mobileHeader.js')
 
     .copyFiles({
         from: './assets/images',
