@@ -4,25 +4,24 @@ import { setTimeout } from "core-js";
 /**
  * Gestion du systéme du like/dislike par ajax
  */
+
 // selection des icons like/dislike
 let thumbs = document.querySelectorAll(".reactions");
 
-// Array.from(thumbs, (thumb) => {
-  // Fournis les stats des likes/dislikes
-  axios.get("reaction/stats").then((response) => {
-    let data = response.data.likes
-    for(let stat of data){
+// Fournis les stats des likes/dislikes
+axios.get("reaction/stats").then((response) => {
+  let data = response.data.likes;
+  for (let stat of data) {
     let idPublication = stat.idPublication;
     let countLikes = stat.countLikes;
     let countDisLikes = stat.countDisLikes;
     const likesSpan = document.getElementById(`j-aime-${idPublication}`);
     const dislikesSpan = document.getElementById(`j-aimePas-${idPublication}`);
     likesSpan.innerHTML = countLikes;
-    dislikesSpan.innerHTML= countDisLikes;
-    }
+    dislikesSpan.innerHTML = countDisLikes;
+  }
+});
 
-  });
-// });
 // On boucle sur toutes les icons
 Array.from(thumbs, (thumb) => {
   // Ecouteur d'evenement sur l'icon cloquer
