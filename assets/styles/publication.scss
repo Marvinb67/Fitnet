@@ -67,9 +67,9 @@ body {
     .publication-card{
       background-color: white;
       margin: 1rem;
-      border-radius: 5px;
+      border-radius: 20px;
       box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    padding: 1rem;
+      padding: 1rem;
     }
 
     .futur-pp{
@@ -91,7 +91,7 @@ body {
     }
 
     header{
-      padding: 1rem 2rem 1rem 2rem;
+      padding: 1rem 0 1rem 0;
       background-color: #262626;
       display: grid;
     }
@@ -119,7 +119,7 @@ body {
     }
 
     .logo-black{
-      width: 150px;
+      width: 120px;
       margin: auto;
     }
 
@@ -158,3 +158,28 @@ body {
       margin-top: 200px;
       
     }
+
+    .main-publication{
+      display: flex;
+    }
+    
+    .publication-section{
+      flex: 50%;
+    }
+
+    .publication-wrapper-desktop{
+      display: none;
+    }
+
+    @media screen and (min-width: 1200px) {
+      .publication-wrapper-mobile{
+        display: none;
+      }
+
+      .publication-wrapper-desktop{
+        display: block;
+      }
+    }
+    
+
+    
