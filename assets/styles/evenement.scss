@@ -1,0 +1,17 @@
+.evenement-wrapper-desktop{
+  display: none;
+}
+
+@media screen and (min-width: 1200px) {
+  .evenement-wrapper-mobile{
+    display: none;
+  }
+
+  .evenement-wrapper-desktop{
+    display: block;
+  }
+}
+
+.main-evenement{
+  display: flex;
+}
