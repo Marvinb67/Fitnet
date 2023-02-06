@@ -41,7 +41,6 @@ class SearchData
     public function getDates(){ return $this->dates; }
 
     public function getPage(){ return $this->page; }
-
     public function setPage($page): self { $this->page = $page; return $this; }
 
 
