@@ -38,7 +38,7 @@ class Evenement
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'evenement', cascade: ['remove'], targetEntity: InscriptionEvenement::class)]
+    #[ORM\OneToMany(mappedBy: 'evenement', cascade: ['persist','remove'], targetEntity: ProgrammationEvenement::class)]
     private Collection $historiqueEvenements;
 
     #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'evenement', cascade: ['persist'])]
@@ -110,14 +110,14 @@ class Evenement
     }
 
     /**
-     * @return Collection<int, InscriptionEvenement>
+     * @return Collection<int, ProgrammationEvenement>
      */
     public function getHistoriqueEvenements(): Collection
     {
         return $this->historiqueEvenements;
     }
 
-    public function addHistoriqueEvenement(InscriptionEvenement $historiqueEvenement): self
+    public function addHistoriqueEvenement(ProgrammationEvenement $historiqueEvenement): self
     {
         if (!$this->historiqueEvenements->contains($historiqueEvenement)) {
             $this->historiqueEvenements->add($historiqueEvenement);
@@ -127,7 +127,7 @@ class Evenement
         return $this;
     }
 
-    public function removeHistoriqueEvenement(InscriptionEvenement $historiqueEvenement): self
+    public function removeHistoriqueEvenement(ProgrammationEvenement $historiqueEvenement): self
     {
         if ($this->historiqueEvenements->removeElement($historiqueEvenement)) {
             // set the owning side to null (unless already changed)
