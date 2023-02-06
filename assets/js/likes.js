@@ -11,7 +11,7 @@ let thumbs = document.querySelectorAll(".reactions");
 Array.from(thumbs, (thumb) => {
     // Ecouteur d'evenement sur l'icon cloquer
   thumb.addEventListener("click", () => {
-
+    
     // l'icon cliquer
     let aimer = thumb.classList.contains("fa-thumbs-up") ? true : false;
     // Class à ajouter à l'icon
@@ -42,7 +42,7 @@ Array.from(thumbs, (thumb) => {
       } 
       // Au cas d'annulation du like/dislike on rafraichi les donnees afficher
       else {
-        class1 === 'j-aimePas' ? popup(message, 80) : popup(message, 112);
+        class1 === 'j-aimePas' ? popup(thumb, message, 80) : popup(thumb, message, 112);
         thumb.classList.remove(class1);
         countSpanLikes.innerHTML = countLikes;
         countSpanDisLikes.innerHTML = countDisLikes;
@@ -51,16 +51,14 @@ Array.from(thumbs, (thumb) => {
   });
 });
 // Fonction qui gére le petit popup au cas d'annulation du like/dislike
-const popup = (message, left) => {
-  let popup = document.querySelectorAll("#myPopup");
-  Array.from(popup, (pop) => {
+const popup = (element, message, left) => {
+  let pop = element.parentElement.parentElement.children[0].children[0];
     pop.innerHTML = message;
     pop.style.setProperty('--popAfterLeft',left+'px');
     pop.classList.toggle("show");
     setTimeout(() => {
       pop.innerHTML = "";
       pop.classList.remove("show");
-    }, 222000);
-  });
+    }, 2000);
 };
 // #00b5ff
