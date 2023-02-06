@@ -27,12 +27,8 @@ Encore
     .addEntry('publication', './assets/entries/publication.js')
     .addEntry('social', './assets/entries/social.js')
     .addEntry('authentification', './assets/entries/authentification.js')
-
     .addEntry('mobileFooter', './assets/entries/mobileFooter.js')
     .addEntry('mobileHeader', './assets/entries/mobileHeader.js')
-    .addEntry('navDesktop', './assets/entries/navDesktop.js')
-    .addEntry('sideNavDesktop', './assets/entries/sideNavDesktop.js')
-    .addEntry('tchat', './assets/entries/tchat.js')
 
     .copyFiles({
         from: './assets/images',
