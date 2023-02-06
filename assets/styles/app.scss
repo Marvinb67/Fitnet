@@ -1,6 +1,11 @@
 @import "variables";
 @import "~bootstrap/scss/bootstrap";
 
+*{
+    margin: 0;
+    padding: 0;
+}
+
 .grid{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -13,4 +18,18 @@
 }
 #flash-messages{
     z-index: 9999;
+}
+
+li{
+    margin: 0;
+    padding: 0;
+}
+
+ul{
+    margin: 0;
+    padding: 0;
+}
+
+main{
+    padding: 0 20rem;
 }

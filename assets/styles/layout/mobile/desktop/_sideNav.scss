@@ -1,0 +1,39 @@
+.side-nav-section{
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-color: white;
+}
+
+.side-nav-desktop{
+    flex: 25%;
+
+}
+
+.side-nav-title{
+    background-color: #262626;
+    color: white;
+    padding: 0.5rem 1rem;
+}
+
+.side-nav-title h3{
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.side-nav-section nav{
+    padding: 1rem 3rem;
+}
+
+.side-nav-section nav li{
+    padding: 0.5rem 0;
+}
+
+.side-nav-section:nth-child(2), .side-nav-section:nth-child(3){
+    height: 200px;
+}
+
+.nav-icon{
+    color: #00AEF7;
+}

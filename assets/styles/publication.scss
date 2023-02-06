@@ -4,11 +4,6 @@ body {
 
 }
 
-body {
-  background-color: #EDEDED;
-
-}
-
   *{
     margin: 0;
     padding: 0;
@@ -33,32 +28,7 @@ body {
   }
 
 
-  footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  color: white;
-}
 
-  header {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    color: white;
-  }
-
-  footer nav ul {
-    justify-content: space-between;
-    padding: 1rem 2rem;
-  }
-
-  footer nav ul{
-    justify-content: space-between;
-    padding: 1rem 2rem 1rem 2rem;
-  background-color: #262626;
-  }
 
     ul li i{
     font-size: 1.5rem;
@@ -68,9 +38,9 @@ body {
     .publication-card{
       background-color: white;
       margin: 1rem;
-      border-radius: 5px;
+      border-radius: 20px;
       box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    padding: 1rem;
+      padding: 1rem;
     }
 
     .futur-pp{
@@ -91,8 +61,9 @@ body {
     gap: 0.5rem;
     }
 
+
     header{
-      padding: 1rem 2rem 1rem 2rem;
+      padding: 1rem 0 1rem 0;
       background-color: #262626;
       display: grid;
     }
@@ -120,7 +91,7 @@ body {
     }
 
     .logo-black{
-      width: 150px;
+      width: 120px;
       margin: auto;
     }
 
@@ -156,10 +127,35 @@ body {
       color: $primary_color;
     }
 
+
     .header-margin{
       margin-top: 200px;
+      
+    }
+
+    .main-publication{
+      display: flex;
     }
     
+    .publication-wrapper{
+      flex: 50%;
+    }
+
+    .publication-wrapper-desktop{
+      display: none;
+    }
+
+    @media screen and (min-width: 1200px) {
+      .publication-wrapper-mobile{
+        display: none;
+      }
+
+      .publication-wrapper-desktop{
+        display: block;
+      }
+    }
+    
+
   .j-aime{
     color: $primary_color;
   }
