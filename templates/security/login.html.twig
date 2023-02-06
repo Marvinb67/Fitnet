@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %} {% block title %}Connexion!{% endblock %} {%
 block container %}
-<section class="container my-3">
+  {% include '_layout/_authentification/headerAuthentification.html.twig' %}
+
+  <section class="container my-3">
   <div class="row">
     <div class="col">
       <form method="post">
@@ -69,5 +71,7 @@ block container %}
     </div>
   </div>
 </section>
+  {% include '_layout/_authentification/footerAuthentification.html.twig' %}
+
 
 {% endblock %}

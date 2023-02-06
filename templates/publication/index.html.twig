@@ -1,6 +1,10 @@
-{% extends 'base.html.twig' %} {% block title %}Liste des publications {%
-endblock %} {% block container %} {% include '_layout/_mobile_nav_bar.html.twig'
-%}
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des publications {% endblock %}
+
+{% block container %}
+
+{% include '_layout/_mobileNavBar.html.twig' %}
 
 <div class="example-wrapper ">
 <div class="header-margin"></div>
@@ -70,4 +74,5 @@ endblock %} {% block container %} {% include '_layout/_mobile_nav_bar.html.twig'
         </div>
         {% endfor %}
       </div>
+</div>
 {% include '_layout/_mobileFooter.html.twig' %} {% endblock %}

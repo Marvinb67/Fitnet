@@ -3,11 +3,6 @@ body {
 
 }
 
-body {
-  background-color: #EDEDED;
-
-}
-
   *{
     margin: 0;
     padding: 0;
@@ -32,32 +27,7 @@ body {
   }
 
 
-  footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  color: white;
-}
 
-  header {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    color: white;
-  }
-
-  footer nav ul {
-    justify-content: space-between;
-    padding: 1rem 2rem;
-  }
-
-  footer nav ul{
-    justify-content: space-between;
-    padding: 1rem 2rem 1rem 2rem;
-  background-color: #262626;
-  }
 
     ul li i{
     font-size: 1.5rem;
@@ -88,12 +58,6 @@ body {
       display: flex;
       align-items: center;
     gap: 0.5rem;
-    }
-
-    header{
-      padding: 1rem 2rem 1rem 2rem;
-      background-color: #262626;
-      display: grid;
     }
 
     .bottom-line{
@@ -154,7 +118,3 @@ body {
       color: #00AEF7;
     }
 
-    .header-margin{
-      margin-top: 200px;
-
-    }
