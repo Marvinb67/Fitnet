@@ -30,6 +30,11 @@ Encore
     .addEntry('mobileHeader', './assets/entries/mobileHeader.js')
     .addEntry('mobileFooter', './assets/entries/mobileFooter.js')
 
+
+    .addEntry('navDesktop', './assets/entries/navDesktop.js')
+    .addEntry('sideNavDesktop', './assets/entries/sideNavDesktop.js')
+    .addEntry('tchat', './assets/entries/tchat.js')
+
     .copyFiles({
         from: './assets/images',
         to: 'images/[path][name].[hash:8].[ext]'

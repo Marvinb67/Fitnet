@@ -64,11 +64,13 @@ class ReactionPublicationRepository extends ServiceEntityRepository
             return $query->getQuery()->getResult();
     }
 
-    public function countByPublicationLikes($publication){
+    public function countByPublicationLikes($publication, $etatLikeDislike){
         $query = $this->createQueryBuilder('r')
             ->select('COUNT(r)')->distinct()
             ->where('r.publication = :publication')
-            ->setParameter('publication', $publication);
+            ->andWhere('r.etatLikeDislike = :etatLikeDislike')
+            ->setParameter('publication', $publication)
+            ->setParameter('etatLikeDislike', $etatLikeDislike);
             return $query->getQuery()->getSingleScalarResult();
     }
 //    /**

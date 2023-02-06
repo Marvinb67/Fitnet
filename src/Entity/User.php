@@ -59,9 +59,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Evenement::class)]
     private Collection $evenements;
 
-    #[ORM\OneToMany(mappedBy: 'users', targetEntity: InscriptionEvenement::class)]
-    private Collection $mesEvenements;
-
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ReactionPublication::class, orphanRemoval: true)]
     private Collection $reactionPublications;
 
@@ -82,6 +79,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'followers')]
     #[ORM\JoinTable(name: 'user_follows')]
     private Collection $myfollowers;
+
+    #[ORM\ManyToMany(targetEntity: ProgrammationEvenement::class, mappedBy: 'inscritEvenement')]
+    private Collection $programmationEvenements;
 
     public function __toString()
     {
@@ -113,13 +113,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->commentaires = new ArrayCollection();
         $this->groupes = new ArrayCollection();
         $this->evenements = new ArrayCollection();
-        $this->mesEvenements = new ArrayCollection();
         $this->reactionPublications = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->messageRecus = new ArrayCollection();
         $this->amis = new ArrayCollection();
         $this->followers = new ArrayCollection();
         $this->myfollowers = new ArrayCollection();
+        $this->programmationEvenements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -349,36 +349,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, InscriptionEvenement>
-     */
-    public function getMesEvenements(): Collection
-    {
-        return $this->mesEvenements;
-    }
-
-    public function addMesEvenement(InscriptionEvenement $mesEvenement): self
-    {
-        if (!$this->mesEvenements->contains($mesEvenement)) {
-            $this->mesEvenements->add($mesEvenement);
-            $mesEvenement->setUsers($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMesEvenement(InscriptionEvenement $mesEvenement): self
-    {
-        if ($this->mesEvenements->removeElement($mesEvenement)) {
-            // set the owning side to null (unless already changed)
-            if ($mesEvenement->getUsers() === $this) {
-                $mesEvenement->setUsers(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, ReactionPublication>
      */
     public function getReactionPublications(): Collection
@@ -563,6 +533,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setResetToken(?string $resetToken): self
     {
         $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProgrammationEvenement>
+     */
+    public function getProgrammationEvenements(): Collection
+    {
+        return $this->programmationEvenements;
+    }
+
+    public function addProgrammationEvenement(ProgrammationEvenement $programmationEvenement): self
+    {
+        if (!$this->programmationEvenements->contains($programmationEvenement)) {
+            $this->programmationEvenements->add($programmationEvenement);
+            $programmationEvenement->addInscritEvenement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProgrammationEvenement(ProgrammationEvenement $programmationEvenement): self
+    {
+        if ($this->programmationEvenements->removeElement($programmationEvenement)) {
+            $programmationEvenement->removeInscritEvenement($this);
+        }
 
         return $this;
     }

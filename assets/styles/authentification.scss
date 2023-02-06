@@ -1,26 +1,52 @@
 
-.authenfication-header{
-  background-color: #1d2124;
-  display: grid;
-  justify-content: center;
-  align-items: center;
-}
-
-//.circle:last-child{
-//  position: absolute;
-//  bottom: 0;
-//  border-radius: 200px 200px 0px 0px / 100px 100px 0px 0px;
-//  height: 140px;
-//  width: 100%;
-//}
-//
-//.circle:first-child{
-//  border-radius: 0px 0px 200px 200px / 0px 0px 50px 50px;
-//  height: 220px;
-//  width: 100%;
-//}
 
 .authenfication-header img{
   width: 300px;
 }
 
+.authentification-header{
+    border-radius: 0px 0px 200px 200px / 0px 0px 50px 50px;
+    height: 220px;
+    width: 100%;
+    background-color: #262626;
+    display: grid;
+    margin-bottom: 3rem;
+}
+
+.dark-logo{
+    width: 300px;
+    margin: auto;
+}
+
+.authentification-footer{
+    position: absolute;
+    bottom: 0;
+    border-radius: 200px 200px 0px 0px / 100px 100px 0px 0px;
+    height: 140px;
+    width: 100%;
+    background-color: #262626;
+}
+
+.authentification-input{
+    border-radius: 50px;
+    border: none;
+}
+
+.btn-authentification{
+    border-radius: 50px;
+    border: none;
+    background-color: #262626;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.authentification-button{
+    display: grid;
+    justify-content: flex-end;
+}
+
+.authentification-form{
+    padding: 0 2rem 0 2rem;
+}

@@ -1,78 +1,163 @@
-{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %} {% block title %}Liste des publications {%
+endblock %} {% block container %} 
 
-{% block title %}Liste des publications {% endblock %}
+<div class="publication-wrapper-mobile">
+    {% include '_layout/_mobileNavBar.html.twig' %}
+    {# {% if reaction.etatLikeDislike is not null %} #}
+    <div class="header-margin"></div>
 
-{% block container %}
-
-{% include '_layout/_mobileNavBar.html.twig' %}
-
-<div class="example-wrapper ">
-<div class="header-margin"></div>
-
-      <div class="publication-wrapper">
+    <div class="publication-wrapper">
         {% for publication in publications %}
 
-        <div class="publication-card">
-          <div class="user-publication">
-            <div class="futur-pp"></div>
-            <div class="infos-user-publication">
-              <p>{{ publication.user.nom }} {{ publication.user.prenom }}</p>
-              <p>Posté le : {{publication.createdAt | date('d/m/Y à H:i')}}</p>
-              {% if publication.editedAt | date('d/m/Y à H:i') >
-              publication.createdAt | date('d/m/Y à H:i') %}
-              <p>
-                Modifié le : {{publication.editedAt | date('d/m/Y à H:i')
-                }}<small> Par {{ app.user.nom }} {{ app.user.prenom }}</small>
-              </p>
-              {% endif %}
+            {% set sum = 0%}
+            {% set sum1 = 0 %}
+            {% for coll in publication.reactionPublications %}
+                {% if coll.etatLikeDislike == true %}
+                    {% set sum = sum + coll|length %}
+                {% elseif coll.etatLikeDislike == false  %}
+                    {% set sum1 = sum1 + coll|length %}
+                {% endif %}
+            {% endfor %}
+
+            <div class="publication-card">
+                <div class="user-publication">
+                    <div class="futur-pp"></div>
+                    <div class="infos-user-publication">
+                        <p>{{ publication.user.nom }}
+                            {{ publication.user.prenom }}</p>
+                        <p>Posté le :
+                            {{publication.createdAt | date('d/m/Y à H:i')}}</p>
+                        {% if (publication.editedAt | date('d/m/Y à H:i') >
+                            publication.createdAt | date('d/m/Y à H:i')) and (app.user) %}
+                            <p>
+                                Modifié le :
+                                {{publication.editedAt | date('d/m/Y à H:i')
+                                }}<small>
+                                    Par
+                                    {{ app.user.nom }}
+                                    {{ app.user.prenom }}</small>
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+                <h2>
+                    <a href="{{ path('app_publication_show', { id: publication.id, slug: publication.slug }) }}">{{ publication.titre }}</a>
+                </h2>
+                <p>{{ publication.contenu }}</p>
+                <div class="reaction-publication">
+                    <div class="popup">
+                        <span class="popuptext" id="myPopup"></span>
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-thumbs-down reactions" data-id="{{ publication.id }}"></i>
+                        <span id="j-aimePas-{{publication.id}}">{{ sum1 }}</span>
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-thumbs-up reactions" data-id="{{ publication.id }}"></i>
+                        <span id="j-aime-{{publication.id}}">{{ sum }}</span>
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-comment-dots"></i>
+                    </div>
+                </div>
+
+                {% for key, img in publication.mediaPublication %}
+                    {% if key == 0 %}
+                        <a href="{{ path('app_show_media', { slug: img.slug }) }}">
+                            <img class="card-img-top img-fluid" src="{{ img.lien }}" alt="{{ img.titre }}"/></a>
+                    {% endif %}
+                {% endfor %}
+
+                <a href="{{ path('app_publication_edit', { id: publication.id, slug: publication.slug }) }}">Modifier la publication</a>
+                <a href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer la publication</a>
             </div>
-          </div>
-          <h2>
-            <a
-              href="{{
-                path('app_publication_show', {
-                  id: publication.id,
-                  slug: publication.slug
-                })
-              }}"
-              >{{ publication.titre }}</a
-            >
-          </h2>
-          <p>{{ publication.contenu }}</p>
-          <div class="reaction-publication">
-            <i class="fa-solid fa-thumbs-up" data-id="{{ publication.id }}"></i>
-            <i class="fa-solid fa-comment-dots"></i>
-          </div>
-
-          {% for key, img in publication.mediaPublication %} {% if key == 0 %}
-          <a href="{{ path('app_show_media', { slug: img.slug }) }}">
-            <img
-              class="card-img-top img-fluid"
-              src="{{ img.lien }}"
-              alt="{{ img.titre }}"
-          /></a>
-          {% endif %} {% endfor %}
-
-          <a
-            href="{{
-              path('app_publication_edit', {
-                id: publication.id,
-                slug: publication.slug
-              })
-            }}"
-            >Modifier la publication</a
-          >
-          <a
-            href="{{
-              path('app_publication_delete', {
-                id: publication.id,
-                slug: publication.slug
-              })
-            }}"
-            >Supprimer la publication</a
-          >
-        </div>
         {% endfor %}
-      </div>
+    </div>
+    {% include '_layout/_mobileFooter.html.twig' %}
 </div>
-{% include '_layout/_mobileFooter.html.twig' %} {% endblock %}
+
+
+
+{# Partie Desktop  #}
+
+<div class="publication-wrapper-desktop">
+  {% include '_layout/_desktop/nav.html.twig' %}
+    <div class="header-margin"></div>
+    <main class="main-publication">
+    {# {% if reaction.etatLikeDislike is not null %} #}
+        {% include '_layout/_desktop/sideNav.html.twig' %}
+
+        <div class="publication-wrapper">
+        {% for publication in publications %}
+
+            {% set sum = 0%}
+            {% set sum1 = 0 %}
+            {% for coll in publication.reactionPublications %}
+                {% if coll.etatLikeDislike == true %}
+                    {% set sum = sum + coll|length %}
+                {% elseif coll.etatLikeDislike == false  %}
+                    {% set sum1 = sum1 + coll|length %}
+                {% endif %}
+            {% endfor %}
+
+            <div class="publication-card">
+                <div class="user-publication">
+                    <div class="futur-pp"></div>
+                    <div class="infos-user-publication">
+                        <p>{{ publication.user.nom }}
+                            {{ publication.user.prenom }}</p>
+                        <p>Posté le :
+                            {{publication.createdAt | date('d/m/Y à H:i')}}</p>
+                        {% if (publication.editedAt | date('d/m/Y à H:i') >
+                            publication.createdAt | date('d/m/Y à H:i')) and (app.user) %}
+                            <p>
+                                Modifié le :
+                                {{publication.editedAt | date('d/m/Y à H:i')
+                                }}<small>
+                                    Par
+                                    {{ app.user.nom }}
+                                    {{ app.user.prenom }}</small>
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+                <h2>
+                    <a href="{{ path('app_publication_show', { id: publication.id, slug: publication.slug }) }}">{{ publication.titre }}</a>
+                </h2>
+                <p>{{ publication.contenu }}</p>
+                <div class="reaction-publication">
+                    <div class="popup">
+                        <span class="popuptext" id="myPopup"></span>
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-thumbs-down reactions" data-id="{{ publication.id }}"></i>
+                        <span id="j-aimePas-{{publication.id}}">{{ sum1 }}</span>
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-thumbs-up reactions" data-id="{{ publication.id }}"></i>
+                        <span id="j-aime-{{publication.id}}">{{ sum }}</span>
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-comment-dots"></i>
+                    </div>
+                </div>
+
+                {% for key, img in publication.mediaPublication %}
+                    {% if key == 0 %}
+                        <a href="{{ path('app_show_media', { slug: img.slug }) }}">
+                            <img class="card-img-top img-fluid" src="{{ img.lien }}" alt="{{ img.titre }}"/></a>
+                    {% endif %}
+                {% endfor %}
+
+                <a href="{{ path('app_publication_edit', { id: publication.id, slug: publication.slug }) }}">Modifier la publication</a>
+                <a href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer la publication</a>
+            </div>
+        {% endfor %}
+    </div>
+    {% include '_layout/_desktop/tchat.html.twig' %}
+  </main>
+</div>
+{% endblock %}
+
+
+

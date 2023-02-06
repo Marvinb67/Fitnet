@@ -22,18 +22,18 @@ class RegistrationFormType extends AbstractType
         $builder
         ->add('email', EmailType::class, [
             'attr' => [
-                'class' => 'form-control'
+                'class' => 'form-control authentification-input'
             ],
             'label' => 'E-mail'
         ])
         ->add('nom', TextType::class, [
             'attr' => [
-                'class' => 'form-control'
+                'class' => 'form-control authentification-input'
             ]
         ])
         ->add('prenom', TextType::class, [
             'attr' => [
-                'class' => 'form-control'
+                'class' => 'form-control authentification-input'
             ],
             'label' => 'Prénom'
         ])
@@ -54,7 +54,7 @@ class RegistrationFormType extends AbstractType
             'invalid_message' => 'Les deux mots de passes doivent etre identiques!',
             'options' => [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control authentification-input',
                     'autocomplete' => 'new-password'
                     ]
                 ],
