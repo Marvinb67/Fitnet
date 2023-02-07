@@ -4,11 +4,17 @@
     margin-bottom: 1.5rem;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     background-color: white;
+    width: 100%;
+    width: 250px;
 }
 
 .side-nav-desktop{
-    flex: 25%;
+    position: absolute;
+    left: 0;
+}
 
+.fixed-sideNav{
+    position: fixed;
 }
 
 .side-nav-title{
@@ -21,6 +27,10 @@
     font-size: 1.2rem;
     text-align: center;
 }
+
+// .sideNav-margin{
+//     margin-left: 15rem;
+// }
 
 .side-nav-section nav{
     padding: 1rem 3rem;

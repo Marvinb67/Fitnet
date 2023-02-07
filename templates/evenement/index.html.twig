@@ -5,15 +5,15 @@
 {% block container %}
 
 
-    <style>
+    {# <style>
         .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    </style>
+    </style> #}
 
 
 <div class="evenement-wrapper-mobile">
     {% include '_layout/_mobileNavBar.html.twig' %}
 
-    <div class="example-wrapper">
+    <div class="evenement-container">
         {% for event in peRepo %}
             <div>
                 {# <p>{{event.user.nom}} {{event.user.prenom}}</p> #}
@@ -33,7 +33,6 @@
                 <a href="{{ path('app_inscription_evenement_add', {id: event.id}) }}" class="btn btn-primary">S'inscrire</a>
                 <a href="{{ path('app_inscription_evenement_remove', {id: event.id}) }}" class="btn btn-danger">Désinscrire</a>
             </div>
-            <hr>
         {% endfor %}
     </div>
 
@@ -45,11 +44,12 @@
     {% include '_layout/_desktop/nav.html.twig' %}
     <div class="header-margin"></div>
 
-    <main class="main-evenement">
+    <main class="main-evenement wrapper-1200">
     {% include '_layout/_desktop/sideNav.html.twig' %}
-        <div class="example-wrapper">
+    {# <div class="sideNav-margin"></div> #}
+        <div class="evenement-container">
             {% for event in peRepo %}
-                <div>
+                <div class="publication-card">
 {#                     <p>{{event.user.nom}} {{event.user.prenom}}</p>#}
                     <p>Posté le : {{event.evenement.createdAt | date('Y/m/d')}}</p>
                     <p>Début : {{ event.startAt | date('Y/m/d H:m') }}</p>
@@ -67,7 +67,6 @@
                     <a href="{{ path('app_inscription_evenement_add', {id: event.id}) }}" class="btn btn-primary">S'inscrire</a>
                     <a href="{{ path('app_inscription_evenement_remove', {id: event.id}) }}" class="btn btn-danger">Désinscrire</a>
                 </div>
-                <hr>
             {% endfor %}
         </div>
     {% include '_layout/_desktop/tchat.html.twig' %}
