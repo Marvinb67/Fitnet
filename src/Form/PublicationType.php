@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Publication;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -31,7 +32,12 @@ class PublicationType extends AbstractType
             // ->add('editedAt')
             // ->add('slug')
             // ->add('user')
-            // ->add('mediaPublication')
+             ->add('mediaPublication', FileType::class, [
+                 'label' => false,
+                'multiple' => true,
+                'mapped' => false,
+                'required' => false
+            ])
             // ->add('tagsPublication')
             ->add('envoyer', SubmitType::class, [
                 'attr' => [

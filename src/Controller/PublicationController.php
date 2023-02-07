@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Data\SearchData;
 use App\Entity\Commentaire;
+use App\Entity\Media;
 use App\Entity\Publication;
 use App\Entity\ReactionPublication;
 use App\Form\CommentaireType;
@@ -63,6 +64,30 @@ class PublicationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // On récupère les images
+
+            $images = $form->get('mediaPublication')->getData();
+
+            foreach ($images as $image) {
+                //On génère un nouveau nom de fichier
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+
+                //On copie e fichier dans le dossier upload
+                $image->move(
+                    $this->getParameter('medias_directory'),
+                    $fichier
+                );
+
+                //On stocke l'image dans la base de données
+
+                $img = new Media();
+                $img->setLien($fichier);
+                $img->setTitre($publication->getTitre());
+                $img->setSlug($sluggerInterface->slug($img->getTitre()));
+                $publication->addMediaPublication($img);
+            }
+
+
             $user = $this->getUser();
             if (!$user) return $this->redirectToRoute('app_login');
             $publication->setUser($user);
