@@ -41,6 +41,7 @@ body {
       border-radius: 20px;
       box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
       padding: 1rem;
+      width: 665px;
     }
 
     .futur-pp{
@@ -136,9 +137,11 @@ body {
     .main-publication{
       display: flex;
     }
-    
+
     .publication-wrapper{
-      flex: 50%;
+      position: absolute;
+      top: 0;
+      left: 250px;
     }
 
     .publication-wrapper-desktop{
@@ -154,7 +157,6 @@ body {
         display: block;
       }
     }
-    
 
   .j-aime{
     color: $primary_color;
