@@ -72,17 +72,6 @@
 
         <div class="publication-wrapper">
         {% for publication in publications %}
-
-            {% set sum = 0%}
-            {% set sum1 = 0 %}
-            {% for coll in publication.reactionPublications %}
-                {% if coll.etatLikeDislike == true %}
-                    {% set sum = sum + coll|length %}
-                {% elseif coll.etatLikeDislike == false  %}
-                    {% set sum1 = sum1 + coll|length %}
-                {% endif %}
-            {% endfor %}
-
             <div class="publication-card">
                 <div class="user-publication">
                     <div class="futur-pp"></div>
@@ -114,11 +103,11 @@
                     </div>
                     <div>
                         <i class="fa-solid fa-thumbs-down reactions" data-id="{{ publication.id }}"></i>
-                        <span id="j-aimePas-{{publication.id}}">{{ sum1 }}</span>
+                        <span id="j-aimePas-{{publication.id}}"></span>
                     </div>
                     <div>
                         <i class="fa-solid fa-thumbs-up reactions" data-id="{{ publication.id }}"></i>
-                        <span id="j-aime-{{publication.id}}">{{ sum }}</span>
+                        <span id="j-aime-{{publication.id}}"></span>
                     </div>
                     <div>
                         <i class="fa-solid fa-comment-dots"></i>
@@ -140,7 +129,11 @@
     {% include '_layout/_desktop/tchat.html.twig' %}
   </main>
 </div>
+{% block javascripts %}
+		{{ parent() }}
+		{{ encore_entry_script_tags('publication') }}
 {% endblock %}
 
+{% endblock %}
 
 

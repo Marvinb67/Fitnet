@@ -15,6 +15,6 @@ import './styles/layout/mobile/desktop/_tchat.scss';
 
 import './bootstrap';
 import './js/datepicker';
-import './js/likes';
+// import './js/likes';
 
 
