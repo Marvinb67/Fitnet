@@ -7,7 +7,7 @@
 		<div class="row">
       {% for img in publication.mediaPublication %}
       <a href="{{ path('app_show_media', {'slug': img.slug}) }}">
-     <img class="card-img-top" src="{{img.lien}}" alt="{{img.titre}}"></a>
+     <img class="card-img-top" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{img.titre}}"></a>
       {% endfor %}
     {% include 'publication/_card.html.twig' %}
     <div class="d-flex flex-row-reverse my-3">

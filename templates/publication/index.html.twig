@@ -128,7 +128,7 @@
                 {% for key, img in publication.mediaPublication %}
                     {% if key == 0 %}
                         <a href="{{ path('app_show_media', { slug: img.slug }) }}">
-                            <img class="card-img-top img-fluid" src="{{ img.lien }}" alt="{{ img.titre }}"/></a>
+                            <img class="card-img-top img-fluid" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{ img.titre }}"/></a>
                     {% endif %}
                 {% endfor %}
 

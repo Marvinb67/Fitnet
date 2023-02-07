@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Validator\Constraints\File;
 
 class PublicationType extends AbstractType
 {
@@ -36,7 +37,16 @@ class PublicationType extends AbstractType
                  'label' => false,
                 'multiple' => true,
                 'mapped' => false,
-                'required' => false
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'mimeTypes' => [
+                            'mediaPublication/jpeg',
+                            'mediaPublication/png',
+                        ],
+                        'mimeTypesMessage' => 'Veuillez choisir un fichier au bon format'
+                    ])
+                ]
             ])
             // ->add('tagsPublication')
             ->add('envoyer', SubmitType::class, [
