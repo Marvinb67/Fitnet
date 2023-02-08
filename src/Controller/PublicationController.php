@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Data\SearchData;
 use App\Entity\Commentaire;
+use App\Entity\Media;
 use App\Entity\Publication;
 use App\Form\SearchFormType;
 use App\Form\CommentaireType;
@@ -60,6 +61,30 @@ class PublicationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // On récupère les images
+
+            $images = $form->get('mediaPublication')->getData();
+
+            foreach ($images as $image) {
+                //On génère un nouveau nom de fichier
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+
+                //On copie e fichier dans le dossier upload
+                $image->move(
+                    $this->getParameter('medias_directory'),
+                    $fichier
+                );
+
+                //On stocke l'image dans la base de données
+
+                $img = new Media();
+                $img->setLien($fichier);
+                $img->setTitre($publication->getTitre());
+                $img->setSlug($sluggerInterface->slug($img->getTitre()));
+                $publication->addMediaPublication($img);
+            }
+
+
             $user = $this->getUser();
             if (!$user) return $this->redirectToRoute('app_login');
             $publication->setUser($user);
@@ -67,6 +92,8 @@ class PublicationController extends AbstractController
             $em = $doctrine->getManager();
             $em->persist($publication);
             $em->flush();
+
+            $this->addFlash('success', 'Publication envoyé avec succès');
 
             return $this->redirectToRoute('app_publication');
         }
@@ -145,7 +172,7 @@ class PublicationController extends AbstractController
     public function edit(
         ManagerRegistry $doctrine,
         Publication $publication,
-        Request $request,
+        Request $request
     ): Response {
         if (!$publication) {
             throw $this->createNotFoundException(
@@ -173,8 +200,22 @@ class PublicationController extends AbstractController
     public function delete(Publication $publication, ManagerRegistry $doctrine): Response
     {
         $em = $doctrine->getManager();
-        $em->remove($publication);
 
+        $medias = $publication->getMediaPublication();
+
+        if($medias)
+        {
+            foreach($medias as $media)
+            {                
+                $nomMedia = $this->getParameter('medias_directory') . '/' . $media->getLien();
+                if(file_exists($nomMedia))
+                {
+                    unlink($nomMedia);
+                }
+            }
+        }
+        $em->remove($publication);
+        
         $em->flush();
 
         return $this->redirectToRoute('app_publication');

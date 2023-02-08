@@ -4,11 +4,13 @@ namespace App\Form;
 
 use App\Entity\Publication;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Validator\Constraints\File;
 
 class PublicationType extends AbstractType
 {
@@ -27,11 +29,21 @@ class PublicationType extends AbstractType
                 ],
                 'label' => 'Contenu'
             ])
-            // ->add('createdAt')
-            // ->add('editedAt')
-            // ->add('slug')
-            // ->add('user')
-            // ->add('mediaPublication')
+             ->add('mediaPublication', FileType::class, [
+                 'label' => false,
+                'multiple' => true,
+                'mapped' => false,
+                'required' => false,
+                // 'constraints' => [
+                //     new File([
+                //         'mimeTypes' => [
+                //             'mediaPublication/jpg',
+                //             'mediaPublication/png',
+                //         ],
+                //         'mimeTypesMessage' => 'Veuillez choisir un fichier au bon format'
+                //     ])
+                // ]
+            ])
             // ->add('tagsPublication')
             ->add('envoyer', SubmitType::class, [
                 'attr' => [
