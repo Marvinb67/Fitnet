@@ -307,6 +307,9 @@
     "symfonycasts/verify-email-bundle": {
         "version": "v1.13.0"
     },
+    "tattali/mobile-detect-bundle": {
+        "version": "v2.2.6"
+    },
     "twig/extra-bundle": {
         "version": "v3.5.0"
     }

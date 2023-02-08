@@ -65,7 +65,6 @@ let thumbs = document.querySelectorAll(".reactions");
     .get(lien)
     .then((response) => {
       let data = response.data.likes;
-  console.log(data);
       for (let stat of data) {
         let idPublication = stat.idPublication;
         let countLikes = stat.countLikes;

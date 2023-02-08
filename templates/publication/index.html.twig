@@ -3,6 +3,9 @@
 {% block container %} 
 <div class="publication-wrapper-mobile">
     {% include '_layout/_mobileNavBar.html.twig' %}
+    <pre>
+        {{ dump(is_mobile) }}
+    </pre>
     <div class="header-margin"></div>
     <div class="publication-wrapper">
         {% for publication in publications %}
@@ -67,9 +70,7 @@
   {% include '_layout/_desktop/nav.html.twig' %}
     <div class="header-margin"></div>
     <main class="main-publication">
-    {# {% if reaction.etatLikeDislike is not null %} #}
         {% include '_layout/_desktop/sideNav.html.twig' %}
-
         <div class="publication-wrapper">
         {% for publication in publications %}
             <div class="publication-card">
