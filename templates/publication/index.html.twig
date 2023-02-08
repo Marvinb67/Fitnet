@@ -66,7 +66,9 @@
     {% include '_layout/_mobileFooter.html.twig' %}
 </div>
 {# Partie Desktop  #}
-<div class="publication-wrapper-desktop">
+
+<div class="publication-wrapper-desktop wrapper-1200">
+
   {% include '_layout/_desktop/nav.html.twig' %}
   {% for message in app.flashes('success') %}
     <p class="alert alert-success text-center">{{ message }}</p>
@@ -142,7 +144,7 @@
                 <a href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer la publication</a>
             </div>
         {% endfor %}
-    </div>
+        </div>
     {% include '_layout/_desktop/tchat.html.twig' %}
   </main>
 </div>

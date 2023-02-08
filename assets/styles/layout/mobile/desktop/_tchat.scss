@@ -1,8 +1,16 @@
 .tchat-section{
-    // width: 200px;
-    height: 200px;
+    position: absolute;
+    right: 250px;
+}
+
+.tchat-fixed{
+    position: fixed;   
+}
+
+.tchat-content{
     border-radius: 20px;
-    background-color:aquamarine;
-    padding: 0 3rem;
-    flex: 25%;
+    background-color: white;
+    width: 250px;
+    height: 250px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
