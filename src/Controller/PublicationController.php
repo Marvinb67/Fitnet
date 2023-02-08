@@ -96,6 +96,8 @@ class PublicationController extends AbstractController
             $em->persist($publication);
             $em->flush();
 
+            $this->addFlash('success', 'Publication envoyé avec succès');
+
             return $this->redirectToRoute('app_publication');
         }
 
@@ -173,7 +175,7 @@ class PublicationController extends AbstractController
     public function edit(
         ManagerRegistry $doctrine,
         Publication $publication,
-        Request $request,
+        Request $request
     ): Response {
         if (!$publication) {
             throw $this->createNotFoundException(
@@ -201,8 +203,22 @@ class PublicationController extends AbstractController
     public function delete(Publication $publication, ManagerRegistry $doctrine): Response
     {
         $em = $doctrine->getManager();
-        $em->remove($publication);
 
+        $medias = $publication->getMediaPublication();
+
+        if($medias)
+        {
+            foreach($medias as $media)
+            {                
+                $nomMedia = $this->getParameter('medias_directory') . '/' . $media->getLien();
+                if(file_exists($nomMedia))
+                {
+                    unlink($nomMedia);
+                }
+            }
+        }
+        $em->remove($publication);
+        
         $em->flush();
 
         return $this->redirectToRoute('app_publication');

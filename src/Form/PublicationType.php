@@ -29,24 +29,20 @@ class PublicationType extends AbstractType
                 ],
                 'label' => 'Contenu'
             ])
-            // ->add('createdAt')
-            // ->add('editedAt')
-            // ->add('slug')
-            // ->add('user')
              ->add('mediaPublication', FileType::class, [
                  'label' => false,
                 'multiple' => true,
                 'mapped' => false,
                 'required' => false,
-                'constraints' => [
-                    new File([
-                        'mimeTypes' => [
-                            'mediaPublication/jpeg',
-                            'mediaPublication/png',
-                        ],
-                        'mimeTypesMessage' => 'Veuillez choisir un fichier au bon format'
-                    ])
-                ]
+                // 'constraints' => [
+                //     new File([
+                //         'mimeTypes' => [
+                //             'mediaPublication/jpg',
+                //             'mediaPublication/png',
+                //         ],
+                //         'mimeTypesMessage' => 'Veuillez choisir un fichier au bon format'
+                //     ])
+                // ]
             ])
             // ->add('tagsPublication')
             ->add('envoyer', SubmitType::class, [
