@@ -1,33 +1,20 @@
 @import "variables";
 body {
   background-color: #f5f5f5;
-
 }
 
-  *{
-    margin: 0;
-    padding: 0;
+* {
+  margin: 0;
+  padding: 0;
 
   border: none;
-    font-size: 1rem;
-  }
+  font-size: 1rem;
+}
 
-  p{
-    margin: 0;
-    padding: 0;
-
-
-  }
-
-  a{
-    text-decoration: none;
-  }
-
-  li{
-    list-style: none;
-  }
-
-
+p {
+  margin: 0;
+  padding: 0;
+}
 
 
     ul li i{
@@ -163,11 +150,23 @@ body {
   }
   .j-aimePas{
     color: red;
+}
+
+  .publication-wrapper-desktop {
+    display: block;
   }
-  .fa-thumbs-up, .fa-thumbs-down{
-    cursor: pointer;
-  }
-  /* Popup container - can be anything you want */
+}
+.j-aime {
+  color: $primary_color !important;
+}
+.j-aimePas {
+  color: red !important;
+}
+.fa-thumbs-up,
+.fa-thumbs-down, #popular_filter, #old_filter, #new_filter {
+  cursor: pointer;
+}
+/* Popup container - can be anything you want */
 .popup {
   display: inline-block;
   cursor: pointer;
@@ -177,7 +176,7 @@ body {
   user-select: none;
 }
 .popuptext:empty {
-visibility: hidden;
+  visibility: hidden;
 }
 /* The actual popup */
 .popup .popuptext {
@@ -217,13 +216,21 @@ visibility: hidden;
 
 /* Add animation (fade in the popup) */
 @-webkit-keyframes fadeIn {
-  from {opacity: 0;} 
-  to {opacity: 1;}
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity:1 ;}
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 // Show publication 

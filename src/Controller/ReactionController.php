@@ -4,20 +4,33 @@ namespace App\Controller;
 
 use App\Entity\Publication;
 use App\Entity\ReactionPublication;
-use App\Form\ReactionPublicationType;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\ReactionPublicationRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/reaction')]
+#[Route('/reaction', name: 'app_reaction_stats', methods: ['GET'])]
 class ReactionController extends AbstractController
 {
+    #[Route('/stats')]
+    public function index(EntityManagerInterface $em, PublicationRepository $publicationRepository): Response
+    {
+        $publications = $publicationRepository->findBy(['isActive' => true]);
+        foreach ($publications as $publication) {
+            $countLikes = $em->getRepository(ReactionPublication::class)->countByPublicationLikes($publication, 1);
+            $countDisLikes = $em->getRepository(ReactionPublication::class)->countByPublicationLikes($publication, 0);
+            $likes[] = [
+                "idPublication" => $publication->getId(),
+                "countLikes" => $countLikes,
+                "countDisLikes" => $countDisLikes
+            ];
+        }
+        return new JsonResponse(['likes' => $likes]);
+    }
 
     #[Route('/like/{idPublication}-{etatLikeDislike}', name: 'app_reaction', methods: ['GET', 'POST'])]
     public function new(int $idPublication, string $etatLikeDislike, Request $request, ManagerRegistry $doctrine, EntityManagerInterface $em): Response

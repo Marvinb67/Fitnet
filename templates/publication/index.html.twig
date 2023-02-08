@@ -1,24 +1,11 @@
-{% extends 'base.html.twig' %} {% block title %}Liste des publications {%
-endblock %} {% block container %} 
-
+{% extends 'base.html.twig' %}
+{% block title %}Liste des publications {% endblock %} 
+{% block container %} 
 <div class="publication-wrapper-mobile">
     {% include '_layout/_mobileNavBar.html.twig' %}
-    {# {% if reaction.etatLikeDislike is not null %} #}
     <div class="header-margin"></div>
-
     <div class="publication-wrapper">
         {% for publication in publications %}
-
-            {% set sum = 0%}
-            {% set sum1 = 0 %}
-            {% for coll in publication.reactionPublications %}
-                {% if coll.etatLikeDislike == true %}
-                    {% set sum = sum + coll|length %}
-                {% elseif coll.etatLikeDislike == false  %}
-                    {% set sum1 = sum1 + coll|length %}
-                {% endif %}
-            {% endfor %}
-
             <div class="publication-card">
                 <div class="user-publication">
                     <div class="futur-pp"></div>
@@ -50,11 +37,11 @@ endblock %} {% block container %}
                     </div>
                     <div>
                         <i class="fa-solid fa-thumbs-down reactions" data-id="{{ publication.id }}"></i>
-                        <span id="j-aimePas-{{publication.id}}">{{ sum1 }}</span>
+                        <span id="j-aimePas-{{publication.id}}"></span>
                     </div>
                     <div>
                         <i class="fa-solid fa-thumbs-up reactions" data-id="{{ publication.id }}"></i>
-                        <span id="j-aime-{{publication.id}}">{{ sum }}</span>
+                        <span id="j-aime-{{publication.id}}"></span>
                     </div>
                     <div>
                         <i class="fa-solid fa-comment-dots"></i>
@@ -75,12 +62,10 @@ endblock %} {% block container %}
     </div>
     {% include '_layout/_mobileFooter.html.twig' %}
 </div>
-
-
-
 {# Partie Desktop  #}
 
 <div class="publication-wrapper-desktop wrapper-1200">
+
   {% include '_layout/_desktop/nav.html.twig' %}
     <div class="header-margin"></div>
     <main class="main-publication">
