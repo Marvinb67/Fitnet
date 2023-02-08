@@ -3,6 +3,9 @@
 {% block container %} 
 <div class="publication-wrapper-mobile">
     {% include '_layout/_mobileNavBar.html.twig' %}
+    {% for message in app.flashes('success') %}
+    <p class="alert alert-success text-center">{{ message }}</p>
+    {% endfor %}
     <div class="header-margin"></div>
     <div class="publication-wrapper">
         {% for publication in publications %}
@@ -67,6 +70,9 @@
 <div class="publication-wrapper-desktop wrapper-1200">
 
   {% include '_layout/_desktop/nav.html.twig' %}
+  {% for message in app.flashes('success') %}
+    <p class="alert alert-success text-center">{{ message }}</p>
+  {% endfor %}
     <div class="header-margin"></div>
     <main class="main-publication">
     {# {% if reaction.etatLikeDislike is not null %} #}
@@ -130,7 +136,7 @@
                 {% for key, img in publication.mediaPublication %}
                     {% if key == 0 %}
                         <a href="{{ path('app_show_media', { slug: img.slug }) }}">
-                            <img class="card-img-top img-fluid" src="{{ img.lien }}" alt="{{ img.titre }}"/></a>
+                            <img class="card-img-top img-fluid" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{ img.titre }}"/></a>
                     {% endif %}
                 {% endfor %}
 
