@@ -1,11 +1,36 @@
-<div class="card px-1">
-	<img src="{#{ publication.image }#}" alt="" srcset="">
-	<div class="card-body">
-		<h5 class="card-title text-primary text-capitalize">{{ publication.titre }}</h5>
-		<p class="text-start">{{ publication.contenu }}</p>
-		
+<div class="user-publication">
+	<div class="futur-pp"></div>
+	<div class="infos-user-publication">
+		<p>{{ publication.user.nom }}
+			{{ publication.user.prenom }}</p>
+		<p>Posté le :
+			{{publication.createdAt | date('d/m/Y à H:i')}}</p>
+		{% if (publication.editedAt | date('d/m/Y à H:i') >
+			publication.createdAt | date('d/m/Y à H:i')) and (app.user) %}
+			<p>
+				Modifié le :
+				{{publication.editedAt | date('d/m/Y à H:i')
+				}}<small>
+					Par
+					{{ app.user.nom }}
+					{{ app.user.prenom }}</small>
+			</p>
+		{% endif %}
 	</div>
-	<p>Posté le :
-		{{publication.createdAt | date('d/m/Y H:m')}} par : <span class="text text-muted">{{publication.user.nom}}
-		{{publication.user.prenom}}</span></p>
+</div>
+<h2>
+	<a href="{{ path('app_publication_show', { id: publication.id, slug: publication.slug }) }}">{{ publication.titre }}</a>
+</h2>
+<p>{{ publication.contenu }}</p>
 
+
+{% for key, img in publication.mediaPublication %}
+	{% if key == 0 %}
+		<a href="{{ path('app_show_media', { slug: img.slug }) }}">
+			<img class="card-img-top img-fluid" src="{{ img.lien }}" alt="{{ img.titre }}"/></a>
+	{% endif %}
+{% endfor %}
+
+	{# <a href="{{ path('app_publication_edit', { id: publication.id, slug: publication.slug }) }}">Modifier la publication</a>
+	<a href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer la publication</a> #}
+{# {% endfor %} #}

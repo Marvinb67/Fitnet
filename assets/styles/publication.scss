@@ -16,130 +16,141 @@ p {
   padding: 0;
 }
 
-a {
-  text-decoration: none;
-}
 
-li {
-  list-style: none;
-}
+    ul li i{
+    font-size: 1.5rem;
+    color: white;
+    }
 
-ul li i {
-  font-size: 1.5rem;
-  color: white;
-}
+    .publication-card{
+      background-color: white;
+      margin: 1rem;
+      border-radius: 20px;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      padding: 1rem;
+      width: 665px;
+    }
 
-.publication-card {
-  background-color: white;
-  margin: 1rem;
-  border-radius: 20px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  padding: 1rem;
-}
+    .futur-pp{
+      width: 40px;
+      height: 40px;
+    }
 
-.futur-pp {
-  width: 40px;
-  height: 40px;
-}
+    .futur-pp{
+      width: 50px;
+      height: 50px;
+    border-radius: 100px;
+      background-color: #999999;
+    }
 
-.futur-pp {
-  width: 50px;
-  height: 50px;
-  border-radius: 100px;
-  background-color: #999999;
-}
+    .user-publication{
+      display: flex;
+      align-items: center;
+    gap: 0.5rem;
+    }
 
-.user-publication {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
 
-header {
-  padding: 1rem 0 1rem 0;
-  background-color: #262626;
-  display: grid;
-}
+    header{
+      padding: 1rem 0 1rem 0;
+      background-color: #262626;
+      display: grid;
+    }
 
-.bottom-line {
-  height: 3px;
-  width: 100%;
-  background-color: white;
-  border-radius: 5px;
-}
+    .bottom-line{
+      height: 3px;
+      width: 100%;
+      background-color: white;
+      border-radius: 5px;
+    }
 
-.search-input {
-  width: 100%;
-  border-radius: 50px;
-}
+    .search-input{
+      width: 100%;
+      border-radius: 50px;
+    }
 
-.search-and-menu {
-  display: flex;
-  gap: 1rem;
-}
+    .search-and-menu{
+      display: flex;
+      gap: 1rem;
+    }
 
-.fa-bars {
-  font-size: 1.5rem;
-  color: white;
-}
+    .fa-bars{
+      font-size: 1.5rem;
+      color: white;
+    }
 
-.logo-black {
-  width: 120px;
-  margin: auto;
-}
+    .logo-black{
+      width: 120px;
+      margin: auto;
+    }
 
-.fa-shuffle {
-  font-size: 1.5rem;
-}
+    .fa-shuffle{
+      font-size: 1.5rem;
+    }
 
-.filter-menu {
-  padding: 1rem 0 0 0;
-}
+    .filter-menu{
+      padding: 1rem 0 0 0;
+    }
 
-.reaction-publication {
-  position: relative;
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.3rem;
-}
+    .reaction-publication{
+      position: relative;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.3rem;
+    }
 
-.reaction-publication i {
-  font-size: 1.2rem;
-}
+    .reaction-publication i{
+      font-size: 1.2rem;
+    }
 
-.infos-user-publication {
-  display: flex;
-  flex-direction: column;
-}
+    .infos-user-publication{
+      display: flex;
+      flex-direction: column;
+    }
 
-.infos-user-publication p:first-child {
-  font-weight: bold;
-}
+    .infos-user-publication p:first-child{
+      font-weight: bold;
+    }
 
-h2 a {
-  color: $primary_color;
-}
+    h2 a{
+      color: $primary_color;
+    }
 
-.header-margin {
-  margin-top: 200px;
-}
 
-.main-publication {
-  display: flex;
-}
+    .header-margin{
+      margin-top: 200px;
+      
+    }
 
-.publication-wrapper {
-  flex: 50%;
-}
+    .main-publication{
+      display: flex;
+    }
 
-.publication-wrapper-desktop {
-  display: none;
-}
+    .publication-wrapper{
+      position: absolute;
+      top: 0;
+      left: 250px;
+    }
 
-@media screen and (min-width: 1200px) {
-  .publication-wrapper-mobile {
-    display: none;
+    .publication-wrapper-desktop{
+      display: none;
+    }
+
+    @media screen and (min-width: 1200px) {
+      .publication-wrapper-mobile{
+        display: none;
+      }
+
+      .publication-wrapper-desktop{
+        display: block;
+      }
+    }
+
+  .j-aime{
+    color: $primary_color;
   }
+  .j-aimePas{
+    color: red;
+}
 
   .publication-wrapper-desktop {
     display: block;
@@ -220,4 +231,30 @@ h2 a {
   to {
     opacity: 1;
   }
+}
+
+// Show publication 
+
+.main-show-publication{
+  margin: auto;
+}
+
+.commentaire-card{
+  background-color: #e0f6ff;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 0.5rem;
+}
+
+.reponse-card{
+  margin-left: 2rem;
+}
+
+.reponse-commentaire{
+  background-color: #eeeeee;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 0.5rem;
+  margin-left: 2rem;
+  
 }

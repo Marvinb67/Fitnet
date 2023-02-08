@@ -30,6 +30,33 @@ ul{
     padding: 0;
 }
 
-main{
-    padding: 0 20rem;
+.wrapper-1200{
+    width: 1200px;
+    margin: auto;
+    position: relative;
+}
+
+.blue-ground{
+    background-color: $primary_color;
+ }
+
+.dark-ground{
+    background-color: #262626;
+}
+
+.bouton{
+    padding: 0.5rem 1rem;
+    color: white;
+    border-radius: 50px;
+}
+
+.white-bloc{
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.img-fluid{
+    height: 200px;
 }

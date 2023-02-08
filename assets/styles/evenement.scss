@@ -1,0 +1,76 @@
+.evenement-wrapper-desktop{
+  display: none;
+}
+
+@media screen and (min-width: 1200px) {
+  .evenement-wrapper-mobile{
+    display: none;
+  }
+
+  .evenement-wrapper-desktop{
+    display: block;
+  }
+}
+
+.main-evenement{
+  display: flex;
+  justify-content: space-between;
+}
+
+.evenement-container{
+  position: absolute;
+  top: 0;
+  left: 250px;
+}
+
+.event-picture{
+  width: 50%;
+  height: 270px;
+  background-color: #0d9488;
+}
+
+.evenement-card{
+  //background-image: url("assets/images/musculation.jpg");
+  background-color: white;
+  margin: 1rem;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  //padding: 1rem;
+  width: 665px;
+  display: flex;
+  overflow: hidden;
+}
+
+.evenement-title{
+  font-size: 1.2rem;
+}
+
+.event-slot{
+  border: 1px solid black;
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  border-radius: 5px;
+}
+
+.event-text{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+  width: 50%;
+  align-items: center;
+}
+
+// Partie show evenement 
+
+.main-show-evenement{
+  display: flex;
+}
+
+.show-evenement-container{
+  width: 665px;
+  position: absolute;
+  top: 0;
+  left: 250px;
+  margin: 1rem;
+}
