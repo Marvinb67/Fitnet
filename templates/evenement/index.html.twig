@@ -65,7 +65,7 @@
     {#                    <p>Posté le : {{event.evenement.createdAt | date('Y/m/d')}}</p>#}
                         <div>
                             <span class="bouton dark-ground">Participants : {{event.inscritEvenement | length}}</span>
-                            <a class="bouton blue-ground" href="#">En savoir plus</a>
+                            <a class="bouton blue-ground" href="{{ path('app_evenement_show', {slug: event.evenement.slug, id: event.evenement.id}) }}">En savoir plus</a>
                         </div>
                     </div>
 {#                    <a href="{{ path('app_evenement_edit', {slug: event.evenement.slug}) }}">Modifier l'évènement</a>#}

@@ -2,46 +2,87 @@
 {% block title %}Article :
 	{{publication.titre}}
 {% endblock %}
+
+
 {% block container %}
-	<div class="container my-3">
-		<div class="row">
-      {% for img in publication.mediaPublication %}
+{% include '_layout/_desktop/nav.html.twig' %}
+  <div class="header-margin"></div>
+
+	<main class="wrapper-1200">
+    <div class="show-publication-container main-show-publication publication-card">
+    {% include '_layout/_desktop/sideNav.html.twig' %}
+
+      {# {% for img in publication.mediaPublication %}
       <a href="{{ path('app_show_media', {'slug': img.slug}) }}">
      <img class="card-img-top" src="{{img.lien}}" alt="{{img.titre}}"></a>
-      {% endfor %}
+      {% endfor %} #}
     {% include 'publication/_card.html.twig' %}
-    <div class="d-flex flex-row-reverse my-3">
-    <a class="btn btn-warning mt-1 ml-1" href="{{ path('app_publication_edit', {id: publication.id, slug: publication.slug}) }}">Modifier la publication</a>
-	<a class="btn btn-danger mt-1 mr-1" href="{{ path('app_publication_delete', {id: publication.id, slug: publication.slug})}}">Supprimer la publication</a></div>
-		</div>
-		</div>
-	</div>
-
-  <div>
-    <div>
-      <h2>Commentaires</h2>
-        {% for commentaire in publication.commentaires %}
-          {% if commentaire.parent == null %}
-              <strong>Publié par : {{commentaire.user}} le {{ commentaire.createdAt | date('d/m/Y H:i')}}</strong>
-              <p>{{ commentaire.contenu }}</p>
-              <p><a href="#commentaire_contenu" data-reply data-id="{{commentaire.id}}">Répondre</a></p>
-              {# affichage réponse #}
-              {% for reponse in commentaire.reponse %}
-                <strong>Réponse de : {{reponse.user}} le {{ reponse.createdAt | date('d/m/Y H:i')}}</strong>
-                <p>{{ reponse.contenu }}</p>
-              {% endfor %}
-              <hr>
+    {# <a class="btn btn-warning mt-1 ml-1" href="{{ path('app_publication_edit', {id: publication.id, slug: publication.slug}) }}">Modifier la publication</a> #}
+	  {# <a class="btn btn-danger mt-1 mr-1" href="{{ path('app_publication_delete', {id: publication.id, slug: publication.slug})}}">Supprimer la publication</a></div> #}
+    
+    
+      {% set sum = 0%}
+      {% set sum1 = 0 %}
+      {% for coll in publication.reactionPublications %}
+          {% if coll.etatLikeDislike == true %}
+              {% set sum = sum + coll|length %}
+          {% elseif coll.etatLikeDislike == false  %}
+              {% set sum1 = sum1 + coll|length %}
           {% endif %}
-        {% endfor %}
+      {% endfor %}
+
+      <div class="reaction-publication">
+          <div class="popup">
+              <span class="popuptext" id="myPopup"></span>
+          </div>
+          <div>
+              <i class="fa-solid fa-thumbs-down reactions" data-id="{{ publication.id }}"></i>
+              <span id="j-aimePas-{{publication.id}}">{{ sum1 }}</span>
+          </div>
+          <div>
+              <i class="fa-solid fa-thumbs-up reactions" data-id="{{ publication.id }}"></i>
+              <span id="j-aime-{{publication.id}}">{{ sum }}</span>
+          </div>
+          <div>
+              <i class="fa-solid fa-comment-dots"></i>
+          </div>
+      </div>
+    
+      <h2>Commentaires</h2>
+
+      <div id="ajout-com">
+        {{form(formCommentaire)}}
+      </div>
+
+      {% for commentaire in publication.commentaires %}
+        {% if commentaire.parent == null %}
+            <div class="user-publication">
+              <div class="futur-pp"></div>
+              <strong>Publié par : {{commentaire.user}} le {{ commentaire.createdAt | date('d/m/Y H:i')}}</strong>
+            </div>
+            <p class="commentaire-card">{{ commentaire.contenu }}</p>
+            <p><a href="#commentaire_contenu" data-reply data-id="{{commentaire.id}}">Répondre</a></p>
+            {# affichage réponse #}
+            {% for reponse in commentaire.reponse %}
+            <div class="user-publication reponse-card">
+              <div class="futur-pp"></div>
+              <strong>Réponse de : {{reponse.user}} le {{ reponse.createdAt | date('d/m/Y H:i')}}</strong>
+            </div>
+              <p class="reponse-commentaire">{{ reponse.contenu }}</p>
+            {% endfor %}
+            <hr>
+        {% endif %}
+      {% endfor %}
+
+
+      {% for tag in publication.tagsPublication %}
+          {{ tag.intitule }}
+      {% endfor %}
+
+      {% include '_layout/_desktop/tchat.html.twig' %}
+
     </div>
-    <div id="ajout-com">
-      <h2>Ajouter un commentaire</h2>
-      {{form(formCommentaire)}}
-    </div>
-  </div>
-  {% for tag in publication.tagsPublication %}
-      {{ tag.intitule }}
-  {% endfor %}
+  </main>
 
   {% block javascript %}
     <script>
