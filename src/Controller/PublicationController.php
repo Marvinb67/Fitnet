@@ -6,28 +6,27 @@ use App\Data\SearchData;
 use App\Entity\Commentaire;
 use App\Entity\Media;
 use App\Entity\Publication;
-use App\Entity\ReactionPublication;
-use App\Form\CommentaireType;
 use App\Form\SearchFormType;
+use App\Form\CommentaireType;
 use App\Form\PublicationType;
-use App\Repository\UserRepository;
-use App\Repository\PublicationRepository;
+use App\Entity\ReactionPublication;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\PublicationRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Config\Definition\Exception\Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use MobileDetectBundle\DeviceDetector\MobileDetectorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PublicationController extends AbstractController
 {
     #[Route('/publication', name: 'app_publication')]
-    public function index(PublicationRepository $publicationRepository, Request $request): Response
+    public function index(PublicationRepository $publicationRepository, Request $request, MobileDetectorInterface $mobileDetector): Response
     {
         $user = $this->getUser();
         $data = new SearchData();
@@ -41,14 +40,12 @@ class PublicationController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         $publications = $publicationRepository->findSearch($data);
-
-        // foreach( $publications as $publication){
-        // $isPublicationLiked [] = $em->getRepository(ReactionPublication::class)->countByPublicationAndUser($user, $publication);
-        // }
-
         return $this->render('publication/index.html.twig', [
             'publications' => $publications,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'is_mobile' => $mobileDetector->isMobile(),
+            'is_tablet' => $mobileDetector->isTablet(),
+            'is_iphone' => $mobileDetector->is('iPhone')
         ]);
     }
 

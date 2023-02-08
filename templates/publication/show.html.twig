@@ -1,13 +1,9 @@
 {% extends 'base.html.twig' %}
-{% block title %}Article :
-	{{publication.titre}}
-{% endblock %}
-
+{% block title %}Article : {{publication.titre}} {% endblock %}
 
 {% block container %}
 {% include '_layout/_desktop/nav.html.twig' %}
   <div class="header-margin"></div>
-
 	<main class="wrapper-1200">
     <div class="show-publication-container main-show-publication publication-card">
     {% include '_layout/_desktop/sideNav.html.twig' %}
@@ -19,7 +15,6 @@
     {% include 'publication/_card.html.twig' %}
     {# <a class="btn btn-warning mt-1 ml-1" href="{{ path('app_publication_edit', {id: publication.id, slug: publication.slug}) }}">Modifier la publication</a> #}
 	  {# <a class="btn btn-danger mt-1 mr-1" href="{{ path('app_publication_delete', {id: publication.id, slug: publication.slug})}}">Supprimer la publication</a></div> #}
-    
     
       {% set sum = 0%}
       {% set sum1 = 0 %}
@@ -84,18 +79,15 @@
     </div>
   </main>
 
-  {% block javascript %}
-    <script>
-      window.onload = () => {
-        document.querySelector(".card-title").value = "{{ publication.titre }}"
-
-        document.querySelectorAll("[data-reply]").forEach(element => {
-          element.addEventListener("click", function(){
-            document.querySelector("#commentaire_parentId").value = this.dataset.id
-
-          })
-        })
-      }
-    </script>
-  {% endblock %}
+	{% block javascript %}
+		<script>
+			window.onload = () => {
+document.querySelector(".card-title").value = "{{ publication.titre }}"
+document.querySelectorAll("[data-reply]").forEach(element => {
+element.addEventListener("click", function () {
+document.querySelector("#commentaire_parentId").value = this.dataset.id})
+})
+}
+		</script>
+	{% endblock %}
 {% endblock %}
