@@ -15,16 +15,12 @@
     {% include 'publication/_card.html.twig' %}
     {# <a class="btn btn-warning mt-1 ml-1" href="{{ path('app_publication_edit', {id: publication.id, slug: publication.slug}) }}">Modifier la publication</a> #}
 	  {# <a class="btn btn-danger mt-1 mr-1" href="{{ path('app_publication_delete', {id: publication.id, slug: publication.slug})}}">Supprimer la publication</a></div> #}
-<<<<<<< HEAD
 
         {% include 'publication/_card.html.twig' %}
 
 
-        {% set sum = 0%}
-=======
-    
+
       {% set sum = 0%}
->>>>>>> 9dd48acfdbdc32a6d402de31fd713a81974c80da
       {% set sum1 = 0 %}
       {% for coll in publication.reactionPublications %}
           {% if coll.etatLikeDislike == true %}

@@ -52,12 +52,12 @@
                     </div>
                 </div>
 
-                {% for key, img in publication.mediaPublication %}
-                    {% if key == 0 %}
-                        <a href="{{ path('app_show_media', { slug: img.slug }) }}">
-                            <img class="card-img-top img-fluid" src="{{ img.lien }}" alt="{{ img.titre }}"/></a>
-                    {% endif %}
-                {% endfor %}
+{#                {% for key, img in publication.mediaPublication %}#}
+{#                    {% if key == 0 %}#}
+{#                        <a href="{{ path('app_show_media', { slug: img.slug }) }}">#}
+{#                            <img class="card-img-top img-fluid" src="{{ img.lien }}" alt="{{ img.titre }}"/></a>#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
 
                 <a href="{{ path('app_publication_edit', { id: publication.id, slug: publication.slug }) }}">Modifier la publication</a>
                 <a href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer la publication</a>

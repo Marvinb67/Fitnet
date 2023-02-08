@@ -88,7 +88,7 @@ class PublicationController extends AbstractController
             $user = $this->getUser();
             if (!$user) return $this->redirectToRoute('app_login');
             $publication->setUser($user);
-            $publication->setSlug($sluggerInterface->slug($publication->getTitre()));
+            $publication->setSlug($sluggerInterface->slug(strtolower($publication->getTitre())));
             $em = $doctrine->getManager();
             $em->persist($publication);
             $em->flush();
