@@ -31,7 +31,22 @@
 	{% endif %}
 {% endfor %}
 
-
+<div class="reaction-publication">
+	<div class="popup">
+		<span class="popuptext" id="myPopup"></span>
+	</div>
+	<div>
+		<i class="fa-solid fa-thumbs-down reactions" data-id="{{ publication.id }}"></i>
+		<span id="j-aimePas-{{publication.id}}"></span>
+	</div>
+	<div>
+		<i class="fa-solid fa-thumbs-up reactions" data-id="{{ publication.id }}"></i>
+		<span id="j-aime-{{publication.id}}"></span>
+	</div>
+	<div>
+		<i class="fa-solid fa-comment-dots"></i>
+	</div>
+</div>
 
 	{# <a href="{{ path('app_publication_edit', { id: publication.id, slug: publication.slug }) }}">Modifier la publication</a>
 	<a href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer la publication</a> #}
