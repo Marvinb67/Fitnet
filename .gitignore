@@ -28,4 +28,4 @@ yarn-error.log
 /.idea
 
 ###< public/uploads ###
-public\uploads
+/public/uploads/

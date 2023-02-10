@@ -3,18 +3,24 @@
 namespace App\Entity;
 
 use App\Entity\Publication;
+use App\Entity\Trait\SlugTrait;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
+#[HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: "Cet e-mail est déjà utiliser..!")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use SlugTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -83,10 +89,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: ProgrammationEvenement::class, mappedBy: 'inscritEvenement')]
     private Collection $programmationEvenements;
 
-    public function __toString()
-    {
-        return '' .$this->getNom().' '.$this->getPrenom();
-    }
+    // public function __toString()
+    // {
+    //     return '' .$this->getNom().' '.$this->getPrenom();
+    // }
     
     /**
      * faciliter la creation utilisateur
@@ -121,7 +127,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->myfollowers = new ArrayCollection();
         $this->programmationEvenements = new ArrayCollection();
     }
-
+    #[PrePersist]
+    public function prepesist()
+    {
+        $this->slug = str_replace(' ', '-',trim(strtolower($this->nom.' '.$this->prenom)));
+    }
     public function getId(): ?int
     {
         return $this->id;

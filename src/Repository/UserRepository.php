@@ -3,11 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Data\SearchData;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -90,5 +91,22 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->execute()
         ;
+    }
+
+    /**
+     * Recupére les userss en lien avec une recherche
+     *
+     * @return Publication[]
+     */
+    public function findSearch(SearchData $search): array
+    {
+        $query = $this->createQueryBuilder('u')
+            ->select('u.id', "CONCAT(u.nom,' ',u.prenom) as nom", 'u.slug');
+        if (!empty($search->getQ())) {
+            $query = $query
+                ->andWhere('u.nom LIKE :q OR u.prenom LIKE :q')
+                ->setParameter('q', "%{$search->getQ()}%");
+        }
+        return $query->getQuery()->getResult();
     }
 }
