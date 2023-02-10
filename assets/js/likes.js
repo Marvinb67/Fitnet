@@ -59,7 +59,9 @@ let thumbs = document.querySelectorAll(".reactions");
   });
 
   // Fournis les stats des likes/dislikes
-  let postId = document.querySelector('.reactions').attributes["data-id"].value;
+  let icon = document.querySelector('.reactions');
+  if (icon) {
+  let postId = icon.attributes["data-id"].value;
   const lien = (window.location.pathname === '/publication' || window.location.pathname === '/') ? `reaction/stats` : `reaction/stats/${postId}`;
   axios
     .get(lien)
@@ -82,6 +84,7 @@ let thumbs = document.querySelectorAll(".reactions");
         // ...
       }
     });
+  }
 // Fonction qui gére le petit popup au cas d'annulation du like/dislike
 const popup = (element, message, left) => {
   let pop = element.parentElement.parentElement.children[0].children[0];
