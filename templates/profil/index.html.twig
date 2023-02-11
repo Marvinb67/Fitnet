@@ -1,25 +1,20 @@
-{% extends 'base.html.twig' %} {% block title %}Hello ProfilController!{%
-endblock %} {% block body %}
-<div class="container">
-  <div class="row">
-    <div class="col my-2">
-      {% for user in users %}
-      <a
-        class="link-secondary text-decoration-none"
-        href="{{ path('app_user_detail', { slug: user.slug }) }}"
-        ><img
-          class="img-profil"
-          src="{{ user.image }}"
-          alt="{{ user.nom }}"
-          width="50px"
-          height="50px"
-        />
-        {{ user.nom }}</a
-      ><br />
-      {% endfor %}
-    </div>
-    <div class="col-6 my-2">test1</div>
-    <div class="col my-2">test2</div>
-  </div>
-</div>
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProfilController!{%endblock %}
+
+{% block container %}
+
+	<div class="container">
+		<div class="row">
+			<div class="col my-2">
+				{% for user in users %}
+					<a class="link-secondary text-decoration-none" href="{{ path('app_user_detail', { slug: user.slug }) }}"><img class="img-profil" src="{{ user.image }}" alt="{{ user.nom }}" width="50px" height="50px"/>
+						{{ user.nom }}</a><br/>
+				{% endfor %}
+			</div>
+			<div class="col-6 my-2">test1</div>
+			<div class="col my-2">test2</div>
+		</div>
+	</div>
+  
 {% endblock %}

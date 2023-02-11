@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\ModifPassType;
 use App\Service\SendMailService;
 use App\Repository\UserRepository;
 use App\Form\ResetPasswordFormType;
+use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\ResetPasswordRequestFormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,15 +67,14 @@ class SecurityController extends AbstractController
         TokenGeneratorInterface $tokenGenerator,
         EntityManagerInterface $entityManager,
         SendMailService $mail
-    ): Response
-    {
+    ): Response {
         $form = $this->createForm(ResetPasswordRequestFormType::class);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             //On va chercher l'utilisateur par son email
             $user = $usersRepository->findOneByEmail($form->get('email')->getData());
             // On vérifie si on a un utilisateur
-            if($user){
+            if ($user) {
                 // On génère un token de réinitialisation
                 $token = $tokenGenerator->generateToken();
                 $user->setResetToken($token);
@@ -81,7 +83,7 @@ class SecurityController extends AbstractController
 
                 // On génère un lien de réinitialisation du mot de passe
                 $url = $this->generateUrl('reset_pass', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
-                
+
                 // On crée les données du mail
                 $context = compact('url', 'user');
 
@@ -116,37 +118,35 @@ class SecurityController extends AbstractController
      * @param UserPasswordHasherInterface $passwordHasher
      * @return Response
      */
-    #[Route('/oubli-pass/{token}', name:'reset_pass')]
+    #[Route('/oubli-pass/{token}', name: 'reset_pass')]
     public function resetPass(
         string $token,
         Request $request,
         UserRepository $usersRepository,
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $passwordHasher
-    ): Response
-    {
+    ): Response {
         // On vérifie si on a ce token dans la base
         $user = $usersRepository->findOneByResetToken($token);
 
         // On vérifie si l'utilisateur existe
 
-        if($user){
+        if ($user) {
             $form = $this->createForm(ResetPasswordFormType::class);
 
             $form->handleRequest($request);
 
-            if($form->isSubmitted() && $form->isValid()){
+            if ($form->isSubmitted() && $form->isValid()) {
                 // On efface le token
                 $user->setResetToken('');
-                
-// On enregistre le nouveau mot de passe en le hashant
+
+                // On enregistre le nouveau mot de passe en le hashant
                 $user->setPassword(
                     $passwordHasher->hashPassword(
                         $user,
                         $form->get('password')->getData()
                     )
                 );
-                $entityManager->persist($user);
                 $entityManager->flush();
 
                 $this->addFlash('success', 'Mot de passe changé avec succès');
@@ -157,9 +157,50 @@ class SecurityController extends AbstractController
                 'passForm' => $form->createView()
             ]);
         }
-        
+
         // Si le token est invalide on redirige vers le login
         $this->addFlash('danger', 'Jeton invalide');
         return $this->redirectToRoute('app_login');
+    }
+
+    #[Route('/profil/{id}/modifPass', requirements: ['id' => '\d+'], name: 'modif_pass', methods: ["GET","POST"])]
+    public function modifPass(
+        Request $request,
+        User $user,
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher
+    ): Response {
+        // On s'assure qu'un utilisateur est connecté
+        if (!$this->getUser()) {
+            $this->addFlash('danger', 'Vous n\'êtes pas connecté(e)!');
+            return $this->redirectToRoute('app_login');
+        }
+        // On s'assure que l'utilisateur connecté(e) modifier bien son propre compte
+        if ($this->getUser() === $user ||  $this->isGranted('ROLE_ADMIN')) {
+            $form = $this->createForm(ModifPassType::class);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                // get l'ancien mot de passe
+                $oldPassword = $request->get('modif_pass')['actuelPassword'];
+                // Si c'est le bon ancien mot de passe
+                if ($passwordHasher->isPasswordValid($user, $oldPassword)) {
+                    // On enregistre le nouveau mot de passe en le hashant
+                    $user->setPassword(
+                        $passwordHasher->hashPassword(
+                            $user,
+                            $form->get('plainPassword')->getData()
+                        )
+                    );
+                    // enregistrement du nouveau mot de passe
+                    $entityManager->flush();
+                    $this->addFlash('success', 'Mot de passe changé avec succès');
+                    return $this->redirectToRoute('app_user_detail', ['slug' => $user->getSlug()]);
+                }
+            }
+            return $this->render('security/password_change.html.twig', [
+                'modifPassForm' => $form->createView()
+            ]);
+        }
     }
 }

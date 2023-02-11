@@ -78,13 +78,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinTable(name: 'user_amis')]
     private Collection $amis;
 
-    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'myfollowers')]
+    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'followedByUsers')]
     #[ORM\JoinTable(name: 'user_follows')]
-    private Collection $followers;
+    private Collection $followUsers;
 
-    #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'followers')]
+    #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'followUsers')]
     #[ORM\JoinTable(name: 'user_follows')]
-    private Collection $myfollowers;
+    private Collection $followedByUsers;
 
     #[ORM\ManyToMany(targetEntity: ProgrammationEvenement::class, mappedBy: 'inscritEvenement')]
     private Collection $programmationEvenements;
@@ -123,8 +123,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->messages = new ArrayCollection();
         $this->messageRecus = new ArrayCollection();
         $this->amis = new ArrayCollection();
-        $this->followers = new ArrayCollection();
-        $this->myfollowers = new ArrayCollection();
+        $this->followUsers = new ArrayCollection();
+        $this->followedByUsers = new ArrayCollection();
         $this->programmationEvenements = new ArrayCollection();
     }
     public function __toString()
@@ -479,23 +479,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, self>
      */
-    public function getFollowers(): Collection
+    public function getFollowUsers(): Collection
     {
-        return $this->followers;
+        return $this->followUsers;
     }
 
-    public function addFollower(self$follower): self
+    public function addFollowUser(self$followUser): self
     {
-        if (!$this->followers->contains($follower)) {
-            $this->followers->add($follower);
+        if (!$this->followUsers->contains($followUser)) {
+            $this->followUsers->add($followUser);
         }
 
         return $this;
     }
 
-    public function removeFollower(self$follower): self
+    public function removeFollowUser(self$followUser): self
     {
-        $this->followers->removeElement($follower);
+        $this->followUsers->removeElement($followUser);
 
         return $this;
     }
@@ -503,25 +503,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, self>
      */
-    public function getMyfollowers(): Collection
+    public function getFollowedByUsers(): Collection
     {
-        return $this->myfollowers;
+        return $this->followedByUsers;
     }
 
-    public function addMyfollower(self$myfollower): self
+    public function addFollowedByUser(self$followedByUser): self
     {
-        if (!$this->myfollowers->contains($myfollower)) {
-            $this->myfollowers->add($myfollower);
-            $myfollower->addFollower($this);
+        if (!$this->followedByUsers->contains($followedByUser)) {
+            $this->followedByUsers->add($followedByUser);
+            $followedByUser->addFollowUser($this);
         }
 
         return $this;
     }
 
-    public function removeMyfollower(self$myfollower): self
+    public function removeFollowedByUser(self$followedByUser): self
     {
-        if ($this->myfollowers->removeElement($myfollower)) {
-            $myfollower->removeFollower($this);
+        if ($this->followedByUsers->removeElement($followedByUser)) {
+            $followedByUser->removeFollowUser($this);
         }
 
         return $this;
