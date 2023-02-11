@@ -10,7 +10,6 @@ use App\Entity\Trait\CreatedAtTrait;
 use App\Repository\GroupeRepository;
 use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: GroupeRepository::class)]
@@ -38,7 +37,6 @@ class Groupe
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->editedAt = new \DateTimeImmutable();
-        //$this->slug = str_replace(' ', '-',trim(strtolower($this->titre)));
     }
 
     #[PreUpdate]

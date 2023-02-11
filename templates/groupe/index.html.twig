@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello GroupeController!{% endblock %}
+
+{% block body %}
+<a href="{{path('app_groupe_new')}}" class="btn btn-primary">Créer un groupe</a>
+<div>
+    {% for groupe in groupes %}
+        <h1><a href="{{ path('app_groupe_show', {slug: groupe.slug, id: groupe.id}) }}">{{ groupe.intitule }}</a></h1>
+        <p>Créer par : {{ groupe.user }}</p>
+        <hr>
+    {% endfor %}
+</div>
+{% endblock %}

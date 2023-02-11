@@ -1,0 +1,3 @@
+<h2>{{groupe.intitule}}</h2>
+<p>Créer le : {{groupe.createdAt | date('Y/m/d')}}</p> <p>Créateur : {{groupe.user}}</p>
+<a href="{{ path('app_groupe_edit', {slug: groupe.slug}) }}">Modifier</a> <a href="{{ path('app_groupe_delete', {slug: groupe.slug}) }}">Supprimer</a>
