@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
 {% block title %}Article : {{publication.titre}} {% endblock %}
-
 {% block container %}
 {% include '_layout/_desktop/nav.html.twig' %}
   <div class="header-margin"></div>
@@ -18,29 +17,17 @@
 
         {% include 'publication/_card.html.twig' %}
 
-
-
-      {% set sum = 0%}
-      {% set sum1 = 0 %}
-      {% for coll in publication.reactionPublications %}
-          {% if coll.etatLikeDislike == true %}
-              {% set sum = sum + coll|length %}
-          {% elseif coll.etatLikeDislike == false  %}
-              {% set sum1 = sum1 + coll|length %}
-          {% endif %}
-      {% endfor %}
-
       <div class="reaction-publication">
           <div class="popup">
               <span class="popuptext" id="myPopup"></span>
           </div>
           <div>
-              <i class="fa-solid fa-thumbs-down reactions" data-id="{{ publication.id }}"></i>
-              <span id="j-aimePas-{{publication.id}}">{{ sum1 }}</span>
+              <i class="fa-solid fa-thumbs-up reactions" data-id="{{ publication.id }}"></i>
+              <span id="j-aime-{{publication.id}}"></span>
           </div>
           <div>
-              <i class="fa-solid fa-thumbs-up reactions" data-id="{{ publication.id }}"></i>
-              <span id="j-aime-{{publication.id}}">{{ sum }}</span>
+              <i class="fa-solid fa-thumbs-down reactions" data-id="{{ publication.id }}"></i>
+              <span id="j-aimePas-{{publication.id}}"></span>
           </div>
           <div>
               <i class="fa-solid fa-comment-dots"></i>

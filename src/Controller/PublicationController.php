@@ -62,29 +62,22 @@ class PublicationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // On récupère les images
-
             $images = $form->get('mediaPublication')->getData();
-
             foreach ($images as $image) {
                 //On génère un nouveau nom de fichier
                 $fichier = md5(uniqid()) . '.' . $image->guessExtension();
-
                 //On copie e fichier dans le dossier upload
                 $image->move(
                     $this->getParameter('medias_directory'),
                     $fichier
                 );
-
                 //On stocke l'image dans la base de données
-
                 $img = new Media();
                 $img->setLien($fichier);
                 $img->setTitre($publication->getTitre());
                 $img->setSlug($sluggerInterface->slug($img->getTitre()));
                 $publication->addMediaPublication($img);
             }
-
-
             $user = $this->getUser();
             if (!$user) return $this->redirectToRoute('app_login');
             $publication->setUser($user);
@@ -117,10 +110,8 @@ class PublicationController extends AbstractController
         if (!$user) return $this->redirectToRoute('app_login');
         if (!$publication) throw $this->createNotFoundException('Cet Article n\'est exist plus!');
 
-        $isPublicationLiked = $em->getRepository(ReactionPublication::class)->countByPublicationAndUser($user, $publication);
         // On crée un commentaire
         $commentaire = new Commentaire;
-
         // Géneration du formulaire
         $formCommentaire = $this->createForm(CommentaireType::class, $commentaire);
 
@@ -153,11 +144,10 @@ class PublicationController extends AbstractController
                 'publication' => $publication,
             ]);
         }
-
+        
         return $this->render('publication/show.html.twig', [
             'publication' => $publication,
             'formCommentaire' => $formCommentaire->createView(),
-            'isPublicationLiked ' => $isPublicationLiked
         ]);
     }
 

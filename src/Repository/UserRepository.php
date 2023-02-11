@@ -101,7 +101,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function findSearch(SearchData $search): array
     {
         $query = $this->createQueryBuilder('u')
-            ->select('u.id', "CONCAT(u.nom,' ',u.prenom) as nom", 'u.slug');
+            ->select('u.id', "CONCAT(u.nom,' ',u.prenom) as nom", 'u.slug', 'u.image');
         if (!empty($search->getQ())) {
             $query = $query
                 ->andWhere('u.nom LIKE :q OR u.prenom LIKE :q')

@@ -127,6 +127,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->myfollowers = new ArrayCollection();
         $this->programmationEvenements = new ArrayCollection();
     }
+    public function __toString()
+    {
+        return $this->getNom();
+    }
     #[PrePersist]
     public function prepesist()
     {
