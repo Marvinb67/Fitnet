@@ -1,0 +1,65 @@
+
+    {% for message in app.flashes('success') %}
+        <p class="alert alert-success text-center">{{ message }}</p>
+    {% endfor %}
+
+    <main class="main-publication">
+        <div class="publication-wrapper">
+            {% for publication in publications %}
+                <div class="publication-card">
+                    <div class="user-publication">
+                        <div class="futur-pp"></div>
+                        <div class="infos-user-publication">
+                            <p>{{ publication.user.nom }}
+                                {{ publication.user.prenom }}</p>
+                            <p>Posté le :
+                                {{publication.createdAt | date('d/m/Y à H:i')}}</p>
+                            {% if (publication.editedAt | date('d/m/Y à H:i') >
+                                publication.createdAt | date('d/m/Y à H:i')) and (app.user) %}
+                                <p>
+                                    Modifié le :
+                                    {{publication.editedAt | date('d/m/Y à H:i')
+                                    }}<small>
+                                        Par
+                                        {{ app.user.nom }}
+                                        {{ app.user.prenom }}</small>
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <h2>
+                        <a href="{{ path('app_publication_show', { id: publication.id, slug: publication.slug }) }}">{{ publication.titre }}</a>
+                    </h2>
+                    <p>{{ publication.contenu }}</p>
+                    <div class="reaction-publication">
+                        <div class="popup">
+                            <span class="popuptext" id="myPopup"></span>
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-thumbs-down reactions" data-id="{{ publication.id }}"></i>
+                            <span id="j-aimePas-{{publication.id}}"></span>
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-thumbs-up reactions" data-id="{{ publication.id }}"></i>
+                            <span id="j-aime-{{publication.id}}"></span>
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-comment-dots"></i>
+                        </div>
+                    </div>
+
+                    {% for key, img in publication.mediaPublication %}
+                        {% if key == 0 %}
+                            <a href="{{ path('app_show_media', { slug: img.slug }) }}">
+                                <img class="card-img-top img-fluid" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{ img.titre }}"/></a>
+                        {% endif %}
+                    {% endfor %}
+
+                    <a href="{{ path('app_publication_edit', { id: publication.id, slug: publication.slug }) }}">Modifier la publication</a>
+                    <a href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer la publication</a>
+                </div>
+            {% endfor %}
+        </div>
+
+    </main>
+
