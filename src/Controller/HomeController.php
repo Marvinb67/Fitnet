@@ -23,7 +23,9 @@ class HomeController extends AbstractController
         $publications = $publicationRepository->findSearch($data);
         return $this->render('publication/index.html.twig', [
             'publications' => $publications,
-            'form' => $form->createView()
+
+            'form' => $form->createView(),
+
         ]);
     }
 }

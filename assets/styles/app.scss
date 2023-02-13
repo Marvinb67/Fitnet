@@ -30,10 +30,12 @@ ul{
     padding: 0;
 }
 
-.wrapper-1200{
-    width: 1200px;
-    margin: auto;
-    position: relative;
+@media screen and (min-width: 1200px) {
+    .wrapper-1200{
+        width: 1200px;
+        margin: auto;
+        position: relative;
+    }
 }
 
 .blue-ground{

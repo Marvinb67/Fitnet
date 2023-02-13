@@ -11,6 +11,8 @@
 
     <div class="publication-wrapper-mobile">
         {% include '_layout/_mobileNavBar.html.twig' %}
+        <div class="header-margin"></div>
+
     </div>
 
     <div class="publication-wrapper-desktop">
@@ -27,15 +29,16 @@
         {% include '_layout/_mobileFooter.html.twig' %}
     </div>
 
+
 <div>
 
 {% endblock %}
+
 
 
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('publication') }}
 {% endblock %}
-
 
 
