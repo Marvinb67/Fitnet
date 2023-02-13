@@ -31,8 +31,8 @@
                         <a href="{{ path('app_publication_show', { id: publication.id, slug: publication.slug }) }}">{{ publication.titre }}</a>
                     </h2>
                     <p>{{ publication.contenu }}</p>
+                    
                     {% include '/publication/reaction.html.twig' %}
-
 
                     {% for key, img in publication.mediaPublication %}
                         {% if key == 0 %}
