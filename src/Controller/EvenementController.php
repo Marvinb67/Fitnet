@@ -4,14 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Evenement;
 use App\Form\EvenementType;
+use App\Entity\ProgrammationEvenement;
 use App\Repository\EvenementRepository;
-use App\Repository\ProgrammationEvenementRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\ProgrammationEvenementRepository;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class EvenementController extends AbstractController
 {
@@ -52,10 +53,11 @@ class EvenementController extends AbstractController
     }
 
     #[Route('evenement/{slug}-{id}',requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], methods: ['GET'], name:'app_evenement_show')]
-    public function show(Evenement $evenement)
+    public function show(Evenement $evenement, ProgrammationEvenement $peRepo)
     {
         return $this->render('evenement/show.html.twig', [
-            'evenement' => $evenement
+            'evenement' => $evenement,
+            'peRepo' => $peRepo
         ]);
     }
 

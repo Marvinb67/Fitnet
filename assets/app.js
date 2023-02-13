@@ -8,6 +8,7 @@ import './styles/evenement.scss';
 import './styles/authentification.scss';
 import './styles/layout/mobile/_mobileFooter.scss';
 import './styles/layout/mobile/_mobileHeader.scss';
+import './styles/slideshow.scss';
 
 import './styles/layout/mobile/desktop/_nav.scss';
 import './styles/layout/mobile/desktop/_sideNav.scss';
