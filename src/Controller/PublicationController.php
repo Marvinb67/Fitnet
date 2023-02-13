@@ -61,6 +61,8 @@ class PublicationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // recevoir l'id du groupe si il esxist
+            // $publication-> setGroupe(id)
             // On récupère les images
             $images = $form->get('mediaPublication')->getData();
             foreach ($images as $image) {

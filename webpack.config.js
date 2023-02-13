@@ -25,6 +25,7 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('publication', './assets/entries/publication.js')
+    .addEntry('userProfil', './assets/entries/userProfil.js')
     .addEntry('social', './assets/entries/social.js')
     .addEntry('evenement', './assets/entries/evenement.js')
     .addEntry('authentification', './assets/entries/authentification.js')

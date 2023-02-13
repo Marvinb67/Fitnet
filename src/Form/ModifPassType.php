@@ -44,7 +44,7 @@ class ModifPassType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label'=>'Valider',
                  'attr'=>[
-                    'class'=>'btn btn-primary'
+                    'class'=>'btn btn-primary form-control my-2 profile-button'
                  ]
                 ]);
         }

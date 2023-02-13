@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ModifPassType;
+use App\Form\EditProfilType;
 use App\Service\SendMailService;
 use App\Repository\UserRepository;
 use App\Form\ResetPasswordFormType;
@@ -163,7 +164,7 @@ class SecurityController extends AbstractController
         return $this->redirectToRoute('app_login');
     }
 
-    #[Route('/profil/{id}/modifPass', requirements: ['id' => '\d+'], name: 'modif_pass', methods: ["GET","POST"])]
+    #[Route('/profil/parametre/{slug}{id}', requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], name: 'modif_pass', methods: ["GET","POST"])]
     public function modifPass(
         Request $request,
         User $user,
@@ -175,12 +176,14 @@ class SecurityController extends AbstractController
             $this->addFlash('danger', 'Vous n\'êtes pas connecté(e)!');
             return $this->redirectToRoute('app_login');
         }
+        //  ||  $this->isGranted('ROLE_ADMIN')
         // On s'assure que l'utilisateur connecté(e) modifier bien son propre compte
-        if ($this->getUser() === $user ||  $this->isGranted('ROLE_ADMIN')) {
-            $form = $this->createForm(ModifPassType::class);
-            $form->handleRequest($request);
+        if ($this->getUser() === $user) {
+            $formPassChange = $this->createForm(ModifPassType::class);
+            $formPassChange->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
+
+            if ($formPassChange->isSubmitted() && $formPassChange->isValid()) {
                 // get l'ancien mot de passe
                 $oldPassword = $request->get('modif_pass')['actuelPassword'];
                 // Si c'est le bon ancien mot de passe
@@ -189,17 +192,30 @@ class SecurityController extends AbstractController
                     $user->setPassword(
                         $passwordHasher->hashPassword(
                             $user,
-                            $form->get('plainPassword')->getData()
+                            $formPassChange->get('plainPassword')->getData()
                         )
                     );
                     // enregistrement du nouveau mot de passe
                     $entityManager->flush();
                     $this->addFlash('success', 'Mot de passe changé avec succès');
-                    return $this->redirectToRoute('app_user_detail', ['slug' => $user->getSlug()]);
+                    return $this->redirectToRoute('app_profil');
                 }
             }
-            return $this->render('security/password_change.html.twig', [
-                'modifPassForm' => $form->createView()
+
+            $formProfilChange = $this->createForm(EditProfilType::class, $user);
+            $formProfilChange->handleRequest($request);
+            if ($formProfilChange->isSubmitted() && $formProfilChange->isValid()){
+                $entityManager->persist($user);
+                $entityManager->flush();
+                // message de succee
+                $this->addFlash('message', 'Profile à jour. Merci');
+                // redirection vers le profile
+                return $this->redirectToRoute('app_user_detail', ['slug' => $user->getSlug()]);
+            }
+
+            return $this->render('security/setting_change.html.twig', [
+                'modifPassForm' => $formPassChange->createView(),
+                'changeProfilForm' => $formProfilChange->createView(),
             ]);
         }
     }

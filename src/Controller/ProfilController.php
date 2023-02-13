@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Data\SearchData;
 use App\Form\SearchFormType;
+use Doctrine\ORM\EntityManager;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,9 +34,18 @@ class ProfilController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         $users = $userRepository->findSearch($data);
-        // dd($users);
+        foreach ($user->getAmis() as $ami) {
+            $amis[] = $ami;
+        }
+        foreach ($user->getFollowUsers() as $follow) {
+            $suivis[] = $follow;
+        };
+        // dd($amis);
         return $this->render('profil/index.html.twig', [
             'users' => $users,
+            'amis' => $amis,
+            'suivis' => $suivis,
+
         ]);
     }
     #[IsGranted('ROLE_USER')]
@@ -43,8 +54,12 @@ class ProfilController extends AbstractController
     {
         $ConnectedUser = $this->getUser();
 
-        if ($ConnectedUser === $user || $this->isGranted('ROLE_ADMIN')) {
             // $currentUser = $user->getId();
+            $userProfil[] = [
+                'id' => $user->getId(),
+                'image' => $user->getimage(),
+                'nom' => $user->getnom().' '.$user->getprenom(),
+            ];
             foreach ($user->getAmis() as $ami) {
                 $amis[] = [
                     'idAmi' => $ami->getId(),
@@ -68,13 +83,27 @@ class ProfilController extends AbstractController
             };
             return new JsonResponse(
                 [
-                    'id' => $user->getId(),
+                    'userProfil' => $userProfil,
                     'amis' => $amis,
                     'followUsers'  => $followUsers,
                     'followedByUsers'  => $followedByUsers
                 ]
             );
+
+        // return new JsonResponse(['test']);
+    }
+
+    #[Route('/ajout-ami/{slug}{id}', name: 'app_add_friend')]
+    public function addFriend(int $id, User $user, UserRepository $userRepository, EntityManagerInterface $em): Response
+    {
+        if (!$user) {
+            $this->addFlash('danger', 'vous n\'êtes pas connecté!');
+            return $this->redirectToRoute('app_login');
         }
-        return new JsonResponse(['test']);
+        $ami = $userRepository->findOneBy(['id'=>$id]);
+        $userAmi = $user->addAmi($ami);
+        $em->persist($userAmi);
+        $em->flush();
+        return $this->redirectToRoute('app_profil');
     }
 }
