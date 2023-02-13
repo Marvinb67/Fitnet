@@ -6,7 +6,7 @@ body {
 * {
   margin: 0;
   padding: 0;
-
+  list-style: none;
   border: none;
   font-size: 1rem;
 }
@@ -17,153 +17,152 @@ p {
 }
 
 
-    ul li i{
-    font-size: 1.5rem;
-    color: white;
-    }
+ul li i{
+font-size: 1.5rem;
+color: white;
+}
 
-    .publication-card{
-      background-color: white;
-      margin: 1rem;
-      border-radius: 20px;
-      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-      padding: 1rem;
-      width: 665px;
-    }
+.publication-card{
+  background-color: white;
+  margin: 1rem 0;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 1rem;
+  width: 665px;
+}
 
-    .publication-card-mobile{
-      background-color: white;
-      margin: 1rem;
-      border-radius: 20px;
-      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-      padding: 1rem;
-    }
+.futur-pp{
+  width: 40px;
+  height: 40px;
+}
 
-    .futur-pp{
-      width: 40px;
-      height: 40px;
-    }
+.futur-pp{
+  width: 50px;
+  height: 50px;
+  border-radius: 100px;
+  background-color: #999999;
+}
 
-    .futur-pp{
-      width: 50px;
-      height: 50px;
-    border-radius: 100px;
-      background-color: #999999;
-    }
+.user-publication{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 
-    .user-publication{
-      display: flex;
-      align-items: center;
-    gap: 0.5rem;
-    }
+.mobile-header{
+  display: grid;
+}
 
+header{
+  padding: 1rem 0;
+  background-color: #262626;
+  z-index: 9999;
+}
 
-    header{
-      padding: 1rem 0 1rem 0;
-      background-color: #262626;
-      display: grid;
-    }
+.bottom-line{
+  height: 3px;
+  width: 100%;
+  background-color: white;
+  border-radius: 5px;
+}
 
-    .bottom-line{
-      height: 3px;
-      width: 100%;
-      background-color: white;
-      border-radius: 5px;
-    }
+.search-input{
+  width: 100%;
+  border-radius: 50px;
+}
 
-    .search-input{
-      width: 100%;
-      border-radius: 50px;
-    }
+.search-and-menu{
+  display: flex;
+  gap: 1rem;
+}
 
-    .search-and-menu{
-      display: flex;
-      gap: 1rem;
-    }
+.fa-bars{
+  font-size: 1.5rem;
+  color: white;
+}
 
-    .fa-bars{
-      font-size: 1.5rem;
-      color: white;
-    }
+.logo-black{
+  width: 120px;
+  margin: auto;
+}
 
-    .logo-black{
-      width: 120px;
-      margin: auto;
-    }
+.fa-shuffle{
+  font-size: 1.5rem;
+}
 
-    .fa-shuffle{
-      font-size: 1.5rem;
-    }
+.filter-menu{
+  padding: 1rem 0 0 0;
+}
 
-    .filter-menu{
-      padding: 1rem 0 0 0;
-    }
+.reaction-publication{
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.3rem;
+}
 
-    .reaction-publication{
-      position: relative;
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.3rem;
-    }
+.reaction-publication i{
+  font-size: 1.2rem;
+}
 
-    .reaction-publication i{
-      font-size: 1.2rem;
-    }
+.infos-user-publication{
+  display: flex;
+  flex-direction: column;
+}
 
-    .infos-user-publication{
-      display: flex;
-      flex-direction: column;
-    }
+.infos-user-publication p:first-child{
+  font-weight: bold;
+}
 
-    .infos-user-publication p:first-child{
-      font-weight: bold;
-    }
+h2 a{
+  color: $primary_color;
+}
 
-    h2 a{
-      color: $primary_color;
-    }
+.header-margin{
+  margin-top: 200px;
+  
+}
 
-
-    .header-margin{
-      margin-top: 200px;
-      
-    }
-
-    .main-publication{
-      display: flex;
-    }
-
-    .publication-wrapper{
-      position: absolute;
-      top: 0;
-      left: 250px;
-    }
+.main-publication{
+  display: flex;
+}
 
 .publication-wrapper{
   position: absolute;
   top: 0;
-  left: 250px;
+  left: 267px;
 }
 
-    .publication-wrapper-desktop{
-      display: none;
-    }
+.publication-wrapper-desktop{
+  display: none;
+}
 
-    @media screen and (min-width: 1200px) {
-      .publication-wrapper-mobile{
-        display: none;
-      }
-
-      .publication-wrapper-desktop{
-        display: block;
-      }
-    }
-
-  .j-aime{
-    color: $primary_color;
+@media screen and (min-width: 1200px) {
+  .publication-wrapper-mobile{
+    display: none;
   }
-  .j-aimePas{
-    color: red;
+
+  .publication-wrapper-desktop{
+    display: block;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .publication-card{
+    width: 100%;
+  }
+  
+  .publication-wrapper{
+    position: static;
+    margin: 0 1rem;
+  }
+}
+
+.j-aime{
+  color: $primary_color;
+}
+.j-aimePas{
+  color: red;
 }
 
 
