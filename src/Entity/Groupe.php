@@ -37,9 +37,13 @@ class Groupe
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'mesGroupes')]
     private Collection $adherentsGroupe;
 
+    #[ORM\OneToMany(mappedBy: 'groupe', targetEntity: Publication::class)]
+    private Collection $publications;
+
     public function __construct()
     {
         $this->adherentsGroupe = new ArrayCollection();
+        $this->publications = new ArrayCollection();
     }
     
     #[PrePersist]
@@ -104,6 +108,36 @@ class Groupe
     public function removeAdherentsGroupe(User $adherentsGroupe): self
     {
         $this->adherentsGroupe->removeElement($adherentsGroupe);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Publication>
+     */
+    public function getPublications(): Collection
+    {
+        return $this->publications;
+    }
+
+    public function addPublication(Publication $publication): self
+    {
+        if (!$this->publications->contains($publication)) {
+            $this->publications->add($publication);
+            $publication->setGroupe($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublication(Publication $publication): self
+    {
+        if ($this->publications->removeElement($publication)) {
+            // set the owning side to null (unless already changed)
+            if ($publication->getGroupe() === $this) {
+                $publication->setGroupe(null);
+            }
+        }
 
         return $this;
     }
