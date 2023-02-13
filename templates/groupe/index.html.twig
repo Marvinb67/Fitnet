@@ -8,6 +8,7 @@
     {% for groupe in groupes %}
         <h1><a href="{{ path('app_groupe_show', {slug: groupe.slug, id: groupe.id}) }}">{{ groupe.intitule }}</a></h1>
         <p>Créer par : {{ groupe.user }}</p>
+        <a href="{{path('app_groupe_rejoindre', {id: groupe.id}) }}" class="btn btn-primary">Rejoindre ce groupe</a>
         <hr>
     {% endfor %}
 </div>
