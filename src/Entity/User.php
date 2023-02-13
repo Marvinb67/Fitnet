@@ -83,6 +83,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: ProgrammationEvenement::class, mappedBy: 'inscritEvenement')]
     private Collection $programmationEvenements;
 
+    #[ORM\ManyToMany(targetEntity: Groupe::class, mappedBy: 'adherentsGroupe')]
+    private Collection $mesGroupes;
+
     public function __toString()
     {
         return '' .$this->getNom().' '.$this->getPrenom();
@@ -120,6 +123,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->followers = new ArrayCollection();
         $this->myfollowers = new ArrayCollection();
         $this->programmationEvenements = new ArrayCollection();
+        $this->mesGroupes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -559,6 +563,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->programmationEvenements->removeElement($programmationEvenement)) {
             $programmationEvenement->removeInscritEvenement($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Groupe>
+     */
+    public function getMesGroupes(): Collection
+    {
+        return $this->mesGroupes;
+    }
+
+    public function addMesGroupe(Groupe $mesGroupe): self
+    {
+        if (!$this->mesGroupes->contains($mesGroupe)) {
+            $this->mesGroupes->add($mesGroupe);
+            $mesGroupe->addAdherentsGroupe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMesGroupe(Groupe $mesGroupe): self
+    {
+        if ($this->mesGroupes->removeElement($mesGroupe)) {
+            $mesGroupe->removeAdherentsGroupe($this);
         }
 
         return $this;

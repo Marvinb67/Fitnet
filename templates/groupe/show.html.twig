@@ -1,0 +1,19 @@
+<h2>{{groupe.intitule}}</h2>
+<p>Créer le : {{groupe.createdAt | date('Y/m/d')}}</p> <p>Créateur : {{groupe.user}}</p>
+<div id="membres">
+    <h3>Membres du groupe:</h3>
+    {% if groupe.adherentsGroupe == null %}
+        <p>Aucun membre pour le moment</p>
+    {% else %}
+        <ul>
+            {% for membre in groupe.adherentsGroupe %}
+                <li>{{ membre.prenom }} {{ membre.nom }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+{% if is_granted('ROLE_SUPER_ADMIN') or groupe.user == app.user %}
+    <a href="{{ path('app_groupe_edit', {slug: groupe.slug}) }}">Modifier le groupe</a> <a href="{{ path('app_groupe_delete', {slug: groupe.slug}) }}">Supprimer le groupe</a>
+{% elseif app.user in groupe.adherentsGroupe %}
+<a href="{{ path('app_groupe_desinscription', {id: groupe.id}) }}">Se désinscrire</a>
+{% endif %}
