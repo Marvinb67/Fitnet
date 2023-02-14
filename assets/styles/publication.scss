@@ -275,6 +275,7 @@ h2 a{
 // modal 
 
 .modal-menu-publication{
+  display: none;
   position: absolute;
   right: 0;
   top: 25px;
@@ -287,4 +288,8 @@ h2 a{
 
 .menu-publication{
   position: relative;
+}
+
+.publication-modal{
+  display: none;
 }

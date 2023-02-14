@@ -29,31 +29,34 @@
                             </div>
                         </div>
                         <div class="menu-publication">
-                            <div class="modal-menu-publication" id="{{ publication.titre }}" data-entry-id="{{ publication.titre }}">
+                            <div class="modal-menu-publication" id="publication-modal">
                                 <ul>
-                                    <a href="#">Modifier</a>
-                                    <a href="#">Supprimer</a>
+                                    {% if app.user.id is same as publication.user.id  %}
+                                        <a href="#">Enregistrer</a>
+                                        <a class="edit-publication-btn" href="{{ path('app_publication_edit', { id: publication.id, slug: publication.slug }) }}">Modifier</a>
+                                        <a class="delete-publication-btn" href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer</a>
+                                    {% else %}
+                                        <a href="#">Enregistrer</a>
+                                    {% endif %}
                                 </ul>
                             </div>  
-                            <i class="fas fa-ellipsis-v"></i>
+                            <i class="fas fa-ellipsis-v" data-modal="{{publication.id}}"></i>
                         </div>
                     </div>
                     <h2>
                         <a href="{{ path('app_publication_show', { id: publication.id, slug: publication.slug }) }}">{{ publication.titre }}</a>
                     </h2>
-                    <div>{{ publication.contenu }}</div>
-                    
-                    {% include '/publication/reaction.html.twig' %}
-
                     {% for key, img in publication.mediaPublication %}
                         {% if key == 0 %}
                             <a href="{{ path('app_show_media', { slug: img.slug }) }}">
                                 <img class="card-img-top img-fluid" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{ img.titre }}"/></a>
                         {% endif %}
                     {% endfor %}
+                    <div>{{ publication.contenu }}</div>
+                    
+                    {% include '/publication/reaction.html.twig' %}
 
-                    <a href="{{ path('app_publication_edit', { id: publication.id, slug: publication.slug }) }}">Modifier la publication</a>
-                    <a href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer la publication</a>
+
                 </div>
             {% endfor %}
         </div>
@@ -63,18 +66,36 @@
 {% set foo = publications|length  %}
 
 {% block javascript %}
-	<script>
-		let menuBtn = document.querySelector('.menu-publication')
-        {# let n = 0;
+<script>
+    const menuPublications = document.querySelectorAll('.menu-publication');
 
-        while(n < {{ publications|length }}){
-            console.log(n)
-        } #}
-        menuBtn.addEventListener('click', () => {
-            console.log(foo)
-        })
-        
-	</script>
+    // Pour chaque élément avec la classe "menu-publication", ajouter un écouteur d'événements pour le clic sur l'icône
+    menuPublications.forEach(function(menuPublication) {
+        const modalPublication = menuPublication.querySelector('.modal-menu-publication');
+        const editPublicationBtn = menuPublication.querySelector('.edit-publication-btn');
+        const deletePublicationBtn = menuPublication.querySelector('.delete-publication-btn');
+        const ellipsisIcon = menuPublication.querySelector('.fas.fa-ellipsis-v');
+
+        ellipsisIcon.addEventListener('click', function() {
+            // Fermer toutes les modales ouvertes
+            document.querySelectorAll('.modal-menu-publication').forEach(function(modal) {
+                modal.style.display = 'none';
+            });
+
+            // Ouvrir la modal correspondant à l'icône cliquée
+            modalPublication.style.display = 'block';
+        });
+    });
+
+    // Ajouter un écouteur d'événements pour le clic sur l'écran pour fermer les modales
+    document.addEventListener('click', function(event) {
+        if (!event.target.matches('.fas.fa-ellipsis-v') && !event.target.matches('.modal-menu-publication *')) {
+            document.querySelectorAll('.modal-menu-publication').forEach(function(modal) {
+                modal.style.display = 'none';
+            });
+        }
+    });
+</script>
 {% endblock %}
 
 
