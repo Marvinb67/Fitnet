@@ -8,29 +8,40 @@
             {% for publication in publications %}
                 <div class="publication-card">
                     <div class="user-publication">
-                        <div class="futur-pp"></div>
-                        <div class="infos-user-publication">
-                            <p>{{ publication.user.nom }}
-                                {{ publication.user.prenom }}</p>
-                            <p>Posté le :
-                                {{publication.createdAt | date('d/m/Y à H:i')}}</p>
-                            {% if (publication.editedAt | date('d/m/Y à H:i') >
-                                publication.createdAt | date('d/m/Y à H:i')) and (app.user) %}
-                                <p>
-                                    Modifié le :
-                                    {{publication.editedAt | date('d/m/Y à H:i')
-                                    }}<small>
-                                        Par
-                                        {{ app.user.nom }}
-                                        {{ app.user.prenom }}</small>
-                                </p>
-                            {% endif %}
+                        <div class="user-publication-left-side">
+                            <div class="futur-pp"></div>
+                            <div class="infos-user-publication">
+                                <p>{{ publication.user.nom }}
+                                    {{ publication.user.prenom }}</p>
+                                <p>Posté le :
+                                    {{publication.createdAt | date('d/m/Y à H:i')}}</p>
+                                {% if (publication.editedAt | date('d/m/Y à H:i') >
+                                    publication.createdAt | date('d/m/Y à H:i')) and (app.user) %}
+                                    <p>
+                                        Modifié le :
+                                        {{publication.editedAt | date('d/m/Y à H:i')
+                                        }}<small>
+                                            Par
+                                            {{ app.user.nom }}
+                                            {{ app.user.prenom }}</small>
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="menu-publication">
+                            <div class="modal-menu-publication" id="{{ publication.titre }}" data-entry-id="{{ publication.titre }}">
+                                <ul>
+                                    <a href="#">Modifier</a>
+                                    <a href="#">Supprimer</a>
+                                </ul>
+                            </div>  
+                            <i class="fas fa-ellipsis-v"></i>
                         </div>
                     </div>
                     <h2>
                         <a href="{{ path('app_publication_show', { id: publication.id, slug: publication.slug }) }}">{{ publication.titre }}</a>
                     </h2>
-                    <p>{{ publication.contenu }}</p>
+                    <div>{{ publication.contenu }}</div>
                     
                     {% include '/publication/reaction.html.twig' %}
 
@@ -48,4 +59,22 @@
         </div>
 
     </main>
+
+{% set foo = publications|length  %}
+
+{% block javascript %}
+	<script>
+		let menuBtn = document.querySelector('.menu-publication')
+        {# let n = 0;
+
+        while(n < {{ publications|length }}){
+            console.log(n)
+        } #}
+        menuBtn.addEventListener('click', () => {
+            console.log(foo)
+        })
+        
+	</script>
+{% endblock %}
+
 

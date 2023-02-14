@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Data\SearchData;
+use App\Entity\Publication;
 use App\Form\SearchFormType;
 use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,9 +22,9 @@ class HomeController extends AbstractController
         $form->handleRequest($request);
 
         $publications = $publicationRepository->findSearch($data);
+
         return $this->render('publication/index.html.twig', [
             'publications' => $publications,
-
             'form' => $form->createView(),
 
         ]);
