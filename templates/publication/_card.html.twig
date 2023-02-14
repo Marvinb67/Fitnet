@@ -82,7 +82,7 @@
 {% block javascript %}
 	<script>
 		window.onload = () => {
-		document.querySelector(".card-title").value = "{{ publication.titre }}"
+		document.querySelector(".card-title").value = {{ publication.titre }}
 		document.querySelectorAll("[data-reply]").forEach(element => {
 		element.addEventListener("click", function () {
 		document.querySelector("#commentaire_parentId").value = this.dataset.id})

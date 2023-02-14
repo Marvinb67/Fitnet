@@ -147,6 +147,8 @@ class PublicationController extends AbstractController
 
             return $this->redirectToRoute('app_publication_show', [
                 'publication' => $publication,
+                'slug' => $publication->getSlug(),
+                'id' => $publication->getId()
             ]);
         }
 
