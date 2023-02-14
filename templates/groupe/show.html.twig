@@ -12,6 +12,24 @@
         </ul>
     {% endif %}
 </div>
+<hr>
+
+<div id="publications">
+    <h3>Publications du groupe :</h3>
+    {% for publication in publications %}
+        {% for key, img in publication.mediaPublication %}
+            {% if key == 0 %}
+                <a href="{{ path('app_show_media', { slug: img.slug }) }}">
+                <img class="card-img-top img-fluid" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{ img.titre }}"/></a>
+            {% endif %}
+        {% endfor %}
+        <p>De: {{ publication.user.nom }}</p>
+        <p>Posté le : {{ publication.createdAt | date('Y/m/d H:s:i') }}</p>
+        <h4>{{ publication.titre }}</h4>
+        <p>{{ publication.contenu }}</p>
+        <hr>
+    {% endfor %}
+</div>
 {% if is_granted('ROLE_SUPER_ADMIN') or groupe.user == app.user %}
     <a href="{{ path('app_groupe_edit', {slug: groupe.slug}) }}">Modifier le groupe</a> <a href="{{ path('app_groupe_delete', {slug: groupe.slug}) }}">Supprimer le groupe</a>
 {% elseif app.user in groupe.adherentsGroupe %}
