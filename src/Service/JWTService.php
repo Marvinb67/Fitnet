@@ -5,8 +5,6 @@ use DateTimeImmutable;
 
 class JWTService
 {
-    // On génère le token
-
     /**
      * Génération du JWT
      * @param array $header 
@@ -19,6 +17,7 @@ class JWTService
     {
         if($validity > 0){
             $now = new DateTimeImmutable();
+            // Date d'experation
             $exp = $now->getTimestamp() + $validity;
     
             $payload['iat'] = $now->getTimestamp();

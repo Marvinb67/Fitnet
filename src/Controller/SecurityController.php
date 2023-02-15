@@ -210,7 +210,7 @@ class SecurityController extends AbstractController
                 // message de succee
                 $this->addFlash('message', 'Profile à jour. Merci');
                 // redirection vers le profile
-                return $this->redirectToRoute('app_user_detail', ['slug' => $user->getSlug()]);
+                return $this->redirectToRoute('app_profil');
             }
 
             return $this->render('security/setting_change.html.twig', [

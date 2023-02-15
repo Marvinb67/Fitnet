@@ -4,97 +4,104 @@
 {%endblock %}
 
 {% block container %}
-	{# <div class="container">
+	{% include '_layout/_desktop/nav.html.twig' %}
+	<div class="header" style='height:120px'></div>
+	<div class="container-fluid">
 		<div class="row">
-			<div class="col my-2">Links</div>
+			<div class="col my-2">
+					{% include '_layout/_desktop/sideNav.html.twig' %}
+			</div>
 			{% for user in users %}
 				{% if app.user.id is same as(user.id) %}
-			<div id="profils" class="col-6 my-2">
-				<div class="row d-flex justify-content-center">
-					<div class="card p-3 py-4">
-						<div class="text-center">
-							<img id="image_profil" class="rounded-circle" src="{{ user.image }}" alt="{{ user.nom }}" width="150px"/>
-						</div>
-						<div class="text-center mt-3">
-							<span class="bg-secondary p-1 px-4 rounded text-white">Pro</span>
-							<h5 id="nom_profil" class="mt-2 mb-0">{{ user.nom }}</h5>
-							<span>Coatch FitNess</span>
-							<div class="px-4 mt-1">
-								<p class="fonts">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-								</p>
-							</div>
-							<ul class="social-list">
-											<li>
-												<i class="fab fa-facebook-f"></i>
-											</li>
-											<li>
-												<i class="fab fa-dribbble"></i>
-											</li>
-											<li>
-												<i class="fab fa-instagram"></i>
-											</li>
-											<li>
-												<i class="fab fa-linkedin-in"></i>
-											</li>
-											<li>
-												<i class="fab fa-google"></i>
-											</li>
-										</ul>
-										<div class="buttons">
-											<button class="btn btn-outline-primary btns px-4">Message</button>
-											<button class="btn btn-outline-primary btns px-4">Contact</button>
-											{% if user.id is same as(app.user.id) %}
+					<div id="profils" class="col-6 my-2">
+						<div class="row d-flex justify-content-center">
+							<div class="card p-3 py-4"  style='background-color: aliceblue;'>
+								<div class="text-center">
+									<img id="image_profil" class="rounded-circle" src="{{ user.image }}" alt="{{ user.nom }}" width="150px"/>
+								</div>
+								<div class="text-center mt-3">
+									<span class="bg-secondary p-1 px-4 rounded text-white">Pro</span>
+									<h5 id="nom_profil" class="mt-2 mb-0">{{ user.nom }}</h5>
+									<span>Coatch FitNess</span>
+									<div class="px-4 mt-1">
+										<p class="fonts">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+										</p>
+									</div>
+									<ul class="social-list">
+										<li>
+											<i class="fab fa-facebook-f"></i>
+										</li>
+										<li>
+											<i class="fab fa-dribbble"></i>
+										</li>
+										<li>
+											<i class="fab fa-instagram"></i>
+										</li>
+										<li>
+											<i class="fab fa-linkedin-in"></i>
+										</li>
+										<li>
+											<i class="fab fa-google"></i>
+										</li>
+									</ul>
+									<div class="buttons">
+										<button class="btn btn-outline-primary btns px-4">Message</button>
+										<button class="btn btn-outline-primary btns px-4">Contact</button>
+										{% if user.id is same as(app.user.id) %}
 											<a id="modifie_profil" href="{{path('modif_pass', {slug: user.slug, id: user.id})}}" class="btn btn-outline-primary btns px-4">Modifier Profil</a>
-											{% endif %}
-										</div>
+										{% endif %}
 									</div>
 								</div>
+	{% include 'profil/layout/header.html.twig' %}
 							</div>
+						</div>
 					</div>
 				{% endif %}
 			{% endfor %}
 			<div class="col my-2">
 				<h4>Les Amis</h4>
 				{% for ami in amis %}
-				<div>
-					<a id="ami-{{ami.id}}" class="link-secondary text-decoration-none amis" href="{{ path('app_user_detail', { slug: ami.slug }) }}"><img class="img-profil" src="{{ ami.image }}" alt="{{ ami.nom }}" width="50px" height="50px"/>
-						{{ ami.nom }} {{ ami.prenom }}</a><br/>
-				{% endfor %}
-				<h4>Utilisateurs Suivi</h4>
-				{% for suivi in suivis %}
-				<div>
-					<a id="suivi-{{suivi.id}}" class="link-secondary text-decoration-none suivis" href="{{ path('app_user_detail', { slug: suivi.slug }) }}"><img class="img-profil" src="{{ suivi.image }}" alt="{{ suivi.nom }}" width="50px" height="50px"/>
-						{{ suivi.nom }} {{ suivi.prenom }}</a><br/>
-				{% endfor %}
-			</div></div>
+					<div>
+						<a id="ami-{{ami.id}}" class="link-secondary text-decoration-none amis" href="{{ path('app_user_detail', { slug: ami.slug }) }}"><img class="img-profil" src="{{ ami.image }}" alt="{{ ami.nom }}" width="50px" height="50px"/>
+							{{ ami.nom }}
+							{{ ami.prenom }}</a><br/>
+					{% endfor %}
+					<h4>Utilisateurs Suivi</h4>
+					{% for suivi in suivis %}
+						<div>
+							<a id="suivi-{{suivi.id}}" class="link-secondary text-decoration-none suivis" href="{{ path('app_user_detail', { slug: suivi.slug }) }}"><img class="img-profil" src="{{ suivi.image }}" alt="{{ suivi.nom }}" width="50px" height="50px"/>
+								{{ suivi.nom }}
+								{{ suivi.prenom }}</a><br/>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
 		</div>
-	</div> #}
-<div class="profil-wrapper-desktop " id="contain"> 
-    {% include '_layout/_desktop/nav.html.twig' %}
-    <div class="header-margin"></div>
+		{# <div class="profil-wrapper-desktop " id="contain"> 
+		    {% include '_layout/_desktop/nav.html.twig' %}
+		    <div class="header-margin"></div>
+		
+		    <main class="main-evenement wrapper-1200">
+		    {% include '_layout/_desktop/sideNav.html.twig' %}
+		
+		    <section class="profil-container white-bloc">
+		        {% include 'profil/layout/header.html.twig' %}
+		        {% include 'profil/layout/sideNav.html.twig' %}
+		    </section>
+		        
+		    </main>
+		</div>
+		
+		 <div class="evenement-wrapper-mobile">
+		    {% include '_layout/_mobileNavBar.html.twig' %} 
+		
+		    {% include 'evenement/layout/event-card.html.twig' %}
+		    
+		    {% include '_layout/_mobileFooter.html.twig' %}
+		</div> #}
+		{% block javascripts %}
+			{{ parent() }}
+			{{ encore_entry_script_tags('userProfil') }}
+		{% endblock %}
 
-    <main class="main-evenement wrapper-1200">
-    {% include '_layout/_desktop/sideNav.html.twig' %}
-
-    <section class="profil-container white-bloc">
-        {% include 'profil/layout/header.html.twig' %}
-        {% include 'profil/layout/sideNav.html.twig' %}
-    </section>
-        
-    </main>
-</div>
-
- <div class="evenement-wrapper-mobile">
-    {% include '_layout/_mobileNavBar.html.twig' %} 
-
-    {% include 'evenement/layout/event-card.html.twig' %}
-    
-    {% include '_layout/_mobileFooter.html.twig' %}
-</div>
-{% block javascripts %}
-		{{ parent() }}
-		{{ encore_entry_script_tags('userProfil') }}
-{% endblock %}
-
-{% endblock %}
-
+	{% endblock %}
