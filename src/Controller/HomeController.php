@@ -17,6 +17,9 @@ class HomeController extends AbstractController
 
     public function index(PublicationRepository $publicationRepository, Request $request): Response
     {
+        if(!$this->getUser()){
+            return $this->redirectToRoute('app_login');
+        }
         $data = new SearchData();
 
         $form = $this->createForm(SearchFormType::class, $data);

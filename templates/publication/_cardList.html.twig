@@ -45,7 +45,7 @@
                         <div class="menu-publication">
                             <div class="modal-menu-publication" id="publication-modal">
                                 <ul>
-                                    {% if app.user.id is same as publication.user.id  %}
+                                    {% if app.user and (app.user.id is same as publication.user.id)  %}
                                         <a href="#">Enregistrer</a>
                                         <a class="edit-publication-btn" href="{{ path('app_publication_edit', { id: publication.id, slug: publication.slug }) }}">Modifier</a>
                                         <a class="delete-publication-btn" href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer</a>

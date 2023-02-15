@@ -2,10 +2,7 @@
 
 {% block title %}Page Profil
 {%endblock %}
-{% extends 'base.html.twig' %}
 
-{% block title %}Page Profil
-{%endblock %}
 
 {% block container %}
 	<div class="container">
@@ -77,10 +74,7 @@
 		{{ parent() }}
 		{{ encore_entry_script_tags('userProfil') }}
 {% endblock %}
-{% endblock %} #}
 
-
-{% block container %}
 
 <div class="profil-wrapper-desktop"> 
     {% include '_layout/_desktop/nav.html.twig' %}

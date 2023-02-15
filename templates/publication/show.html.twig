@@ -18,28 +18,9 @@
 
         {% include 'publication/_card.html.twig' %}
 
-      <div class="reaction-publication">
-          <div class="popup">
-              <span class="popuptext" id="myPopup"></span>
-          </div>
-          <div>
-              <i class="fa-solid fa-thumbs-up reactions" data-id="{{ publication.id }}"></i>
-              <span id="j-aime-{{publication.id}}"></span>
-          </div>
-          <div>
-              <i class="fa-solid fa-thumbs-down reactions" data-id="{{ publication.id }}"></i>
-              <span id="j-aimePas-{{publication.id}}"></span>
-          </div>
-          <div>
-              <i class="fa-solid fa-comment-dots"></i>
-          </div>
-      </div>
+
     
       <h2>Commentaires</h2>
-
-
-
-    {% include 'publication/_card.html.twig' %}
 
   
     {% include '_layout/_desktop/tchat.html.twig' %}

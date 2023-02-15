@@ -62,36 +62,18 @@
           {# {% for event in events %} #}
 
           <div>
-            <p>Participant <span class="dark-round">{{events | length}}</span></p>
-            <a class="dark-round" href="#">S'inscrire</a>
+            <p>Participant <span class="dark-round">{{peRepo.InscritEvenement | length}}</span></p>
+            <a class="dark-round" href="{{ path('app_inscription_evenement_add', {'id': evenement.id}) }}">S'inscrire</a>
           </div>
           {# {% endfor %} #}
-          <ul>
-            <li>
-              <div class="futur-pp"></div>
-            </li>
-            <li>
-              <div class="futur-pp"></div>
-            </li>
-            <li>
-              <div class="futur-pp"></div>
-            </li>
-            <li>
-              <div class="futur-pp"></div>
-            </li>
-            <li>
-              <div class="futur-pp"></div>
-            </li>
-            <li>
-              <div class="futur-pp"></div>
-            </li>
-            <li>
-              <div class="futur-pp"></div>
-            </li>
-            <li>
-              <div class="futur-pp"></div>
-            </li>
-          </ul>
+
+          {% for inscrit in peRepo.InscritEvenement %}
+            <ul>
+              <li>
+                <div class="futur-pp"></div>
+              </li>
+            </ul>
+          {% endfor %}
 
           <section class="event-map">
             <h3>Lieu de l'évènement</h3>

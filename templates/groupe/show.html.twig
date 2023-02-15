@@ -23,6 +23,7 @@
                         <li>{{ membre.prenom }} {{ membre.nom }}</li>
                     {% endfor %}
                 </ul>
+                <a href="{{ path('app_groupe_desinscription', {'id': groupe.id}) }}">Se désinscrire</a>
             {% endif %}
         </div>
 
