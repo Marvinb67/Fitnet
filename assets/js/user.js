@@ -7,7 +7,7 @@ const nom_profil = document.getElementById("nom_profil");
 const modifie_profil = document.getElementById("modifie_profil");
 
 /**
- * Le profil d'ami d'un utilisateur
+ * Le profil d'ami d'un utilisateur***
  */
 Array.from(amisLiknks, (ami) => {
   ami.addEventListener("click", (e) => {
