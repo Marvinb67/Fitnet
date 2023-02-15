@@ -131,15 +131,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->programmationEvenements = new ArrayCollection();
         $this->mesGroupes = new ArrayCollection();
     }
-    public function __toString()
-    {
-        return $this->getNom();
-    }
-    #[PrePersist]
-    public function prepesist()
-    {
-        $this->slug = str_replace(' ', '-',trim(strtolower($this->nom.' '.$this->prenom)));
-    }
+    
     public function getId(): ?int
     {
         return $this->id;

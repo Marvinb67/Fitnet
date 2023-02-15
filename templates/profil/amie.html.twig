@@ -1,30 +1,13 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Evénements{% endblock %}
-
-{% block container %}
-
-<div class="profil-wrapper-desktop"> 
-    {% include '_layout/_desktop/nav.html.twig' %}
-    <div class="header-margin"></div>
-
-    <main class="main-evenement wrapper-1200">
-    {% include '_layout/_desktop/sideNav.html.twig' %}
-
-    <section class="profil-container white-bloc">
-        {% include 'profil/layout/header.html.twig' %}
-        {% include 'profil/layout/sideNav.html.twig' %}
-    </section>
-        
-    </main>
-</div>
-
-{# <div class="evenement-wrapper-mobile">
-    {% include '_layout/_mobileNavBar.html.twig' %} 
-
-    {% include 'evenement/layout/event-card.html.twig' %}
-    
-    {% include '_layout/_mobileFooter.html.twig' %}
-</div> #}
-
+{% block title %}Mes Amis
 {% endblock %}
+
+<div class="col my-2">
+	<h4>Les Amis</h4>
+	{% for ami in amis %}
+		<div>
+			<a id="ami-{{ami.id}}" class="link-secondary text-decoration-none amis" href="{{ path('app_user_detail', { slug: ami.slug }) }}"><img class="img-profil" src="{{ ami.image }}" alt="{{ ami.nom }}" width="50px" height="50px"/>
+				{{ ami.nom }}
+				{{ ami.prenom }}</a><br/>
+		{% endfor %}
+	</div>
+</div>

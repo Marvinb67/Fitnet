@@ -2,13 +2,9 @@
 
 {% block title %}Page Profil
 {%endblock %}
-{% extends 'base.html.twig' %}
-
-{% block title %}Page Profil
-{%endblock %}
 
 {% block container %}
-	<div class="container">
+	{# <div class="container">
 		<div class="row">
 			<div class="col my-2">Links</div>
 			{% for user in users %}
@@ -72,17 +68,8 @@
 				{% endfor %}
 			</div></div>
 		</div>
-	</div>
-{% block javascripts %}
-		{{ parent() }}
-		{{ encore_entry_script_tags('userProfil') }}
-{% endblock %}
-{% endblock %} #}
-
-
-{% block container %}
-
-<div class="profil-wrapper-desktop"> 
+	</div> #}
+<div class="profil-wrapper-desktop " id="contain"> 
     {% include '_layout/_desktop/nav.html.twig' %}
     <div class="header-margin"></div>
 
@@ -97,12 +84,17 @@
     </main>
 </div>
 
-{# <div class="evenement-wrapper-mobile">
+ <div class="evenement-wrapper-mobile">
     {% include '_layout/_mobileNavBar.html.twig' %} 
 
     {% include 'evenement/layout/event-card.html.twig' %}
     
     {% include '_layout/_mobileFooter.html.twig' %}
-</div> #}
+</div>
+{% block javascripts %}
+		{{ parent() }}
+		{{ encore_entry_script_tags('userProfil') }}
+{% endblock %}
+
 {% endblock %}
 

@@ -1,5 +1,13 @@
 import axios from "axios";
 
+const container = document.getElementById('contain');
+const div = document.createElement('div');
+div.innerHTML = `{% include 'profil/amie.html.twig' %}`
+document.getElementById('app_amie').addEventListener('click', (e)=>{ 
+  e.preventDefault();
+  container.appendChild(div)
+});
+
 const amisLiknks = document.querySelectorAll(".amis");
 const suivisLiniks = document.querySelectorAll(".suivis");
 const image_profil = document.getElementById("image_profil");
