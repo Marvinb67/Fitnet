@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Groupe;
 use App\Form\GroupeType;
 use App\Repository\GroupeRepository;
+use App\Repository\PublicationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,10 +53,12 @@ class GroupeController extends AbstractController
     }
 
     #[Route('/groupe/{slug}-{id}', name: 'app_groupe_show', requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], methods: ['GET'])]
-    public function show(Groupe $groupe)
+    public function show(Groupe $groupe, PublicationRepository $publicationRepository)
     {
+        $publications = $publicationRepository->findBy(['groupe' => $groupe->getId()], ['createdAt' => 'DESC']);
         return $this->render('/groupe/show.html.twig', [
-            'groupe' => $groupe
+            'groupe' => $groupe,
+            'publications' => $publications
         ]);
     }
 

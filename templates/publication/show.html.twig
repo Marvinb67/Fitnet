@@ -1,12 +1,42 @@
 {% extends 'base.html.twig' %}
 {% block title %}Article : {{publication.titre}} {% endblock %}
-
 {% block container %}
 {% include '_layout/_desktop/nav.html.twig' %}
   <div class="header-margin"></div>
 
 	<main class="wrapper-1200">
     {% include '_layout/_desktop/sideNav.html.twig' %}
+
+
+      {# {% for img in publication.mediaPublication %}
+      <a href="{{ path('app_show_media', {'slug': img.slug}) }}">
+     <img class="card-img-top" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{img.titre}}"></a>
+      {% endfor %}
+    {% include 'publication/_card.html.twig' %}
+    {# <a class="btn btn-warning mt-1 ml-1" href="{{ path('app_publication_edit', {id: publication.id, slug: publication.slug}) }}">Modifier la publication</a> #}
+	  {# <a class="btn btn-danger mt-1 mr-1" href="{{ path('app_publication_delete', {id: publication.id, slug: publication.slug})}}">Supprimer la publication</a></div> #}
+
+        {% include 'publication/_card.html.twig' %}
+
+      <div class="reaction-publication">
+          <div class="popup">
+              <span class="popuptext" id="myPopup"></span>
+          </div>
+          <div>
+              <i class="fa-solid fa-thumbs-up reactions" data-id="{{ publication.id }}"></i>
+              <span id="j-aime-{{publication.id}}"></span>
+          </div>
+          <div>
+              <i class="fa-solid fa-thumbs-down reactions" data-id="{{ publication.id }}"></i>
+              <span id="j-aimePas-{{publication.id}}"></span>
+          </div>
+          <div>
+              <i class="fa-solid fa-comment-dots"></i>
+          </div>
+      </div>
+    
+      <h2>Commentaires</h2>
+
 
 
     {% include 'publication/_card.html.twig' %}

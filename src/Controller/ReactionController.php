@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/reaction', name: 'app_reaction_stats', methods: ['GET'])]
+#[Route('reaction/', name: 'app_reaction_stats', methods: ['GET'])]
 class ReactionController extends AbstractController
 {
     /**
@@ -23,12 +23,15 @@ class ReactionController extends AbstractController
      * @param PublicationRepository $publicationRepository
      * @return Response
      */
-    #[Route('/stats', name: 'app_reactions_stats', methods: ['GET'])]
+    #[Route('stats', name: 'app_reactions_stats', methods: ['GET'])]
     public function index(EntityManagerInterface $em, PublicationRepository $publicationRepository): Response
     {
+        $user = $this->getUser();
         // Récupération des publications
         $publications = $publicationRepository->findBy(['isActive' => true]);
         foreach ($publications as $publication) {
+            // En vérifier si l'utilisateur est connecté si non une reponse json exploiter au js
+            if ($user) $reaction = $em->getRepository(ReactionPublication::class)->findOneBy(['user' => $user, 'publication' => $publication]);
             // Compte des likes
             $countLikes = $em->getRepository(ReactionPublication::class)->countByPublicationLikes($publication, 1);
             // Compte des dislikes
@@ -37,7 +40,8 @@ class ReactionController extends AbstractController
             $likes[] = [
                 "idPublication" => $publication->getId(),
                 "countLikes" => $countLikes,
-                "countDisLikes" => $countDisLikes
+                "countDisLikes" => $countDisLikes,
+                'aimeOuPas' => $reaction ? $reaction->isEtatLikeDislike() : null
             ];
         }
         // Return les résultat en json pour les exploiter en js
@@ -55,7 +59,7 @@ class ReactionController extends AbstractController
      * @param EntityManagerInterface $em
      * @return Response
      */
-    #[Route('/like/{idPublication}-{etatLikeDislike}', name: 'app_reactions', methods: ['GET', 'POST'])]
+    #[Route('like/{idPublication}-{etatLikeDislike}', name: 'app_reactions', methods: ['GET', 'POST'])]
     public function new(int $idPublication, string $etatLikeDislike, Request $request, ManagerRegistry $doctrine, EntityManagerInterface $em): Response
     {
         // En vérifier si l'utilisateur est connecté si non une reponse json exploiter au js
@@ -74,7 +78,7 @@ class ReactionController extends AbstractController
             'true' => true,
             'false' => false,
         };
-        // Récupération à partir de la base des données de la publication et l'etat de la reaction de l'utilisateur à celle-ci
+        // Récupération à partir de la base de données de la publication et l'etat de la reaction de l'utilisateur à celle-ci
         $publication = $em->getRepository(Publication::class)->findOneBy(['id' => $idPublication]);
         $reaction = $em->getRepository(ReactionPublication::class)->findOneBy(['user' => $user, 'publication' => $publication]);
 
@@ -99,7 +103,8 @@ class ReactionController extends AbstractController
                     'message' => $message,
                     'countLikes' => $countLikes,
                     'countDisLikes' => $countDisLikes,
-                    'reaction' => $isReactedPublication
+                    'reaction' => $isReactedPublication,
+                    'aimeOuPas' => null
                 ], Response::HTTP_OK);
             } else {
                 // Et si la réaction existant n'est pas la même que celle envoyer dans l'url dans ce cas on supprime la réaction et on continue
@@ -121,28 +126,32 @@ class ReactionController extends AbstractController
                 'message' => '',
                 'countLikes' => $countLikes,
                 'countDisLikes' => $countDisLikes,
-                'reaction' => $isReactedPublication
+                'reaction' => $isReactedPublication,
+                'aimeOuPas' => $reactionPublication->isEtatLikeDislike()
             ],
             Response::HTTP_OK
         );
     }
 
-    #[Route('/stats/{id}', name: 'app_reactions_pub_stats', methods: ['GET'])]
+    #[Route('stats/{id}', name: 'app_reactions_pub_stats', methods: ['GET'])]
     public function show(EntityManagerInterface $em, Publication $publication): Response
     {
-            // Compte des likes
-            $countLikes = $em->getRepository(ReactionPublication::class)->countByPublicationLikes($publication, 1);
-            // Compte des dislikes
-            $countDisLikes = $em->getRepository(ReactionPublication::class)->countByPublicationLikes($publication, 0);
-            //  Stock les résultat avec l'id de la publication
-            $likes[] = [
-                'message' => '',
-                "idPublication" => $publication->getId(),
-                "countLikes" => $countLikes,
-                "countDisLikes" => $countDisLikes
-            ];
+        // En vérifier si l'utilisateur est connecté si non une reponse json exploiter au js
+        $user = $this->getUser();
+        if ($user) $reaction = $em->getRepository(ReactionPublication::class)->findOneBy(['user' => $user, 'publication' => $publication]);
+        // Compte des likes
+        $countLikes = $em->getRepository(ReactionPublication::class)->countByPublicationLikes($publication, 1);
+        // Compte des dislikes
+        $countDisLikes = $em->getRepository(ReactionPublication::class)->countByPublicationLikes($publication, 0);
+        //  Stock les résultat avec l'id de la publication
+        $likes[] = [
+            'message' => '',
+            "idPublication" => $publication->getId(),
+            "countLikes" => $countLikes,
+            "countDisLikes" => $countDisLikes,
+            'aimeOuPas' =>  $reaction ? $reaction->isEtatLikeDislike() : null
+        ];
         // Return les résultat en json pour les exploiter en js
         return new JsonResponse(['likes' => $likes], Response::HTTP_OK);
-
     }
 }

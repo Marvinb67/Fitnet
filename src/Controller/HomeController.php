@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Data\SearchData;
+use App\Entity\Publication;
 use App\Form\SearchFormType;
 use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +13,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
-    #[Route('/home', name: 'home')]
+    #[Route('/', name: 'home')]
+
     public function index(PublicationRepository $publicationRepository, Request $request): Response
     {
         $data = new SearchData();
@@ -21,11 +23,10 @@ class HomeController extends AbstractController
         $form->handleRequest($request);
 
         $publications = $publicationRepository->findSearch($data);
+
         return $this->render('publication/index.html.twig', [
             'publications' => $publications,
-
-            'form' => $form->createView(),
-
+            'form' => $form->createView()
         ]);
     }
 }

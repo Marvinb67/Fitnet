@@ -16,14 +16,32 @@ class EvenementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('intitule', TextType::class)
-            ->add('description', TextareaType::class)
+            ->add('intitule', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+                'label' => 'Nom de l\'évènement'
+            ])
+            ->add('description', TextareaType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+                'label' => 'Description de l\évènement'
+            ])
             ->add('historiqueEvenements', CollectionType::class, [
                 'label' => false,
                 'entry_type' => ProgrammationEvenementType::class,
                 'allow_add' => true,
+                'attr' => [
+                    'class' => 'datetime-input'
+                ],
+                
             ])
-            ->add('envoyer', SubmitType::class)
+            ->add('Envoyer', SubmitType::class, [
+                'attr' => [
+                    'class' => 'dark-round mt-3'
+                ],
+            ])
         ;
     }
 
