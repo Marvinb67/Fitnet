@@ -13,7 +13,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
-    #[Route('/home', name: 'home')]
+    #[Route('/', name: 'home')]
+
     public function index(PublicationRepository $publicationRepository, Request $request): Response
     {
         $data = new SearchData();
@@ -25,8 +26,7 @@ class HomeController extends AbstractController
 
         return $this->render('publication/index.html.twig', [
             'publications' => $publications,
-            'form' => $form->createView(),
-
+            'form' => $form->createView()
         ]);
     }
 }

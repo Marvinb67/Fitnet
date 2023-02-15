@@ -53,11 +53,11 @@ class UserFixtures extends Fixture
             }
 
             foreach($follows as $follow){
-                if ($follow !== $user) $user->addFollower($follow);
+                if ($follow !== $user) $user->addFollowUser($follow);
             }
 
             foreach($myFollows as $myFollow){
-                if ($myFollow !== $user) $user->addMyfollower($myFollow);
+                if ($myFollow !== $user) $user->addFollowedByUser($myFollow);
             }
 
         }

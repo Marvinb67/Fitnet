@@ -16,6 +16,7 @@ import './styles/layout/mobile/desktop/_nav.scss';
 import './styles/layout/mobile/desktop/_sideNav.scss';
 import './styles/layout/mobile/desktop/_tchat.scss';
 
+import './styles/profil/profil.scss';
 
 import './bootstrap';
 import './js/datepicker';

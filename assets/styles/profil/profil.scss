@@ -1,0 +1,111 @@
+@import "../variables";
+.card{
+    border:none;
+    position:relative;
+    overflow:hidden;
+    border-radius:8px;
+}
+.card:before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    width:4px;
+    height:100%;
+    background-color:#E1BEE7;
+    transform:scaleY(1);
+    transition:all 0.5s;
+    transform-origin: bottom
+}
+.card:after{    
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    width:4px;
+    height:100%;
+    background-color:$primary_color;
+    transform:scaleY(0);
+    transition:all 0.5s;
+    transform-origin: bottom
+}
+.card:hover::after{
+    transform:scaleY(1);
+}
+
+
+.fonts{
+    font-size:11px;
+}
+
+.social-list{
+    display:flex;
+    list-style:none;
+    justify-content:center;
+    padding:0;
+}
+
+.social-list li{
+    padding:10px;
+    color:$primary_color;
+    font-size:19px;
+}
+
+
+.btns{
+       border:1px solid $primary_color !important;
+       color:$primary_color;
+       height:40px;
+}
+
+.btns:hover{
+       border:1px solid $primary_color !important;
+       color:#fff;
+       height:40px;
+       background-color:$primary_color;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #BA68C8
+}
+
+.profile-button {
+    background: $primary_color;
+    box-shadow: none;
+    border: none
+}
+
+.profile-button:hover {
+    background: $second_color
+}
+
+.profile-button:focus {
+    background: $second_color;
+    box-shadow: none
+}
+
+.profile-button:active {
+    background: $second_color;
+    box-shadow: none
+}
+
+.back:hover {
+    color: $second_color;
+    cursor: pointer
+}
+
+.labels {
+    font-size: 11px
+}
+
+.add-experience:hover {
+    background: #BA68C8;
+    color: #fff;
+    cursor: pointer;
+    border: solid 1px #BA68C8
+}
+.fab{
+    color: $third_color;
+    cursor: pointer;
+}
