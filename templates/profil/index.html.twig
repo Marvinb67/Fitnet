@@ -2,6 +2,10 @@
 
 {% block title %}Page Profil
 {%endblock %}
+{% extends 'base.html.twig' %}
+
+{% block title %}Page Profil
+{%endblock %}
 
 {% block container %}
 	<div class="container">
@@ -73,4 +77,32 @@
 		{{ parent() }}
 		{{ encore_entry_script_tags('userProfil') }}
 {% endblock %}
+{% endblock %} #}
+
+
+{% block container %}
+
+<div class="profil-wrapper-desktop"> 
+    {% include '_layout/_desktop/nav.html.twig' %}
+    <div class="header-margin"></div>
+
+    <main class="main-evenement wrapper-1200">
+    {% include '_layout/_desktop/sideNav.html.twig' %}
+
+    <section class="profil-container white-bloc">
+        {% include 'profil/layout/header.html.twig' %}
+        {% include 'profil/layout/sideNav.html.twig' %}
+    </section>
+        
+    </main>
+</div>
+
+{# <div class="evenement-wrapper-mobile">
+    {% include '_layout/_mobileNavBar.html.twig' %} 
+
+    {% include 'evenement/layout/event-card.html.twig' %}
+    
+    {% include '_layout/_mobileFooter.html.twig' %}
+</div> #}
 {% endblock %}
+

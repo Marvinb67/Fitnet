@@ -3,9 +3,10 @@
 {% block container %}
 {% include '_layout/_desktop/nav.html.twig' %}
   <div class="header-margin"></div>
+
 	<main class="wrapper-1200">
-    <div class="show-publication-container main-show-publication publication-card">
     {% include '_layout/_desktop/sideNav.html.twig' %}
+
 
       {# {% for img in publication.mediaPublication %}
       <a href="{{ path('app_show_media', {'slug': img.slug}) }}">
@@ -36,49 +37,14 @@
     
       <h2>Commentaires</h2>
 
-      <div id="ajout-com">
-        {{form(formCommentaire)}}
-      </div>
-
-      {% for commentaire in publication.commentaires %}
-        {% if commentaire.parent == null %}
-            <div class="user-publication">
-              <div class="futur-pp"></div>
-              <strong>Publié par : {{commentaire.user}} le {{ commentaire.createdAt | date('d/m/Y H:i')}}</strong>
-            </div>
-            <p class="commentaire-card">{{ commentaire.contenu }}</p>
-            <p><a href="#commentaire_contenu" data-reply data-id="{{commentaire.id}}">Répondre</a></p>
-            {# affichage réponse #}
-            {% for reponse in commentaire.reponse %}
-            <div class="user-publication reponse-card">
-              <div class="futur-pp"></div>
-              <strong>Réponse de : {{reponse.user}} le {{ reponse.createdAt | date('d/m/Y H:i')}}</strong>
-            </div>
-              <p class="reponse-commentaire">{{ reponse.contenu }}</p>
-            {% endfor %}
-            <hr>
-        {% endif %}
-      {% endfor %}
 
 
-      {% for tag in publication.tagsPublication %}
-          {{ tag.intitule }}
-      {% endfor %}
+    {% include 'publication/_card.html.twig' %}
 
-      {% include '_layout/_desktop/tchat.html.twig' %}
-
-    </div>
+  
+    {% include '_layout/_desktop/tchat.html.twig' %}
   </main>
 
-	{% block javascript %}
-		<script>
-			window.onload = () => {
-document.querySelector(".card-title").value = "{{ publication.titre }}"
-document.querySelectorAll("[data-reply]").forEach(element => {
-element.addEventListener("click", function () {
-document.querySelector("#commentaire_parentId").value = this.dataset.id})
-})
-}
-		</script>
-	{% endblock %}
+
 {% endblock %}
+
