@@ -53,11 +53,12 @@ class EvenementController extends AbstractController
     }
 
     #[Route('evenement/{slug}-{id}',requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], methods: ['GET'], name:'app_evenement_show')]
-    public function show(Evenement $evenement, ProgrammationEvenement $peRepo)
+    public function show(Evenement $evenement, ProgrammationEvenement $peRepo, ProgrammationEvenementRepository $events)
     {
         return $this->render('evenement/show.html.twig', [
             'evenement' => $evenement,
-            'peRepo' => $peRepo
+            'peRepo' => $peRepo,
+            'events' => $events->findAll(),
         ]);
     }
 

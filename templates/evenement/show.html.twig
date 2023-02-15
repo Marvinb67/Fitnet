@@ -59,10 +59,13 @@
         </div>
 
         <section class="participant-section">
+          {# {% for event in events %} #}
+
           <div>
-            <p>Participant <span class="dark-round">6</span></p>
+            <p>Participant <span class="dark-round">{{events | length}}</span></p>
             <a class="dark-round" href="#">S'inscrire</a>
           </div>
+          {# {% endfor %} #}
           <ul>
             <li>
               <div class="futur-pp"></div>
