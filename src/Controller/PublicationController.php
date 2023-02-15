@@ -19,14 +19,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use MobileDetectBundle\DeviceDetector\MobileDetectorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PublicationController extends AbstractController
 {
     #[Route('/publication', name: 'app_publication')]
-    public function index(PublicationRepository $publicationRepository, Request $request, MobileDetectorInterface $mobileDetector): Response
+    public function index(PublicationRepository $publicationRepository, Request $request): Response
     {
         $user = $this->getUser();
         $data = new SearchData();
@@ -43,9 +42,6 @@ class PublicationController extends AbstractController
         return $this->render('publication/index.html.twig', [
             'publications' => $publications,
             'form' => $form->createView(),
-            'is_mobile' => $mobileDetector->isMobile(),
-            'is_tablet' => $mobileDetector->isTablet(),
-            'is_iphone' => $mobileDetector->is('iPhone')
         ]);
     }
 
@@ -144,6 +140,8 @@ class PublicationController extends AbstractController
 
             return $this->redirectToRoute('app_publication_show', [
                 'publication' => $publication,
+                'slug' => $publication->getSlug(),
+                'id' => $publication->getId()
             ]);
         }
         

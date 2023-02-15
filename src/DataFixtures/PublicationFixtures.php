@@ -11,6 +11,7 @@ use App\Repository\TagRepository;
 use App\DataFixtures\UserFixtures;
 use App\Repository\UserRepository;
 use App\DataFixtures\MediaFixtures;
+use App\Repository\GroupeRepository;
 use App\Repository\MediaRepository;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -23,7 +24,8 @@ class PublicationFixtures extends Fixture implements DependentFixtureInterface
         private UserRepository $userRepo, 
         private TagRepository $tagRepo, 
         private MediaRepository $mediaRepo,  
-        private SluggerInterface $sluggerInterface
+        private SluggerInterface $sluggerInterface,
+        private GroupeRepository $groupeRepo
         )
     {}
 
@@ -33,13 +35,17 @@ class PublicationFixtures extends Fixture implements DependentFixtureInterface
         $users = $this->userRepo->findAll();
         $tags = $this->tagRepo->findAll();
         $media = $this->mediaRepo->findAll();
+        $groupes = $this->groupeRepo->findAll();
 
         $faker = Faker::create('fr_FR');
 
-        for($i = 0; $i < 30; $i ++)
+        for($i = 0; $i < 50; $i ++)
         {    
             $randomKey = array_rand($users);
             $user = $users[$randomKey];
+
+            $randGroupe = array_rand($groupes);
+            $groupe = $groupes[$randGroupe];
 
             $publication = new Publication();
             $publication
@@ -50,6 +56,10 @@ class PublicationFixtures extends Fixture implements DependentFixtureInterface
                 ->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTime($max = 'now')))
                 ->setEditedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween($max = 'now')))
             ;
+            for($j = 25; $j < $i; $j++)
+            {
+                $publication->setGroupe($groupe);
+            }
 
             $manager->persist($publication);
             $publications[] = $publication;
@@ -73,6 +83,7 @@ class PublicationFixtures extends Fixture implements DependentFixtureInterface
             UserFixtures::class,
             TagFixtures::class,
             MediaFixtures::class,
+            GroupeFixtures::class
         );
 
     }

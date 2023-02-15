@@ -2,15 +2,21 @@
 
 namespace App\Entity;
 
+use App\Entity\Media;
+use App\Entity\Commentaire;
 use Doctrine\DBAL\Types\Types;
 use App\Entity\Trait\SlugTrait;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\ReactionPublication;
 use App\Entity\Trait\EditedAtTrait;
 use Doctrine\ORM\Mapping\PreUpdate;
 use App\Entity\Trait\CreatedAtTrait;
 use Doctrine\ORM\Mapping\PrePersist;
 use App\Repository\PublicationRepository;
+use Doctrine\ORM\Mapping\InheritanceType;
+use Doctrine\ORM\Mapping\DiscriminatorMap;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -53,6 +59,9 @@ class Publication
 
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'publication')]
     private Collection $tagsPublication;
+
+    #[ORM\ManyToOne(inversedBy: 'publications')]
+    private ?Groupe $groupe = null;
 
 
 
@@ -248,6 +257,18 @@ class Publication
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getGroupe(): ?Groupe
+    {
+        return $this->groupe;
+    }
+
+    public function setGroupe(?Groupe $groupe): self
+    {
+        $this->groupe = $groupe;
 
         return $this;
     }

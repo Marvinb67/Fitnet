@@ -1,0 +1,23 @@
+.mySlides {
+    display:none;
+    width: 665px;
+    height: 300px;
+    object-fit: cover;
+}
+
+.img-container{
+    display: flex;
+    position: relative;
+}
+
+.left-button{
+    position: absolute;
+    top: 50%;
+    left: 10px;
+}
+
+.right-button{
+    position: absolute;
+    top: 50%;
+    right: 10px;
+}

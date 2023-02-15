@@ -12,6 +12,16 @@
   }
 }
 
+@media screen and (max-width: 1200px) {
+  .evenement-container{
+    position: static !important;
+  }
+
+  .evenement-card{
+    width: 100% !important;
+  }
+}
+
 .main-evenement{
   display: flex;
   justify-content: space-between;
@@ -21,6 +31,7 @@
   position: absolute;
   top: 0;
   left: 250px;
+  margin: 0 1rem;
 }
 
 .event-picture{
@@ -32,7 +43,7 @@
 .evenement-card{
   //background-image: url("assets/images/musculation.jpg");
   background-color: white;
-  margin: 1rem;
+  margin: 1rem 0;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   //padding: 1rem;
@@ -73,4 +84,73 @@
   top: 0;
   left: 250px;
   margin: 1rem;
+}
+
+.user-container{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.event-reaction i{
+  font-size: 1.5rem;
+}
+
+.event-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.horaire-container{
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.event-section{
+  padding: 1rem;
+}
+
+.horaire-container div{
+  padding: 1rem;
+  background-color: aliceblue;
+  border-radius: 10px;
+  width: 100%;
+}
+
+.participant-section{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.participant-section ul{
+  display: flex;
+  gap: 0.5rem;
+}
+
+.participant-section div{
+  display: flex;
+  justify-content: space-between;
+}
+
+.event-content{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.map-img{
+  width: 100%;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+}
+
+.dark-round{
+  background-color: #262626;
+  color: white;
+  border-radius: 100px;
+  padding: 0.5rem 1rem;
 }
