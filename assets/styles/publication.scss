@@ -44,6 +44,7 @@ color: white;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  justify-content: space-between;
 }
 
 .mobile-header{
@@ -109,6 +110,11 @@ header{
 
 .infos-user-publication p:first-child{
   font-weight: bold;
+}
+
+.user-publication-left-side{
+  display: flex;
+  gap: 0.5rem;
 }
 
 h2 a{
@@ -264,4 +270,26 @@ h2 a{
   margin-top: 0.5rem;
   margin-left: 2rem;
   
+}
+
+// modal 
+
+.modal-menu-publication{
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 25px;
+  background-color: white;
+  padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 5px;
+
+}
+
+.menu-publication{
+  position: relative;
+}
+
+.publication-modal{
+  display: none;
 }
