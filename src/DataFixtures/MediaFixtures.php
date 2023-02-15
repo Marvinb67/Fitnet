@@ -31,7 +31,7 @@ class MediaFixtures extends Fixture
                 ->setTitre($faker->words(3, true))
                 ->setSlug($this->slugger->slug($media->getTitre()))
                 ->setDescription($faker->words(6, true))
-                ->setLien($faker->imageUrl(640, 480, $media->getSlug(), true))
+                ->setLien(str_replace('public/uploads\\','/',$faker->image('public/uploads',640, 480, $media->getSlug(), true)))
             ;
 
             $manager->persist($media);

@@ -43,13 +43,12 @@ class PublicationRepository extends ServiceEntityRepository
     }
 
     /**
-     * Recupére les produits en lien avec une recherche
+     * Recupére les publications en lien avec une recherche
      *
      * @return Publication[]
      */
     public function findSearch(SearchData $search): array
     {
-        // return $this->findAll();
         $query = $this
             ->findActivePublicationQuery()
             ->select('u', 'p')
