@@ -32,6 +32,7 @@ class GroupeFixtures extends Fixture implements DependentFixtureInterface
                 ->setUser($user)
                 ->setIntitule($faker->words(3, true))
                 ->setSlug($this->slugger->slug($groupe->getIntitule()))
+                ->addAdherentsGroupe($user)
             ;
 
             $manager->persist($groupe);

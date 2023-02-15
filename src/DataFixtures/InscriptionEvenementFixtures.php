@@ -16,15 +16,14 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class InscriptionEvenementFixtures extends Fixture implements DependentFixtureInterface
 {
-    public function __construct(
-        private EvenementRepository $evenementRepo
-        )
+    public function __construct(private EvenementRepository $evenementRepo, private UserRepository $userRepo)
     {}
 
     public function load(ObjectManager $manager): void
     {
 
         $evenements = $this->evenementRepo->findAll();
+        $users = $this->userRepo->findAll();
 
         $faker = Faker::create('fr_FR');
 
@@ -32,6 +31,9 @@ class InscriptionEvenementFixtures extends Fixture implements DependentFixtureIn
         {
             $randomKey = array_rand($evenements);
             $evenement = $evenements[$randomKey];
+
+            $randomUser = array_rand($users);
+            $user = $users[$randomUser];
 
             $start = $faker->dateTimeBetween('-1 year', 'now');
             $end = $faker->dateTimeBetween('now', '+1 year');
@@ -43,10 +45,13 @@ class InscriptionEvenementFixtures extends Fixture implements DependentFixtureIn
                 ->setNbPlaces($faker->randomNumber(2, false))
                 ->setStartAt(DateTimeImmutable::createFromMutable($start))
                 ->setEndAt(DateTimeImmutable::createFromMutable($end))
+                ->addInscritEvenement($user);
             ;
 
             $manager->persist($inscriptionEvenement);
         }
+
+        
 
         $manager->flush();
     }

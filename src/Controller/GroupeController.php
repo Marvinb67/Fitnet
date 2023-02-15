@@ -39,6 +39,7 @@ class GroupeController extends AbstractController
             $groupe
                 ->setUser($this->getUser())
                 ->setSlug($sluggerInterface->slug(strtolower($groupe->getIntitule())))
+                ->addAdherentsGroupe($this->getUser())
             ;
 
             $em->persist($groupe);
