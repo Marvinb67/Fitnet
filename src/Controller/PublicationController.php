@@ -32,13 +32,15 @@ class PublicationController extends AbstractController
 
         $form = $this->createForm(SearchFormType::class, $data);
         $form->handleRequest($request);
-
         $data->setPage($request->get('page', 1));
+
         if (!$user) {
             $this->addFlash('danger', 'vous n\'êtes pas connecté!');
             return $this->redirectToRoute('app_login');
         }
+
         $publications = $publicationRepository->findSearch($data);
+
         return $this->render('publication/index.html.twig', [
             'publications' => $publications,
             'form' => $form->createView(),
@@ -240,4 +242,5 @@ class PublicationController extends AbstractController
         // dd($data);
         return new JsonResponse(['data' => $data], Response::HTTP_OK);
     }
+    
 }

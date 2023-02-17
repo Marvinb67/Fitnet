@@ -5,7 +5,7 @@
 
     <main class="main-publication">
         <div class="publication-wrapper">
-            {% for publication in publications %}
+            {% for publication in publications[0].data %}
                 <div class="publication-card">
                     <div class="user-publication">
                         <div class="user-publication-left-side">
@@ -59,11 +59,15 @@
 
                 </div>
             {% endfor %}
+            {% set path = 'app_publication' %}
+            {% set pages = publications[0].pages %}
+            {% set currentPage = publications[0].page %}
+            {% include '/_partials/_pagination.html.twig' %}
         </div>
 
     </main>
 
-{% set foo = publications|length  %}
+{% set foo = publications[0].data|length  %}
 
 {% block javascript %}
 <script>

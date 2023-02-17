@@ -5,7 +5,7 @@ namespace App\Data;
 class SearchData
 {
     /**
-     *
+     * haine de caractéres à chercher
      * @var string
      */
 
@@ -24,11 +24,24 @@ class SearchData
     private $dates = []; 
 
     /**
+     * Numéro de la page acctuel par défault 1
+     * @var integer
+     */
+    private ?int $page = 1;
+
+    /**
+     * Nombre de pages
      *
      * @var integer
      */
-    private $page = 1;
+    private ?int $nbPages = 0;
 
+    /**
+     * Tableau des resultas final
+     *
+     * @var array
+     */
+    private ?array $result = [];
 
     //https://www.google.com/search?client=firefox-b-d&q=symfony+filtre+produit#fpstate=ive&vld=cid:e64549d9,vid:4uYpFjfUUbc
 
@@ -43,5 +56,9 @@ class SearchData
     public function getPage(){ return $this->page; }
     public function setPage($page): self { $this->page = $page; return $this; }
 
+    public function getResult(){ return $this->result; }
+    public function setResult($result): self { $this->result = $result; return $this; }
 
+    public function getNbPages(){ return $this->nbPages; }
+    public function setNbPages($nbPages): self { $this->nbPages = $nbPages; return $this; }
 }

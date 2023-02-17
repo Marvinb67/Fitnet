@@ -1,8 +1,5 @@
 
-{% for message in app.flashes('success') %}
-	<p class="alert alert-success text-center">{{ message }}</p>
-{% endfor %}
-
+{% include '/_partials/_flash.html.twig' %}
 <main class="main-publication">
 	<div class="publication-wrapper">
 		<div class="publication-card">

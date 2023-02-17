@@ -8,6 +8,7 @@ use App\Entity\Publication;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @extends ServiceEntityRepository<Publication>
@@ -47,12 +48,15 @@ class PublicationRepository extends ServiceEntityRepository
      *
      * @return Publication[]
      */
-    public function findSearch(SearchData $search): array
+    public function findSearch(SearchData $search, int $limit = 7): array
     {
         $query = $this
             ->findActivePublicationQuery()
             ->select('u', 'p')
-            ->join('p.user', 'u');
+            ->join('p.user', 'u')
+            ->setMaxResults($limit)
+            ->setFirstResult(($search->getPage() * $limit) - $limit);
+            
         if (!empty($search->getQ())) {
             $query = $query
                 ->andWhere('p.titre LIKE :q OR p.contenu LIKE :q')
@@ -68,8 +72,19 @@ class PublicationRepository extends ServiceEntityRepository
         //         ->andWhere('p.createdAt = :dates')
         //         ->setParameter('amis', $search->getDates());
         // }
-
-        return $query->getQuery()->getResult();
+        $paginator = new Paginator($query);
+        $data = $paginator->getQuery()->getResult();
+        if (empty($data)){
+            return 'Aucune publication trouvée!';
+        }
+        $pages = ceil($paginator->count() / $limit);
+        $result[] = [
+            'data' => $data,
+            'pages' => $pages,
+            'limit' => $limit,
+            'page' => $search->getPage()
+        ];
+        return $result;
     }
 
     /**
@@ -114,8 +129,15 @@ class PublicationRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    // public function findPublicationsPaginated(int $page, string $slug, int $limit = 8): array
+    // {
+    //     $limit =abs($limit);
+    //     $result = [];
 
-
+    //     $query = $this->findActivePublicationQuery()
+    //                     ->
+    //     return $result;
+    // }
     //    /**
     //     * @return Publication[] Returns an array of Publication objects
     //     */
