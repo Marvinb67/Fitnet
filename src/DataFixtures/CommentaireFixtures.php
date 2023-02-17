@@ -29,6 +29,7 @@ class CommentaireFixtures extends Fixture implements DependentFixtureInterface
         {    
             $randomKey = array_rand($users);
             $randomKeyPublication = array_rand($publications);
+
             $user = $users[$randomKey];
             $publication = $publications[$randomKeyPublication];
 
@@ -47,6 +48,7 @@ class CommentaireFixtures extends Fixture implements DependentFixtureInterface
         {    
             $randomKey = array_rand($users);
             $randomKeyPublication = array_rand($publications);
+
             $user = $users[$randomKey];
             $publication = $publications[$randomKeyPublication];
 

@@ -3,15 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\Evenement;
+use App\Entity\Commentaire;
 use App\Form\EvenementType;
+use App\Form\CommentaireType;
 use App\Entity\ProgrammationEvenement;
 use App\Repository\EvenementRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ProgrammationEvenementRepository;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class EvenementController extends AbstractController
@@ -52,16 +56,56 @@ class EvenementController extends AbstractController
         ]);
     }
 
-    #[Route('evenement/{slug}-{id}',requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], methods: ['GET'], name:'app_evenement_show')]
-    public function show(Evenement $evenement, ProgrammationEvenement $peRepo)
+    #[Route('evenement/{slug}-{id}',requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], methods: ['GET', 'POST'], name:'app_evenement_show')]
+    public function show(Evenement $evenement, ProgrammationEvenement $peRepo, Request $request, EntityManagerInterface $em)
     {
+        // On crée un commentaire
+        $commentaire = new Commentaire;
+
+        // Géneration du formulaire
+        $formCommentaire = $this->createForm(CommentaireType::class, $commentaire);
+
+        $formCommentaire->handleRequest($request);
+
+        // Traitement du fromulaire
+        if ($formCommentaire->isSubmitted() && $formCommentaire->isValid()) {
+            $commentaire->setUser($this->getUser());
+            $commentaire->setEvenement($evenement);
+
+            // Récupere le contenu du champ parentId
+            $parentId = $formCommentaire->get("parentId")->getData();
+
+            // on cherche le commentaire correspondant
+
+            if ($parentId != null) {
+                $parent = $em->getRepository(Commentaire::class)->find($parentId);
+            }
+
+            // On definit le parent
+
+            $commentaire->setParent($parent ?? null);
+
+            $em->persist($commentaire);
+            $em->flush();
+
+            // dd($commentaire);
+
+            return $this->redirectToRoute('app_evenement_show', [
+                'evenement' => $evenement,
+                'slug' => $evenement->getSlug(),
+                'id' => $evenement->getId()
+            ]);
+        }
+
         return $this->render('evenement/show.html.twig', [
             'evenement' => $evenement,
+            'formCommentaire' => $formCommentaire->createView(),
             'peRepo' => $peRepo
         ]);
     }
 
     #[Route('evenement/edit/{slug}', requirements: ['slug' => '[a-z0-9\-]*'], name:'app_evenement_edit')]
+    #[Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER') and evenement.getUser() == user")]
     public function edit(Evenement $evenement, Request $request, ManagerRegistry $doctrine): Response
     {
         $form = $this->createForm(EvenementType::class, $evenement);
@@ -82,6 +126,7 @@ class EvenementController extends AbstractController
     }
 
     #[Route('evenement/delete/{slug}', requirements: ['slug' => '[a-z0-9\-]*'], name: 'app_evenement_delete')]
+    #[Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER') and evenement.getUser() == user")]
     public function delete(Evenement $evenement, ManagerRegistry $doctrine)
     {
         $em = $doctrine->getManager();

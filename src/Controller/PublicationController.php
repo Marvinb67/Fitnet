@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Media;
 use App\Data\SearchData;
 use App\Entity\Commentaire;
-use App\Entity\Media;
 use App\Entity\Publication;
 use App\Form\SearchFormType;
 use App\Form\CommentaireType;
@@ -19,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -160,6 +161,7 @@ class PublicationController extends AbstractController
     }
 
     #[Route('publication/edit/{slug}-{id}', requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], name: 'app_publication_edit')]
+    #[Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER') and publication.getUser() == user")]
     /**
      * Modification d'une publication
      *
@@ -195,6 +197,7 @@ class PublicationController extends AbstractController
     }
 
     #[Route('publication/suppression/{slug}-{id}', requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], name: 'app_publication_delete')]
+    #[Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER') and publication.getUser() == user")]
     public function delete(Publication $publication, ManagerRegistry $doctrine): Response
     {
         $em = $doctrine->getManager();
