@@ -19,14 +19,30 @@ class HomeController extends AbstractController
     {
         $data = new SearchData();
 
-        $form = $this->createForm(SearchFormType::class, $data);
-        $form->handleRequest($request);
         $data->setPage($request->get('page', 1));
-        
+
         $publications = $publicationRepository->findSearch($data);
-        
         return $this->render('publication/index.html.twig', [
             'publications' => $publications,
+        ]);
+    }
+
+    #[Route('/search-form', name: 'search_form')]
+    public function searchForm(PublicationRepository $publicationRepository, Request $request): Response
+    {
+        $data = new SearchData();
+
+        $form = $this->createForm(SearchFormType::class, $data);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data->setTag($request->get('tag'));
+            dd($data);
+            $publications = $publicationRepository->findSearch($data);
+            return $this->render('publication/index.html.twig', [
+                'publications' => $publications,
+            ]);
+        }
+        return $this->render('_partials/_searchForm.html.twig', [
             'form' => $form->createView()
         ]);
     }

@@ -13,13 +13,11 @@ use Doctrine\ORM\Mapping\PreUpdate;
 use App\Entity\Trait\CreatedAtTrait;
 use Doctrine\ORM\Mapping\PrePersist;
 use App\Repository\PublicationRepository;
-use Doctrine\ORM\Mapping\InheritanceType;
-use Doctrine\ORM\Mapping\DiscriminatorMap;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\Count;
 
 #[HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: PublicationRepository::class)]
@@ -57,14 +55,13 @@ class Publication
     #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'publication', cascade: ['persist'])]
     private Collection $mediaPublication;
 
-    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'publication')]
+    #[ORM\ManyToMany(targetEntity: Tag::class)]
+    #[ORM\JoinTable(name: 'tag_publication')]
+    #[Count(min: 1)]
     private Collection $tagsPublication;
 
     #[ORM\ManyToOne(inversedBy: 'publications')]
     private ?Groupe $groupe = null;
-
-
-
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
@@ -73,13 +70,6 @@ class Publication
         $this->tagsPublication = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
     }
-
-    public function __toString()
-    {
-        $date = $this->getCreatedAt();
-        return $date->format('Y');
-    }
-
     #[PrePersist]
     public function prepesist()
     {
@@ -225,7 +215,7 @@ class Publication
     /**
      * @return Collection<int, Tag>
      */
-    public function gettagsPublication(): Collection
+    public function getTagsPublication(): Collection
     {
         return $this->tagsPublication;
     }

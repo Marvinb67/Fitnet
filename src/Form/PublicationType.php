@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Data\TagsData;
 use App\Entity\Publication;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -14,6 +15,8 @@ use Symfony\Component\Validator\Constraints\File;
 
 class PublicationType extends AbstractType
 {
+    public function __construct(private TagsData $tagsData)
+    {}
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -29,8 +32,14 @@ class PublicationType extends AbstractType
                 ],
                 'label' => 'Contenu'
             ])
+            ->add('tagsPublication', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control my-2'
+                ],
+                'label' => 'Les Tags'
+            ])
              ->add('mediaPublication', FileType::class, [
-                 'label' => false,
+                'label' => false,
                 'multiple' => true,
                 'mapped' => false,
                 'required' => false,
@@ -52,6 +61,8 @@ class PublicationType extends AbstractType
                 'label' => 'Envoyer'
             ])
         ;
+
+        $builder->get('tagsPublication')->addModelTransformer($this->tagsData);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

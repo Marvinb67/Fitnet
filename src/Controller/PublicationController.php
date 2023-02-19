@@ -38,12 +38,12 @@ class PublicationController extends AbstractController
             $this->addFlash('danger', 'vous n\'êtes pas connecté!');
             return $this->redirectToRoute('app_login');
         }
-
-        $publications = $publicationRepository->findSearch($data);
+            $data->setTag($request->get('tag'));
+            // dd($data);
+            $publications = $publicationRepository->findSearch($data);
 
         return $this->render('publication/index.html.twig', [
             'publications' => $publications,
-            'form' => $form->createView(),
         ]);
     }
 

@@ -3,6 +3,7 @@
         <ul>
             <li><img class="logo-black" src="{{ asset('build/images/fitnet-logo.png') }}" alt="image logo"/></li>
             <div>
+            {{ render(controller('App\\Controller\\HomeController::searchForm')) }}
                 <li><i class="fa-solid fa-bell"></i></li>
                 {% if app.user %}
                 {% for role in app.user.roles %}

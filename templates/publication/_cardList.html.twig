@@ -1,11 +1,9 @@
-
-    {% for message in app.flashes('success') %}
-        <p class="alert alert-success text-center">{{ message }}</p>
-    {% endfor %}
-
-    <main class="main-publication">
+<main class="main-publication">
         <div class="publication-wrapper">
-            {% for publication in publications[0].data %}
+            {% if publications|length == 0 %}
+        <h2>Aucune publication trouvée!</h2>
+            {% else %}
+            {% for publication in publications.data %}
                 <div class="publication-card">
                     <div class="user-publication">
                         <div class="user-publication-left-side">
@@ -53,22 +51,25 @@
                         {% endif %}
                     {% endfor %}
                     <div>{{ publication.contenu }}</div>
-                    
                     {% include '/publication/reaction.html.twig' %}
-
-
+                    {% for tag in publication.tagsPublication %}
+                    <div>
+                        <a href="{{ path('app_publication', {tag: tag.intitule})}}"><span class="badge badge-pill badge-info text-info">#{{ tag.intitule }}</span></a>
+                    </div>
+                    {% endfor %}
                 </div>
             {% endfor %}
             {% set path = 'app_publication' %}
-            {% set pages = publications[0].pages %}
-            {% set currentPage = publications[0].page %}
+            {% set pages = publications.pages %}
+            {% set q = publications.q %}
+            {% set currentPage = publications.page %}
             {% include '/_partials/_pagination.html.twig' %}
         </div>
-
     </main>
 
-{% set foo = publications[0].data|length  %}
+{% set foo = publications.data|length  %}
 
+            {% endif %}
 {% block javascript %}
 <script>
     const menuPublications = document.querySelectorAll('.menu-publication');

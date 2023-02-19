@@ -68,7 +68,7 @@ class SearchFormType extends AbstractType
         $resolver->setDefaults([
             'data_class' => SearchData::class,
             'method' => 'get',
-            // 'action' => $this->urlGenerator->generate("search_route"),// on définit l'action qui doit traiter le formulaire. Si cette option n'est pas renseignée, le formulaire sera traité par la page en cours, ce qui n'est pas ce que l'on souhaite (tu peux essayer d'enlever cette option et envoyer le formulaire pour voir)
+            'action' => $this->urlGenerator->generate("search_form"),// on définit l'action qui doit traiter le formulaire. Si cette option n'est pas renseignée, le formulaire sera traité par la page en cours, ce qui n'est pas ce que l'on souhaite (tu peux essayer d'enlever cette option et envoyer le formulaire pour voir)
             'csrf_protection' => false
         ]);
     }

@@ -2,37 +2,23 @@
 
 namespace App\Entity;
 
-use App\Repository\TagRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Stringable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TagRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: TagRepository::class)]
-class Tag
+class Tag implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $intitule = null;
-
-    #[ORM\ManyToMany(targetEntity: User::class)]
-    private Collection $user;
-
-    #[ORM\ManyToMany(targetEntity: Publication::class, inversedBy: 'tagsPublication')]
-    private Collection $publication;
-
-    #[ORM\ManyToMany(targetEntity: Evenement::class, inversedBy: 'tagsEvenement')]
-    private Collection $evenement;
-
-    public function __construct()
-    {
-        $this->user = new ArrayCollection();
-        $this->publication = new ArrayCollection();
-        $this->evenement = new ArrayCollection();
-    }
+    #[ORM\Column(type: Types::STRING)]
+    private string $intitule;
 
     public function getId(): ?int
     {
@@ -51,75 +37,8 @@ class Tag
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUser(): Collection
+    public function __toString()
     {
-        return $this->user;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->user->contains($user)) {
-            $this->user->add($user);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        $this->user->removeElement($user);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Publication>
-     */
-    public function getPublication(): Collection
-    {
-        return $this->publication;
-    }
-
-    public function addPublication(Publication $publication): self
-    {
-        if (!$this->publication->contains($publication)) {
-            $this->publication->add($publication);
-        }
-
-        return $this;
-    }
-
-    public function removePublication(Publication $publication): self
-    {
-        $this->publication->removeElement($publication);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Evenement>
-     */
-    public function getEvenement(): Collection
-    {
-        return $this->evenement;
-    }
-
-    public function addEvenement(Evenement $evenement): self
-    {
-        if (!$this->evenement->contains($evenement)) {
-            $this->evenement->add($evenement);
-        }
-
-        return $this;
-    }
-
-    public function removeEvenement(Evenement $evenement): self
-    {
-        $this->evenement->removeElement($evenement);
-
-        return $this;
+        return $this->intitule;
     }
 }

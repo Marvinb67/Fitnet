@@ -56,16 +56,29 @@ class PublicationRepository extends ServiceEntityRepository
             ->join('p.user', 'u')
             ->setMaxResults($limit)
             ->setFirstResult(($search->getPage() * $limit) - $limit);
-            
+
         if (!empty($search->getQ())) {
-            $query = $query
-                ->andWhere('p.titre LIKE :q OR p.contenu LIKE :q')
+            $query = $query->andWhere('p.titre LIKE :q OR p.contenu LIKE :q')
                 ->setParameter('q', "%{$search->getQ()}%");
+            // les mots a chercher exploser la chaine de string et les mettre dans un tableau
+            $mots = explode(" ", $search->getQ());
+            // parcourir le tableau de mots
+            for ($i = 0; $i < count($mots); $i++) {
+                // accepter la recherche seulement si le mot a plus de 2 lettres
+                if (strlen($mots[$i]) > 1) {
+                    // si le compteur est a zero ajouter WHERE a la requete
+                    $query = $query->orWhere($query->expr()->orX(
+                        $query->expr()->like('p.titre',  ':q' . $i),
+                        $query->expr()->like('p.contenu',  ':q' . $i)
+                    ))->setParameter('q' . $i, "%{$mots[$i]}%");
+                }
+            }
         }
-        // if (!empty($search->getAmis())) {
+        // if (!empty($search->getTag())) {
         //     $query = $query
-        //         ->andWhere('u.id IN (:user)')
-        //         ->setParameter('amis', $search->getAmis());
+        //         ->andWhere('p.tagsPublication = :tag')
+        //         ->setParameter('tag', $search->getTag());
+        //     // dd($query);
         // }
         // if (!empty($search->getDates())) {
         //     $query = $query
@@ -74,15 +87,16 @@ class PublicationRepository extends ServiceEntityRepository
         // }
         $paginator = new Paginator($query);
         $data = $paginator->getQuery()->getResult();
-        if (empty($data)){
-            return 'Aucune publication trouvée!';
+        if (empty($data)) {
+            return [];
         }
         $pages = ceil($paginator->count() / $limit);
-        $result[] = [
+        $result = [
             'data' => $data,
             'pages' => $pages,
             'limit' => $limit,
-            'page' => $search->getPage()
+            'page' => $search->getPage(),
+            'q' => $search->getQ(),
         ];
         return $result;
     }
@@ -93,8 +107,8 @@ class PublicationRepository extends ServiceEntityRepository
     private function findActivePublicationQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.isActive = true')
-            ->orderBy('p.createdAt','DESC');
+            ->where('p.isActive = true')
+            ->orderBy('p.createdAt', 'DESC');
     }
     /**
      * Trouver tous les Publications actives
