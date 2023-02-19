@@ -18,7 +18,7 @@
         </button>
         {% for img in evenement.mediaEvenement %}
         <a href="{{ path('app_show_media', {'slug': img.slug}) }}">
-          <img class="mySlides" src="{{img.lien}}" alt="{{img.titre}}">
+          <img class="mySlides" src="{{asset(asset('/uploads/' ~ img.lien))}}" alt="{{img.titre}}">
         </a>
         {% endfor %}
         <button class="right-button" onclick="plusDivs(1)">

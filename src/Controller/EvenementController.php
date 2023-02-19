@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Media;
 use App\Entity\Evenement;
 use App\Form\EvenementType;
 use App\Entity\ProgrammationEvenement;
@@ -20,7 +21,7 @@ class EvenementController extends AbstractController
     public function index(ProgrammationEvenementRepository $peRepo): Response
     {
         return $this->render('evenement/index.html.twig', [
-            'peRepo' => $peRepo->findAll(),
+            'peRepo' => $peRepo->findBy([], ['startAt' => 'DESC']),
         ]);
     }
 
@@ -39,6 +40,25 @@ class EvenementController extends AbstractController
             {
                 $historiqueEvenement->setEvenement($evenement);
             }
+
+             // On récupère les images
+             $images = $form->get('mediaEvenement')->getData();
+             foreach ($images as $image) {
+                 //On génère un nouveau nom de fichier
+                 $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+                 //On copie e fichier dans le dossier upload
+                 $image->move(
+                     $this->getParameter('medias_directory'),
+                     $fichier
+                 );
+                 //On stocke l'image dans la base de données
+                 $img = new Media();
+                 $img->setLien($fichier);
+                 $img->setTitre($evenement->getIntitule());
+                 $img->setSlug($slugger->slug($img->getTitre()));
+                 $evenement->addMediaEvenement($img);
+            }
+            
             $em = $doctrine->getManager();
             $em->persist($evenement);
             $em->flush();
@@ -85,6 +105,20 @@ class EvenementController extends AbstractController
     #[Route('evenement/delete/{slug}', requirements: ['slug' => '[a-z0-9\-]*'], name: 'app_evenement_delete')]
     public function delete(Evenement $evenement, ManagerRegistry $doctrine)
     {
+        $medias = $evenement->getMediaEvenement();
+
+        if($medias)
+        {
+            foreach($medias as $media)
+            {                
+                $nomMedia = $this->getParameter('medias_directory').'/'.$media->getLien();
+                if(file_exists($nomMedia))
+                {
+                    unlink($nomMedia);
+                }
+            }
+        }
+
         $em = $doctrine->getManager();
         $em->remove($evenement);
         $em->flush();
