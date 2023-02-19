@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Media;
 use App\Entity\Evenement;
+use App\Entity\Commentaire;
 use App\Form\EvenementType;
+use App\Form\CommentaireType;
 use App\Entity\ProgrammationEvenement;
 use App\Repository\EvenementRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -12,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ProgrammationEvenementRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -72,13 +75,51 @@ class EvenementController extends AbstractController
         ]);
     }
 
-    #[Route('evenement/{slug}-{id}',requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], methods: ['GET'], name:'app_evenement_show')]
-    public function show(Evenement $evenement, ProgrammationEvenement $peRepo, ProgrammationEvenementRepository $events)
+    #[Route('evenement/{slug}-{id}',requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], methods: ['GET', 'POST'], name:'app_evenement_show')]
+    public function show(Evenement $evenement, ProgrammationEvenement $peRepo, ProgrammationEvenementRepository $events, Request $request, EntityManagerInterface $em)
     {
+        // On crée un commentaire
+        $commentaire = new Commentaire;
+        // Géneration du formulaire
+        $formCommentaire = $this->createForm(CommentaireType::class, $commentaire);
+
+        $formCommentaire->handleRequest($request);
+
+        // Traitement du fromulaire
+        if ($formCommentaire->isSubmitted() && $formCommentaire->isValid()) {
+            $commentaire->setUser($this->getUser());
+            $commentaire->setEvenement($evenement);
+
+            // Récupere le contenu du champ parentId
+            $parentId = $formCommentaire->get("parentId")->getData();
+
+            // on cherche le commentaire correspondant
+
+            if ($parentId != null) {
+                $parent = $em->getRepository(Commentaire::class)->find($parentId);
+            }
+
+            // On definit le parent
+
+            $commentaire->setParent($parent ?? null);
+
+            $em->persist($commentaire);
+            $em->flush();
+
+            // dd($commentaire);
+
+            return $this->redirectToRoute('app_evenement_show', [
+                'evenement' => $evenement,
+                'slug' => $evenement->getSlug(),
+                'id' => $evenement->getId()
+            ]);
+        }
+
         return $this->render('evenement/show.html.twig', [
             'evenement' => $evenement,
             'peRepo' => $peRepo,
             'events' => $events->findAll(),
+            'formCommentaire' => $formCommentaire->createView()
         ]);
     }
 
