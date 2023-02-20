@@ -28,7 +28,7 @@ class TagFixtures extends Fixture
 
             $Tag = new Tag($this->slugger);
             $Tag
-                ->setIntitule('#'.$faker->word())
+                ->setIntitule($faker->word())
             ;
 
             $manager->persist($Tag);

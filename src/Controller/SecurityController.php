@@ -22,6 +22,14 @@ use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 class SecurityController extends AbstractController
 {
+
+    /**
+     * Authentification de l'utilisateur
+     *
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
+     */
+
     #[Route(path: '/connexion', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -41,6 +49,11 @@ class SecurityController extends AbstractController
         ]);
     }
 
+    /**
+     * Déconnexion
+     *
+     * @return Response
+     */
     #[Route(path: '/deconnexion', name: 'app_logout')]
     public function logout(): Response
     {
@@ -164,7 +177,17 @@ class SecurityController extends AbstractController
         return $this->redirectToRoute('app_login');
     }
 
+    /**
+     * Changement du mot de passe ou données pérsonnel de l'utilisateur à partir du page profil
+     *
+     * @param Request $request
+     * @param User $user
+     * @param EntityManagerInterface $entityManager
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @return Response
+     */
     #[Route('/profil/parametre/{slug}{id}', requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], name: 'modif_pass', methods: ["GET","POST"])]
+
     public function modifPass(
         Request $request,
         User $user,
@@ -176,9 +199,10 @@ class SecurityController extends AbstractController
             $this->addFlash('danger', 'Vous n\'êtes pas connecté(e)!');
             return $this->redirectToRoute('app_login');
         }
-        //  ||  $this->isGranted('ROLE_ADMIN')
+        
         // On s'assure que l'utilisateur connecté(e) modifier bien son propre compte
         if ($this->getUser() === $user) {
+            // Formulaire du changement de mot de passe
             $formPassChange = $this->createForm(ModifPassType::class);
             $formPassChange->handleRequest($request);
 
@@ -186,7 +210,7 @@ class SecurityController extends AbstractController
             if ($formPassChange->isSubmitted() && $formPassChange->isValid()) {
                 // get l'ancien mot de passe
                 $oldPassword = $request->get('modif_pass')['actuelPassword'];
-                // Si c'est le bon ancien mot de passe
+                // On vérifie l'ancien mot de passe
                 if ($passwordHasher->isPasswordValid($user, $oldPassword)) {
                     // On enregistre le nouveau mot de passe en le hashant
                     $user->setPassword(
@@ -195,22 +219,25 @@ class SecurityController extends AbstractController
                             $formPassChange->get('plainPassword')->getData()
                         )
                     );
-                    // enregistrement du nouveau mot de passe
+                    // enregistrement du nouveau mot de passe dans la bese de données
                     $entityManager->flush();
+                    // Confirmation du changement du mot de passe
                     $this->addFlash('success', 'Mot de passe changé avec succès');
                     return $this->redirectToRoute('app_profil');
                 }
             }
 
+            // Formulaire du changement du profil de l'utilisateur
             $formProfilChange = $this->createForm(EditProfilType::class, $user);
             $formProfilChange->handleRequest($request);
+            
             if ($formProfilChange->isSubmitted() && $formProfilChange->isValid()){
                 $entityManager->persist($user);
                 $entityManager->flush();
                 // message de succee
                 $this->addFlash('message', 'Profile à jour. Merci');
                 // redirection vers le profile
-                return $this->redirectToRoute('app_user_detail', ['slug' => $user->getSlug()]);
+                return $this->redirectToRoute('app_profil');
             }
 
             return $this->render('security/setting_change.html.twig', [

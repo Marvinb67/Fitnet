@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class RegistrationController extends AbstractController
 {
@@ -28,7 +28,8 @@ class RegistrationController extends AbstractController
         UserPasswordHasherInterface $userPasswordHasher,
         EntityManagerInterface $entityManager,
         SendMailService $mail,
-        JWTService $jwt
+        JWTService $jwt,
+        SluggerInterface $slugger
     ): Response {
 
         $user = new User();
@@ -36,12 +37,14 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
-            $user->setPassword(
+            $user
+            ->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('password')->getData()
                 )
-            );
+            )
+            ->setSlug($slugger->slug(strtolower($user->getNom().' '.$user->getPrenom())));
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -78,7 +81,7 @@ class RegistrationController extends AbstractController
 
     #[Route('/verify/{token}', name: 'app_verify_email')]
     /**
-     * Undocumented function
+     * Vérification de l'email de l'utilisateur
      *
      * @param [type] $token
      * @param JWTService $jwt

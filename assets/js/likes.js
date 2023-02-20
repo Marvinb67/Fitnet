@@ -90,6 +90,7 @@ Array.from(thumbs, (thumb) => {
 
 // Fournis les stats des likes/dislikes
 let icon = document.querySelector(".reactions");
+let icons = document.querySelectorAll(".fa-thumbs-down");
 if (icon) {
   let postId = icon.attributes["data-id"].value;
   const lien =
@@ -101,16 +102,13 @@ if (icon) {
     .get(lien)
     .then((response) => {
       let data = response.data.likes;
-      for (let stat of data) {
-        let idPublication = stat.idPublication;
-        let countLikes = stat.countLikes;
-        let countDisLikes = stat.countDisLikes;
-        let aimeOuPas = stat.aimeOuPas;
-        const likesSpan = document.getElementById(`j-aime-${idPublication}`);
-        const dislikesSpan = document.getElementById(
-          `j-aimePas-${idPublication}`
-        );
-        switch (aimeOuPas) {
+      for (let i=0; i< icons.length; i++) {
+        let id = icons[i].attributes["data-id"].value;
+        let likesSpan =document.getElementById(`j-aime-${id}`)
+        let dislikesSpan = document.getElementById(`j-aimePas-${id}`)
+        likesSpan.innerHTML = data[id-1].countLikes;
+        dislikesSpan.innerHTML = data[id-1].countDisLikes;
+        switch (data[id-1].aimeOuPas) {
           case true:
             likesSpan.previousSibling.previousSibling.style.color = "#0a58ca";
             break;
@@ -122,8 +120,6 @@ if (icon) {
             dislikesSpan.previousSibling.previousSibling.style.color =
               "#212529";
         }
-        likesSpan.innerHTML = countLikes;
-        dislikesSpan.innerHTML = countDisLikes;
       }
     })
     .catch((err) => {

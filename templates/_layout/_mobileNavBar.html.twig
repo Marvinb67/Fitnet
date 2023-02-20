@@ -3,7 +3,7 @@
 	<img class="logo-black" src="{{ asset('build/images/fitnet-logo.png') }}" alt="image logo"/>
 	<div
 		class="search-and-menu">
-		{#    <div class="container">{% include 'publication/_filter.html.twig' %}</div>#}
+		    {{ render(controller('App\\Controller\\HomeController::searchForm')) }}
 		<a href="#">
 			<i class="fa-solid fa-bars"></i>
 		</a>
@@ -11,9 +11,9 @@
 	<div class="filter-menu">
 		<i class="fa-solid fa-shuffle"></i>
 		<div class="d-flex justify-content-around">
-			<li id="popular_filter" class="link-light nav-link"><i class="fa-light fa-fire-flame-curved"></i> Popularité</li>
-			<li id="old_filter" class="link-light nav-link"><i class="fa-duotone fa-scroll-old"></i> Ancienneté</li>
-			<li id="new_filter" class="link-light nav-link"><i class="fa-light fa-rocket-launch"></i> Nouveauté</li>
+			<li id="popular_filter" class="link-light nav-link"><i class="fa fa-fire-flame-curved"></i> Popularité</li>
+			<li id="old_filter" class="link-light nav-link"><i class="fa-solid fa-scroll"></i> Ancienneté</li>
+			<li id="new_filter" class="link-light nav-link"><i class="fa-solid fa-rocket"></i> Nouveauté</li>
 		</div>
 		<div class="bottom-line"></div>
 	</div>
