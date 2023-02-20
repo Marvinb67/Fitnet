@@ -15,11 +15,22 @@ class ProgrammationEvenementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('lieu', TextType::class)
-            ->add('nbPlaces', NumberType::class)
+            ->add('lieu', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+                'label' => 'Lieu de l\évènement'
+            ])
+            ->add('nbPlaces', NumberType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+                'label' => 'Nombre de place'
+            ])
             ->add('startAt', DateTimeType::class, [
                 'input' => 'datetime_immutable',
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'time_label' => 'Starts On',
             ])
             ->add('endAt', DateTimeType::class, [
                 'input' => 'datetime_immutable',

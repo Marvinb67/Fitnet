@@ -14,8 +14,17 @@ class GroupeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('intitule', TextType::class)
-            ->add('envoyer', SubmitType::class)
+            ->add('intitule', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+                'label' => 'Nom du groupe'
+            ])
+            ->add('Envoyer', SubmitType::class, [
+                'attr' => [
+                    'class' => 'dark-round mt-3'
+                ],
+            ])
         ;
     }
 

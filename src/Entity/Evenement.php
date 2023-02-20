@@ -47,11 +47,15 @@ class Evenement
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'evenement', cascade: ['persist', 'remove'])]
     private Collection $tagsEvenement;
 
+    #[ORM\OneToMany(mappedBy: 'evenement', targetEntity: Commentaire::class)]
+    private Collection $commentaires;
+
     public function __construct()
     {
         $this->historiqueEvenements = new ArrayCollection();
         $this->mediaEvenement = new ArrayCollection();
         $this->tagsEvenement = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
 
     #[PrePersist]
@@ -188,6 +192,36 @@ class Evenement
     {
         if ($this->tagsEvenement->removeElement($tagsEvenement)) {
             $tagsEvenement->removeEvenement($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commentaire>
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): self
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires->add($commentaire);
+            $commentaire->setEvenement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): self
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getEvenement() === $this) {
+                $commentaire->setEvenement(null);
+            }
         }
 
         return $this;

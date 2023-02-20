@@ -1,16 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modification de la publication :
-	{{ publication.titre }}
+{% block title %}Liste des publications
 {% endblock %}
-
 {% block container %}
+	{% include '_layout/_desktop/nav.html.twig' %}
+	<div class="header-margin"></div>
 
-	<div class="container my-3">
-		<div class="row">
-			<h1>Modifier une publication</h1>
+	<main class="publication-new-main wrapper-1200">
+	
+	{% include '_layout/_desktop/sideNav.html.twig' %}
+
+		<div class="new-publication-container white-bloc">
+			<h3>Modifier la publication</h3>
 			{{form(formPublication)}}
 		</div>
-	</div>
 
-	{% endblock %}
+	{% include '_layout/_desktop/tchat.html.twig' %}
+
+	</main>
+{% endblock %}

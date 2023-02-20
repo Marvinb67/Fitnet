@@ -15,12 +15,9 @@
     {% include 'publication/_card.html.twig' %}
     {# <a class="btn btn-warning mt-1 ml-1" href="{{ path('app_publication_edit', {id: publication.id, slug: publication.slug}) }}">Modifier la publication</a> #}
 	  {# <a class="btn btn-danger mt-1 mr-1" href="{{ path('app_publication_delete', {id: publication.id, slug: publication.slug})}}">Supprimer la publication</a></div> #}
- 
+
+        {% include 'publication/_card.html.twig' %}
       <h2>Commentaires</h2>
-
-
-
-    {% include 'publication/_card.html.twig' %}
 
   
     {% include '_layout/_desktop/tchat.html.twig' %}

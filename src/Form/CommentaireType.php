@@ -16,7 +16,10 @@ class CommentaireType extends AbstractType
     {
         $builder
             ->add('contenu', TextareaType::class, [
-                'label' => false
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control'
+                ],
             ])
             // ->add('createdAt')
             // ->add('editedAt')
@@ -25,7 +28,11 @@ class CommentaireType extends AbstractType
             ->add('parentId', HiddenType::class, [
                 'mapped' => false
             ])
-            ->add('envoyer', SubmitType::class)
+            ->add('envoyer', SubmitType::class,[
+                'attr' => [
+                'class' => 'dark-round float-right'
+                ]
+            ])
         ;
     }
 
