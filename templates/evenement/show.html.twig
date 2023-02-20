@@ -18,7 +18,7 @@
         </button>
         {% for img in evenement.mediaEvenement %}
         <a href="{{ path('app_show_media', {'slug': img.slug}) }}">
-          <img class="mySlides" src="{{img.lien}}" alt="{{img.titre}}">
+          <img class="mySlides" src="{{asset(asset('/uploads/' ~ img.lien))}}" alt="{{img.titre}}">
         </a>
         {% endfor %}
         <button class="right-button" onclick="plusDivs(1)">
@@ -40,7 +40,7 @@
         </div>
 
         <section class="event-show-text">
-          <h2>{{evenement.intitule}}</h2>
+          <h2 class="card-title">{{evenement.intitule}}</h2>
           <p>{{evenement.description}}</p>
           {# <p>Posté le : {{evenement.createdAt | date('Y/m/d')}}</p> #}
         </section>
@@ -59,42 +59,54 @@
         </div>
 
         <section class="participant-section">
+          {# {% for event in events %} #}
+
           <div>
-            <p>Participant <span class="dark-round">6</span></p>
-            <a class="dark-round" href="#">S'inscrire</a>
+            <p>Participant <span class="dark-round">{{peRepo.InscritEvenement | length}}</span></p>
+            <a class="dark-round" href="{{ path('app_inscription_evenement_add', {'id': evenement.id}) }}">S'inscrire</a>
           </div>
-          <ul>
-            <li>
-              <div class="futur-pp"></div>
-            </li>
-            <li>
-              <div class="futur-pp"></div>
-            </li>
-            <li>
-              <div class="futur-pp"></div>
-            </li>
-            <li>
-              <div class="futur-pp"></div>
-            </li>
-            <li>
-              <div class="futur-pp"></div>
-            </li>
-            <li>
-              <div class="futur-pp"></div>
-            </li>
-            <li>
-              <div class="futur-pp"></div>
-            </li>
-            <li>
-              <div class="futur-pp"></div>
-            </li>
-          </ul>
+          {# {% endfor %} #}
+
+          {% for inscrit in peRepo.InscritEvenement %}
+            <ul>
+              <li>
+                <div class="futur-pp"></div>
+              </li>
+            </ul>
+          {% endfor %}
 
           <section class="event-map">
             <h3>Lieu de l'évènement</h3>
             <img class="map-img" src="{{ asset('build/images/map.PNG') }}" alt="">
           </section>
         </section>
+
+        <h3>Commentaires</h3>
+
+    <div id="ajout-com">
+      {{form(formCommentaire)}}
+    </div>
+
+      {% for commentaire in evenement.commentaires %}
+        {% if commentaire.parent == null %}
+            <div class="user-publication">
+              <div class="futur-pp"></div>
+              <strong>Publié par : {{commentaire.user}} le {{ commentaire.createdAt | date('d/m/Y H:i')}}</strong>
+            </div>
+            <p class="commentaire-card">{{ commentaire.contenu }}</p>
+            <p><a href="#commentaire_contenu" data-reply data-id="{{commentaire.id}}">Répondre</a></p>
+            {# affichage réponse #}
+            {% for reponse in commentaire.reponse %}
+            <div class="user-publication reponse-card">
+              <div class="futur-pp"></div>
+              <strong>Réponse de : {{reponse.user}} le {{ reponse.createdAt | date('d/m/Y H:i')}}</strong>
+            </div>
+              <p class="reponse-commentaire">{{ reponse.contenu }}</p>
+            {% endfor %}
+            <hr>
+        {% endif %}
+      {% endfor %}
+
         {% for tag in evenement.tagsEvenement %}
           {{ tag.intitule }}
         {% endfor %}
@@ -128,6 +140,14 @@
       }
       x[slideIndex-1].style.display = "block";  
     }
+
+    window.onload = () => {
+		document.querySelector(".card-title").value = "{{ evenement.intitule }}"
+		document.querySelectorAll("[data-reply]").forEach(element => {
+		element.addEventListener("click", function () {
+		document.querySelector("#commentaire_parentId").value = this.dataset.id})
+		})
+		}
 	</script>
 {% endblock %}
 

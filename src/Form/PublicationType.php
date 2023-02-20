@@ -30,7 +30,7 @@ class PublicationType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ],
-                'label' => 'Contenu'
+                'label' => 'Description'
             ])
             ->add('tagsPublication', TextType::class, [
                 'attr' => [
@@ -56,7 +56,7 @@ class PublicationType extends AbstractType
             // ->add('tagsPublication')
             ->add('envoyer', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-primary btn-lg mt-3'
+                    'class' => 'mt-3 dark-round'
                 ],
                 'label' => 'Envoyer'
             ])

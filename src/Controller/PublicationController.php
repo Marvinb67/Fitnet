@@ -199,7 +199,7 @@ class PublicationController extends AbstractController
         {
             foreach($medias as $media)
             {                
-                $nomMedia = $this->getParameter('medias_directory') . '/' . $media->getLien();
+                $nomMedia = $this->getParameter('medias_directory').'/'.$media->getLien();
                 if(file_exists($nomMedia))
                 {
                     unlink($nomMedia);

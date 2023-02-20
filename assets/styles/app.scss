@@ -13,7 +13,6 @@ body {
 
 a{
     text-decoration: none;
-
 }
 
 .grid{
@@ -28,6 +27,9 @@ a{
 }
 #flash-messages{
     z-index: 9999;
+    width: fit-content;
+    position: absolute;
+    top: 0;
 }
 
 li{
@@ -67,13 +69,36 @@ ul{
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 10px;
     overflow: hidden;
-
     // padding: 1rem;
 }
 
 .img-fluid{
     height: 250px;
     object-fit: cover;
+}
+
+.publication-scroll-header{
+    background-color: white;
+    padding: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 10px;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.filter-div{
+    position: relative;
+}
+
+.modal-filtre-publication {
+    position: absolute;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 5px;
+    padding: 1rem;
+    width: fit-content;
+
 }
 .img-profil{
     border-radius: 100%;

@@ -22,12 +22,14 @@ use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 class SecurityController extends AbstractController
 {
+
     /**
      * Authentification de l'utilisateur
      *
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
+
     #[Route(path: '/connexion', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
