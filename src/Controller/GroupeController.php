@@ -63,7 +63,7 @@ class GroupeController extends AbstractController
     }
 
     #[Route('groupe/edit/{slug}', requirements: ['slug' => '[a-z0-9\-]*'], name:'app_groupe_edit')]
-    #[Security("is_granted('ROLE_USER') or is_granted('ROLE_SUPER_ADMIN') and groupe.getUser() == user")]
+    #[Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER') and groupe.getUser() == user")]
     public function edit(Groupe $groupe, Request $request, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(GroupeType::class, $groupe);
@@ -83,6 +83,7 @@ class GroupeController extends AbstractController
     }
 
     #[Route('groupe/delete/{slug}', requirements: ['slug' => '[a-z0-9\-]*'], name: 'app_groupe_delete')]
+    #[Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER') and groupe.getUser() == user")]
     public function delete(Groupe $groupe, EntityManagerInterface $em)
     {
         $em->remove($groupe);
