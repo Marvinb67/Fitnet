@@ -4,7 +4,6 @@
             {% if publications|length == 0 %}
         <h2>Aucune publication trouvée!</h2>
             {% else %}
-            {% for publication in publications.data %}
 
 
         <div class="publication-scroll-header">
@@ -20,6 +19,7 @@
             <a class="dark-round" href="{{path('app_publication_new')}}">Créer une publication<i class="fa-solid fa-plus"></i></a>
         </div>
 
+            {% for publication in publications.data %}
    
 
                 <div class="publication-card">

@@ -54,7 +54,6 @@ class PublicationRepository extends ServiceEntityRepository
             ->findActivePublicationQuery()
             ->select('u', 'p')
             ->join('p.user', 'u')
-            ->innerJoin('p.tagsPublication ', 'tp')
             ->setMaxResults($limit)
             ->setFirstResult(($search->getPage() * $limit) - $limit);
 
@@ -77,6 +76,7 @@ class PublicationRepository extends ServiceEntityRepository
         }
         if (!empty($search->getTag())) {
             $query = $query
+                ->innerJoin('p.tagsPublication ', 'tp')
                 ->andWhere('tp.intitule = :tag')
                 ->setParameter('tag', $search->getTag());
             // dd($query);

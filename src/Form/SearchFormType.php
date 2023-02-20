@@ -60,6 +60,7 @@ class SearchFormType extends AbstractType
             //         'class' => 'js-datepicker',
             //     ],
             // ])
+            
         ;
     }
 
