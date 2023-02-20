@@ -81,7 +81,7 @@ class RegistrationController extends AbstractController
 
     #[Route('/verify/{token}', name: 'app_verify_email')]
     /**
-     * Undocumented function
+     * Vérification de l'email de l'utilisateur
      *
      * @param [type] $token
      * @param JWTService $jwt

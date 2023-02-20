@@ -17,14 +17,15 @@ class JWTService
     {
         if($validity > 0){
             $now = new DateTimeImmutable();
-            // Date d'experation
+            // Date d'éxpèration du jeton
             $exp = $now->getTimestamp() + $validity;
     
             $payload['iat'] = $now->getTimestamp();
             $payload['exp'] = $exp;
         }
 
-        // On encode en base64
+        // On encode json et en base64
+        // base64_encode — Encode une chaîne en MIME base64
         $base64Header = base64_encode(json_encode($header));
         $base64Payload = base64_encode(json_encode($payload));
 
@@ -34,7 +35,7 @@ class JWTService
 
         // On génère la signature
         $secret = base64_encode($secret);
-
+        // hash_hmac — Génère une valeur de clé de hachage en utilisant la méthode HMAC
         $signature = hash_hmac('sha256', $base64Header . '.' . $base64Payload, $secret, true);
 
         $base64Signature = base64_encode($signature);
@@ -51,6 +52,7 @@ class JWTService
 
     public function isValid(string $token): bool
     {
+        // preg_match — Effectue une recherche de correspondance avec une expression rationnelle standard
         return preg_match(
             '/^[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+$/',
             $token
