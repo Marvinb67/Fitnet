@@ -125,6 +125,7 @@ class EvenementController extends AbstractController
     }
 
     #[Route('evenement/edit/{slug}', requirements: ['slug' => '[a-z0-9\-]*'], name:'app_evenement_edit')]
+    #[Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER') and evenement.getUser() == user")]
     public function edit(Evenement $evenement, Request $request, ManagerRegistry $doctrine): Response
     {
         $form = $this->createForm(EvenementType::class, $evenement);
@@ -145,6 +146,7 @@ class EvenementController extends AbstractController
     }
 
     #[Route('evenement/delete/{slug}', requirements: ['slug' => '[a-z0-9\-]*'], name: 'app_evenement_delete')]
+    #[Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER') and evenement.getUser() == user")]
     public function delete(Evenement $evenement, ManagerRegistry $doctrine)
     {
         $medias = $evenement->getMediaEvenement();
