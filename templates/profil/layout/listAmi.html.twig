@@ -1,0 +1,6 @@
+<h4>Les Amis</h4>
+{% for ami in amis %}
+    <a id="ami-{{ami.id}}" class="link-secondary text-decoration-none amis" href="{{ path('app_user_detail', { slug: ami.slug }) }}"><img class="img-profil" src="{{ ami.image }}" alt="{{ ami.nom }}" width="50px" height="50px"/>
+        {{ ami.nom }}
+        {{ ami.prenom }}</a><br/>
+{% endfor %}
