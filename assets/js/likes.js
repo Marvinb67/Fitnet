@@ -93,22 +93,25 @@ let icon = document.querySelector(".reactions");
 let icons = document.querySelectorAll(".fa-thumbs-down");
 if (icon) {
   let postId = icon.attributes["data-id"].value;
+  const paths = ['/search-form', '/publication']
   const lien =
-    window.location.pathname === "/publication" ||
+    (window.location.pathname === paths[1] || window.location.pathname === paths[0]) ||
     window.location.pathname === "/"
       ? `${window.location.origin}/reaction/stats`
       : `${window.location.origin}/reaction/stats/${postId}`;
+
   axios
     .get(lien)
     .then((response) => {
       let data = response.data.likes;
       for (let i=0; i< icons.length; i++) {
         let id = icons[i].attributes["data-id"].value;
+        let key = icons.length === 1 ? 0 : id - 1;
         let likesSpan =document.getElementById(`j-aime-${id}`)
         let dislikesSpan = document.getElementById(`j-aimePas-${id}`)
-        likesSpan.innerHTML = data[id-1].countLikes;
-        dislikesSpan.innerHTML = data[id-1].countDisLikes;
-        switch (data[id-1].aimeOuPas) {
+        likesSpan.innerHTML = data[key].countLikes;
+        dislikesSpan.innerHTML = data[key].countDisLikes;
+        switch (data[key].aimeOuPas) {
           case true:
             likesSpan.previousSibling.previousSibling.style.color = "#0a58ca";
             break;
