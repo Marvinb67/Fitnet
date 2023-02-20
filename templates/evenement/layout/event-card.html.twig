@@ -13,7 +13,14 @@
         </div>
             {% for event in peRepo %}
                 <div class="evenement-card">
-                    <div class="event-picture"></div>
+                    <div>
+                        {% for key, img in event.evenement.mediaEvenement %}
+                            {% if key == 0 %}
+                                <a href="{{ path('app_show_media', { slug: img.slug }) }}">
+                                    <img class="card-img-top img-fluid" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{ img.titre }}"/></a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
 {#                     <p>{{event.user.nom}} {{event.user.prenom}}</p>#}
 {#                    <p>Posté le : {{event.evenement.createdAt | date('Y/m/d')}}</p>#}
                     <div class="event-text">
