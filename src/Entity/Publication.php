@@ -55,9 +55,7 @@ class Publication
     #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'publication', cascade: ['persist'])]
     private Collection $mediaPublication;
 
-    #[ORM\ManyToMany(targetEntity: Tag::class)]
-    #[ORM\JoinTable(name: 'tag_publication')]
-    #[Count(min: 1)]
+    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'publication')]
     private Collection $tagsPublication;
 
     #[ORM\ManyToOne(inversedBy: 'publications')]

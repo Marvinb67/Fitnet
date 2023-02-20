@@ -48,12 +48,13 @@ class PublicationRepository extends ServiceEntityRepository
      *
      * @return Publication[]
      */
-    public function findSearch(SearchData $search, int $limit = 7): array
+    public function findSearch(SearchData $search, int $limit = 6): array
     {
         $query = $this
             ->findActivePublicationQuery()
             ->select('u', 'p')
             ->join('p.user', 'u')
+            ->innerJoin('p.tagsPublication ', 'tp')
             ->setMaxResults($limit)
             ->setFirstResult(($search->getPage() * $limit) - $limit);
 
@@ -65,21 +66,21 @@ class PublicationRepository extends ServiceEntityRepository
             // parcourir le tableau de mots
             for ($i = 0; $i < count($mots); $i++) {
                 // accepter la recherche seulement si le mot a plus de 2 lettres
-                if (strlen($mots[$i]) > 1) {
+                if (strlen($mots[$i]) > 2) {
                     // si le compteur est a zero ajouter WHERE a la requete
                     $query = $query->orWhere($query->expr()->orX(
                         $query->expr()->like('p.titre',  ':q' . $i),
-                        $query->expr()->like('p.contenu',  ':q' . $i)
+                        // $query->expr()->like('p.contenu',  ':q' . $i)
                     ))->setParameter('q' . $i, "%{$mots[$i]}%");
                 }
             }
         }
-        // if (!empty($search->getTag())) {
-        //     $query = $query
-        //         ->andWhere('p.tagsPublication = :tag')
-        //         ->setParameter('tag', $search->getTag());
-        //     // dd($query);
-        // }
+        if (!empty($search->getTag())) {
+            $query = $query
+                ->andWhere('tp.intitule = :tag')
+                ->setParameter('tag', $search->getTag());
+            // dd($query);
+        }
         // if (!empty($search->getDates())) {
         //     $query = $query
         //         ->andWhere('p.createdAt = :dates')
@@ -97,6 +98,7 @@ class PublicationRepository extends ServiceEntityRepository
             'limit' => $limit,
             'page' => $search->getPage(),
             'q' => $search->getQ(),
+            'tag' => $search->getTag(),
         ];
         return $result;
     }

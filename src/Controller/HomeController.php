@@ -35,8 +35,6 @@ class HomeController extends AbstractController
         $form = $this->createForm(SearchFormType::class, $data);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $data->setTag($request->get('tag'));
-            dd($data);
             $publications = $publicationRepository->findSearch($data);
             return $this->render('publication/index.html.twig', [
                 'publications' => $publications,
