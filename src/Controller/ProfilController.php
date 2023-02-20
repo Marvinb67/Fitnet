@@ -57,9 +57,11 @@ class ProfilController extends AbstractController
             // $currentUser = $user->getId();
             $userProfil[] = [
                 'id' => $user->getId(),
-                'image' => $user->getimage(),
                 'nom' => $user->getnom().' '.$user->getprenom(),
+                'image' => $user->getimage(),
+                'slug' => $user->getSlug(),
             ];
+            
             foreach ($user->getAmis() as $ami) {
                 $amis[] = [
                     'idAmi' => $ami->getId(),
