@@ -9,7 +9,8 @@
 				</a>
 			{% endif %}
 		{% endfor %}
-        <div class="profil-dark-bar"></div>
+        <div class="profil-dark-bar">
+        </div>
 	{% else %}
 		{% for user in userProfil %}
 			<a href="{{ path('app_user_detail', {slug: user.slug}) }}">
@@ -17,9 +18,8 @@
 					<img id="image_profil1" class="rounded-circle" src="{{ user.image }}" alt="{{ user.nom }}" width="100px"/>
 				</div>
 			</a>
-		{% endfor %}
         <div class="profil-dark-bar">
-		<a class="button-profil button-profil-1" href="#">Suivre
+		<a class="button-profil button-profil-1" href="{{path('app_add_follow', {slug: user.slug, id: user.id})}}">Suivre
 			<i class="fa-solid fa-plus icon"></i>
 		</a>
 		<a class="button-profil button-profil-2" href="#">Invité en ami
@@ -29,6 +29,7 @@
 			<i class="fa-solid fa-paper-plane icon"></i>
 		</a>
 	</div>
+		{% endfor %}
 	{% endif %}
 
 	

@@ -102,4 +102,17 @@ class ProfilController extends AbstractController
         $em->flush();
         return $this->redirectToRoute('app_profil');
     }
+
+    #[Route('/ajout-follow/{slug}{id}', name: 'app_add_follow')]
+    public function addFollow(int $id, User $user, UserRepository $userRepository, EntityManagerInterface $em): Response
+    {
+        // L'utilisateur à ajouter
+        $follow = $userRepository->findOneBy(['id' => $id]);
+        // S'assurer que l'utilisateur n'est pas déjà suivi
+         
+        $userFollow = $user->addFollowUser($follow);
+        $em->persist($userFollow);
+        $em->flush();
+        return $this->redirectToRoute('app_profil');
+    }
 }
