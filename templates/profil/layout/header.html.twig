@@ -1,12 +1,35 @@
 <section class="header-profil-section">
+	{% if users is defined %}
+		{% for user in users %}
+			{% if app.user.id is same as(user.id) %}
+				<a href="{{ path('app_profil') }}">
+					<div class="photo-profil">
+						<img id="image_profil1" class="rounded-circle" src="{{ app.user.image }}" alt="{{ app.user.nom }} {{ app.user.prenom }}" width="100px"/>
+					</div>
+				</a>
+			{% endif %}
+		{% endfor %}
+        <div class="profil-dark-bar"></div>
+	{% else %}
+		{% for user in userProfil %}
+			<a href="{{ path('app_user_detail', {slug: user.slug}) }}">
+				<div class="photo-profil">
+					<img id="image_profil1" class="rounded-circle" src="{{ user.image }}" alt="{{ user.nom }}" width="100px"/>
+				</div>
+			</a>
+		{% endfor %}
+        <div class="profil-dark-bar">
+		<a class="button-profil button-profil-1" href="#">Suivre
+			<i class="fa-solid fa-plus icon"></i>
+		</a>
+		<a class="button-profil button-profil-2" href="#">Invité en ami
+			<i class="fa-solid fa-user-plus icon"></i>
+		</a>
+		<a class="button-profil button-profil-3" href="#">Message
+			<i class="fa-solid fa-paper-plane icon"></i>
+		</a>
+	</div>
+	{% endif %}
 
-<a href="{{ path('app_profil') }}">
-    <div class="photo-profil">
-        <img id="image_profil1" class="rounded-circle" src="{{ app.user.image }}" alt="{{ app.user.nom }}" width="100px"/>
-    </div></a>
-<div class="profil-dark-bar">
-    <a class="button-profil button-profil-1" href="#">Suivre <i class="fa-solid fa-plus icon"></i></a>
-    <a class="button-profil button-profil-2" href="#">Invité en ami <i class="fa-solid fa-user-plus icon"></i></a>
-    <a class="button-profil button-profil-3" href="#">Message <i class="fa-solid fa-paper-plane icon"></i></a>
-</div>
+	
 </section>

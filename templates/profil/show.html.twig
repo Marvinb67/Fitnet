@@ -11,7 +11,6 @@
 				{% include '_layout/_desktop/sideNav.html.twig' %}
 			</div>
 			<section class="public-profil-container">
-				<div>
 			{% include 'profil/layout/header.html.twig' %}
             <div class="public-profil-div">
 					<div class="public-profil-nav">
@@ -36,8 +35,11 @@
 						<div class="lespageprofil list-suivis" id="page-suivi">
 							{% include 'profil/layout/suivi.html.twig' %}
 						</div>
+            <div class="buttons d-flex flex-row-reverse m-2">
+				<a id="modifie_profil" href="{{ path('app_profil') }}" class="btn btn-outline-primary btns px-4">Retour à mon Profil</a>
+			</div>
 					</div>
-				</div></div>
+				</div>
 			</section>
 
 			</div>
