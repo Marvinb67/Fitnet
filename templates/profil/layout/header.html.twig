@@ -9,6 +9,7 @@
 				</a>
 			{% endif %}
 		{% endfor %}
+        <div class="profil-dark-bar"></div>
 	{% else %}
 		{% for user in userProfil %}
 			<a href="{{ path('app_user_detail', {slug: user.slug}) }}">
