@@ -1,7 +1,7 @@
 <div class="evenement-container">
 <div class="publication-scroll-header">
             <div id="filter-modal" class="filter-div">
-                <p>Filtrer<i class="fa-solid fa-caret-down"></i></p>
+{#                <p>Filtrer<i class="fa-solid fa-caret-down"></i></p>#}
                 <div class="modal-filtre-publication">
                     <li>Popularité</li>
                     <li>Ancienneté</li>
@@ -35,6 +35,8 @@
 {#                        <p>Posté le : {{event.evenement.createdAt | date('Y/m/d')}}</p>#}
                         <div>
                              <span class="bouton dark-ground">Participants : {{event.inscritEvenement | length}}</span>
+{#                            <p>Participant <span class="dark-round">{{peRepoo.InscritEvenement | length}}</span></p>#}
+
                             <a class="bouton blue-ground" href="{{ path('app_evenement_show', {slug: event.evenement.slug, id: event.evenement.id}) }}">En savoir plus</a>
                         </div>
                     </div>

@@ -8,7 +8,7 @@
 
         <div class="publication-scroll-header">
             <div id="filter-modal" class="filter-div">
-                <p>Filtrer<i class="fa-solid fa-caret-down"></i></p>
+{#                <p>Filtrer<i class="fa-solid fa-caret-down"></i></p>#}
                 <div class="modal-filtre-publication">
                     <li>Popularité</li>
                     <li>Ancienneté</li>
@@ -48,33 +48,34 @@
                             <div class="modal-menu-publication" id="publication-modal">
                                 <ul>
                                     {% if (app.user) and (app.user.id is same as publication.user.id)  %}
-                                        <a href="#">Enregistrer</a>
                                         <a class="edit-publication-btn" href="{{ path('app_publication_edit', { id: publication.id, slug: publication.slug }) }}">Modifier</a>
                                         <a class="delete-publication-btn" href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer</a>
-                                    {% else %}
-                                        <a href="#">Enregistrer</a>
                                     {% endif %}
                                 </ul>
-                            </div>  
+                            </div>
+                            {% if (app.user) and (app.user.id is same as publication.user.id)  %}
+
                             <i class="fas fa-ellipsis-v" data-modal="{{publication.id}}"></i>
+                            {% endif %}
+
                         </div>
                     </div>
+                    {% for key, img in publication.mediaPublication %}
+                        {% if key == 0 %}
+                            <a  href="{{ path('app_show_media', { slug: img.slug }) }}">
+                                <img class="img-publication card-img-top img-fluid" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{ img.titre }}"/></a>
+                        {% endif %}
+                    {% endfor %}
                     <h2>
                         <a href="{{ path('app_publication_show', { id: publication.id, slug: publication.slug }) }}">{{ publication.titre }}</a>
                     </h2>
-                    {% for key, img in publication.mediaPublication %}
-                        {% if key == 0 %}
-                            <a href="{{ path('app_show_media', { slug: img.slug }) }}">
-                                <img class="card-img-top img-fluid" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{ img.titre }}"/></a>
-                        {% endif %}
-                    {% endfor %}
                     <div>{{ publication.contenu }}</div>
                     {% include '/publication/reaction.html.twig' %}
+                    <div class="tag-div">
                     {% for tag in publication.tagsPublication %}
-                    <div>
                         <a href="{{ path('app_publication', {tag: tag.intitule})}}"><span class="badge badge-pill badge-info text-info">#{{ tag.intitule }}</span></a>
-                    </div>
                     {% endfor %}
+                    </div>
                 </div>
             {% endfor %}
             {% set path = 'app_publication' %}
