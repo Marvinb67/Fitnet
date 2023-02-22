@@ -5,7 +5,7 @@
 			<a id="suivi-{{suivi.id}}" class="link-secondary text-decoration-none suivis" href="{{ path('app_user_detail', { slug: suivi.slug, id: suivi.id }) }}"><img class="img-profil" src="{{ suivi.image }}" alt="{{ suivi.nom }}" width="50px" height="50px"/>
 				{{ suivi.nom }}
 				{{ suivi.prenom }}</a>
-			<a class="button-profil mr-2" href="{{path('app_add_follow', {followEtat: 'false', id: suivi.id})}}">Ne plus Suivre
+			<a class="button-profil mr-2" href="{{path('app_add_interaction', {interaction: 'ajout-follow', etat: 'false', id: suivi.id})}}">Ne plus Suivre
 				<i class="fa-solid fa-ban icon"></i>
 			</a>
 		</div>
@@ -18,11 +18,11 @@
 				{{ suivi.nom }}
 			</a>
 			{% if suivi.idFollowedUser in communFollows %}
-				<a class="button-profil mr-2" href="{{path('app_add_follow', {followEtat: 'false', id: suivi.idFollowedUser})}}">Ne plus Suivre
+				<a class="button-profil mr-2" href="{{path('app_add_interaction', {interaction: 'ajout-follow', etat: 'false', id: suivi.idFollowedUser})}}">Ne plus Suivre
 					<i class="fa-solid fa-ban icon"></i>
 				</a>
 			{% else %}
-				<a class="button-profil mr-2" href="{{path('app_add_follow', {followEtat: 'true', id: suivi.idFollowedUser})}}">Suivre
+				<a class="button-profil mr-2" href="{{path('app_add_interaction', {interaction: 'ajout-follow', etat: 'true', id: suivi.idFollowedUser})}}">Suivre
 					<i class="fa-solid fa-plus icon"></i>
 				</a>
 			{% endif %}

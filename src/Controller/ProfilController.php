@@ -21,6 +21,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/profil')]
 class ProfilController extends AbstractController
 {
+    /**
+     * Recherche des utilisateurs
+     *
+     * @param UserRepository $userRepository
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/', name: 'app_profil')]
     public function index(UserRepository $userRepository, Request $request): Response
     {
@@ -35,22 +42,52 @@ class ProfilController extends AbstractController
         $form->handleRequest($request);
 
         $data->setPage($request->get('page', 1));
-        $users = $userRepository->findSearch($data);
-        foreach ($user->getAmis() as $ami) {
-            $amis[] = $ami;
+            $users = $userRepository->findSearch($data);
+
+            foreach ($user->getAmis() as $ami) {
+                $amis[] = $ami;
+            }
+            foreach ($user->getFollowUsers() as $follow) {
+                $suivis[] = $follow;
+            };
+            
+            return $this->render('profil/index.html.twig', [
+                'users' => $users,
+                'amis' => $amis,
+                'suivis' => $suivis,
+
+            ]);
+    }
+ /**
+     * Géstion du formulaire de recherche des users
+     *
+     * @param UserRepository $userRepository
+     * @param Request $request
+     * @return Response
+     */
+    #[Route('/search-form', name: 'search_user_form')]
+    public function searchForm(UserRepository $userRepository, Request $request): Response
+    {
+        $data = new SearchData();
+
+        $form = $this->createForm(SearchFormType::class, $data);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $users = $userRepository->findSearch($data);
+            return $this->render('user/index.html.twig', [
+                'users' => $users,
+            ]);
         }
-        foreach ($user->getFollowUsers() as $follow) {
-            $suivis[] = $follow;
-        };
-
-        return $this->render('profil/index.html.twig', [
-            'users' => $users,
-            'amis' => $amis,
-            'suivis' => $suivis,
-
+        return $this->render('_partials/_searchForm.html.twig', [
+            'form' => $form->createView()
         ]);
     }
-
+    /**
+     * Les relation entre utilisateurs (Amities et suivis)
+     *
+     * @param User $user
+     * @return Response
+     */
     #[Route('/{id}-{slug}', name: 'app_user_detail')]
     public function show(User $user): Response
     {
@@ -109,25 +146,23 @@ class ProfilController extends AbstractController
             'amisOfAmi' => $amisOfAmi,
             'followUsers'  => $followUsers,
             // 'followedByUsers'  => $followedByUsers,
-            'communAmis' => $amisCommun?? [],
-            'communFollows' => $followsCommun?? [],
+            'communAmis' => $amisCommun ?? [],
+            'communFollows' => $followsCommun ?? [],
             'amisIds' => $amisIds,
             'followersIds' => $followersIds,
         ]);
     }
 
-    #[Route('/ajout-ami/{frendship}-{id}', name: 'app_add_friend')]
-    public function addFriend(int $id, User $user, UserRepository $userRepository, EntityManagerInterface $em): Response
-    {
-        $ami = $userRepository->findOneBy(['id' => $id]);
-        $userAmi = $user->addAmi($ami);
-        $em->persist($userAmi);
-        $em->flush();
-        return $this->redirectToRoute('app_profil');
-    }
-
-    #[Route('/ajout-follow/{followEtat}-{id}', name: 'app_add_follow')]
-    public function addFollow(Request $request, UserRepository $userRepository, EntityManagerInterface $em): Response
+    /**
+     * Ajou/suppression d'amitier ou suivi
+     *
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    #[Route('/{interaction}/{etat}-{id}', name: 'app_add_interaction')]
+    public function addInteraction(Request $request, UserRepository $userRepository, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
         // Redirection vers page de connexion si aucun utilisateur connecté
@@ -138,39 +173,72 @@ class ProfilController extends AbstractController
         // Récupération de l'id de l'utlisateur à suivre et l'état du suivi.
         $userId = $request->get('id');
         // En vérifier si l'utilisateur est connecté si non une reponse json exploiter au js
-        $followEtat = $request->get('followEtat');
+        $etat = $request->get('etat');
+        // En vérifier si l'utilisateur est connecté si non une reponse json exploiter au js
+        $route = $request->get('interaction');
         // match est une alternative de switch(seulement php8)
-        $etat = match ($followEtat) {
+        $etat = match ($etat) {
             'true' => true,
             'false' => false,
         };
         // L'utilisateur à ajouter
-        $followedUser = $userRepository->findOneBy(['id' => $userId]);
+        $targetUser = $userRepository->findOneBy(['id' => $userId]);
         // Vérification de l'existance de l'utilisateur et de l'etat (true ou false)
-        if (!$followedUser) {
+        if (!$targetUser) {
             $this->addFlash('danger', 'Aucun utilisateur idenfier!');
             return $this->redirectToRoute('app_profil');
         }
-        // S'assurer que l'utilisateur est déjà suivi ou non
-        $followedState = $user->getFollowUsers()->contains($followedUser);
+        // S'assurer que l'utilisateur est déjà ami/suivi ou non
+        $followedState = $user->getFollowUsers()->contains($targetUser);
+        $frienshipState = $user->getAmis()->contains($targetUser);
 
-        if ($followedState === true && $etat === false) {
-            // Si il est déjà suivi on supprime le suivi
-            $user->removeFollowUser($followedUser);
-            $this->addFlash('warning', "vous ne suivez plus {$followedUser->getNom()} {$followedUser->getPrenom()}!");
-        } elseif ($followedState === false && $etat === true) {
-            // Si il n'est pas suivi on ajout le suivi
-            $user->addFollowUser($followedUser);
-            $this->addFlash('success', "vous suivez désormais {$followedUser->getNom()} {$followedUser->getPrenom()}!");
-        }elseif ($followedState === true && $etat === true) {
-            // Si vouloir suivi alors qu'il est déjà suivi
-            $this->addFlash('warning', "Vous suiver déjà {$followedUser->getNom()} {$followedUser->getPrenom()}!");
-        }elseif ($followedState === false && $etat === false) {
-            // Si vouloir supprimer le suivi alors qu'il n'est existe pas
-            $this->addFlash('warning', "Vous ne suivez plus {$followedUser->getNom()} {$followedUser->getPrenom()}!");
+        /**
+         * Gestion des suivis
+         */
+        // Si le lien contient 'ajout-follow'
+        if ($route === 'ajout-follow') {
+
+            if ($followedState === true && $etat === false) {
+                // Si il est déjà suivi on supprime le suivi
+                $user->removeFollowUser($targetUser);
+                $this->addFlash('warning', "vous ne suivez plus {$targetUser->getNom()} {$targetUser->getPrenom()}!");
+            } elseif ($followedState === false && $etat === true) {
+                // Si il n'est pas suivi on ajout le suivi
+                $user->addFollowUser($targetUser);
+                $this->addFlash('success', "vous suivez désormais {$targetUser->getNom()} {$targetUser->getPrenom()}!");
+            } elseif ($followedState === true && $etat === true) {
+                // Si vouloir suivi alors qu'il est déjà suivi
+                $this->addFlash('warning', "Vous suiver déjà {$targetUser->getNom()} {$targetUser->getPrenom()}!");
+            } elseif ($followedState === false && $etat === false) {
+                // Si vouloir supprimer le suivi alors qu'il n'est existe pas
+                $this->addFlash('warning', "Vous ne suivez plus {$targetUser->getNom()} {$targetUser->getPrenom()}!");
+            } else {
+                $this->addFlash('danger', "Probléme détecter veuillez réessayer! Merci.");
+            }
         }
-        else {
-            $this->addFlash('danger', "Probléme détecter veuillez réessayer! Merci.");
+
+        /**
+         * Gestion des amis
+         */
+        // Si le lien contient 'ajout-ami'
+        elseif ($route === 'ajout-ami') {
+            if ($frienshipState === true && $etat === false) {
+                // Si il est déjà suivi on supprime le suivi
+                $user->removeAmi($targetUser);
+                $this->addFlash('warning', "vous n'êtes plus ami avec {$targetUser->getNom()} {$targetUser->getPrenom()}!");
+            } elseif ($frienshipState === false && $etat === true) {
+                // Si il n'est pas suivi on ajout le suivi
+                $user->addAmi($targetUser);
+                $this->addFlash('success', "vous êtes désormais ami avec {$targetUser->getNom()} {$targetUser->getPrenom()}!");
+            } elseif ($frienshipState === true && $etat === true) {
+                // Si vouloir suivi alors qu'il est déjà suivi
+                $this->addFlash('warning', "Vous êtes déjà ami avec {$targetUser->getNom()} {$targetUser->getPrenom()}!");
+            } elseif ($frienshipState === false && $etat === false) {
+                // Si vouloir supprimer le suivi alors qu'il n'est existe pas
+                $this->addFlash('warning', "Vous n'êtes pas ami avec {$targetUser->getNom()} {$targetUser->getPrenom()}!");
+            } else {
+                $this->addFlash('danger', "Probléme détecter veuillez réessayer! Merci.");
+            }
         }
         // Enregistrement du changement dans la base des données.
         $em->flush();
