@@ -119,25 +119,33 @@ class ProfilController extends AbstractController
         //         'nom' => $followedBy->getNom() . ' ' . $followedBy->getPrenom(),
         //     ];
         // };
-
+            // Les amis en commun avec l'utlisateur connecté
         $communAmis = array_intersect($user->getAmis()->toArray(), $connectedUser->getAmis()->toArray());
         foreach ($communAmis as $communAmi) {
             $amisCommun[] = $communAmi->getId();
         }
-
+           // Les suivis en commun avec l'utlisateur connecté
         $communFollows = array_intersect($user->getFollowUsers()->toArray(), $connectedUser->getFollowUsers()->toArray());
         foreach ($communFollows as $communFollow) {
             $followsCommun[] = $communFollow->getId();
         }
-
+        // Liste des amis de l'utlisateur connecté
         $amis = $connectedUser->getAmis()->toArray();
         foreach ($amis as $ami) {
             $amisIds[] = $ami->getId();
         }
+        // Liste des suivis de l'utlisateur connecté
         $follows = $connectedUser->getFollowUsers()->toArray();
         foreach ($follows as $follow) {
             $followersIds[] = $follow->getId();
         }
+        // Liste des publications de l'utilisateur consulté
+        $publicationsUser = $user->getPublications()->toArray();
+        // Liste des evenements de l'utilisateur consulté
+        $evenementsUser = $user->getEvenements()->toArray();
+        // Liste des groupes de l'utilisateur consulté
+        $groupesUser = $user->getGroupes()->toArray();
+
         return $this->render('profil/show.html.twig', [
             'userProfil' => $userProfil,
             'amisOfAmi' => $amisOfAmi,
@@ -147,6 +155,9 @@ class ProfilController extends AbstractController
             'communFollows' => $followsCommun ?? [],
             'amisIds' => $amisIds,
             'followersIds' => $followersIds,
+            'publicationsUser' => $publicationsUser,
+            'evenementsUser' => $evenementsUser,
+            'groupesUser' => $groupesUser,
         ]);
     }
 

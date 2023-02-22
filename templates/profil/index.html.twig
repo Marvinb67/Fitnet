@@ -22,6 +22,9 @@
 					<div class="public-profil-nav">
 						<nav>
 							<ul>
+								<li><a class="btn-profil list-publications" href="#page-publications">Mes Publications</a></li>
+								<li><a class="btn-profil list-evenements" href="#page-evenements">Les Evénements</a></li>
+								<li><a class="btn-profil list-groupes" href="#page-groupes">Les Groupes</a></li>
 								<li><a class="btn-profil profil-user" href="#page-profil">Profil</a></li>
 								<li><a class="btn-profil list-amis" href="#page-ami">Ami</a></li>
 								<li><a class="btn-profil list-suivis" href="#page-suivi">Suivi</a></li>
@@ -30,6 +33,19 @@
 					</div>
 
 					<div class="public-profil-na">
+
+						<div class="lespageprofil active profil-publications" id="page-publications">
+						{% include "profil/publication.html.twig" %}
+						</div>
+
+						<div class="lespageprofil profil-evenements" id="page-evenements">
+						{% include "profil/evenement.html.twig" %}
+						</div>
+
+						<div class="lespageprofil profil-groupes" id="page-groupes">
+						{% include "profil/groupe.html.twig" %}
+						</div>
+
 						<div class="lespageprofil active profil-user" id="page-profil">
 							{% include 'profil/layout/profil.html.twig' %}
 						</div>
