@@ -40,6 +40,9 @@ class Groupe
     #[ORM\OneToMany(mappedBy: 'groupe', targetEntity: Publication::class)]
     private Collection $publications;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
     public function __construct()
     {
         $this->adherentsGroupe = new ArrayCollection();
@@ -138,6 +141,18 @@ class Groupe
                 $publication->setGroupe(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
