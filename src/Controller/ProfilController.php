@@ -21,6 +21,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/profil')]
 class ProfilController extends AbstractController
 {
+    /**
+     * Recherche des utilisateurs
+     *
+     * @param UserRepository $userRepository
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/', name: 'app_profil')]
     public function index(UserRepository $userRepository, Request $request): Response
     {
@@ -35,22 +42,52 @@ class ProfilController extends AbstractController
         $form->handleRequest($request);
 
         $data->setPage($request->get('page', 1));
-        $users = $userRepository->findSearch($data);
-        foreach ($user->getAmis() as $ami) {
-            $amis[] = $ami;
+            $users = $userRepository->findSearch($data);
+
+            foreach ($user->getAmis() as $ami) {
+                $amis[] = $ami;
+            }
+            foreach ($user->getFollowUsers() as $follow) {
+                $suivis[] = $follow;
+            };
+            
+            return $this->render('profil/index.html.twig', [
+                'users' => $users,
+                'amis' => $amis,
+                'suivis' => $suivis,
+
+            ]);
+    }
+ /**
+     * Géstion du formulaire de recherche des users
+     *
+     * @param UserRepository $userRepository
+     * @param Request $request
+     * @return Response
+     */
+    #[Route('/search-form', name: 'search_user_form')]
+    public function searchForm(UserRepository $userRepository, Request $request): Response
+    {
+        $data = new SearchData();
+
+        $form = $this->createForm(SearchFormType::class, $data);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $users = $userRepository->findSearch($data);
+            return $this->render('user/index.html.twig', [
+                'users' => $users,
+            ]);
         }
-        foreach ($user->getFollowUsers() as $follow) {
-            $suivis[] = $follow;
-        };
-
-        return $this->render('profil/index.html.twig', [
-            'users' => $users,
-            'amis' => $amis,
-            'suivis' => $suivis,
-
+        return $this->render('_partials/_searchForm.html.twig', [
+            'form' => $form->createView()
         ]);
     }
-
+    /**
+     * Les relation entre utilisateurs (Amities et suivis)
+     *
+     * @param User $user
+     * @return Response
+     */
     #[Route('/{id}-{slug}', name: 'app_user_detail')]
     public function show(User $user): Response
     {
@@ -116,16 +153,14 @@ class ProfilController extends AbstractController
         ]);
     }
 
-    // #[Route('/ajout-ami/{etat}-{id}', name: 'app_add_friend')]
-    // public function addFriend(int $id, User $user, UserRepository $userRepository, EntityManagerInterface $em): Response
-    // {
-    //     $ami = $userRepository->findOneBy(['id' => $id]);
-    //     $userAmi = $user->addAmi($ami);
-    //     $em->persist($userAmi);
-    //     $em->flush();
-    //     return $this->redirectToRoute('app_profil');
-    // }
-
+    /**
+     * Ajou/suppression d'amitier ou suivi
+     *
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/{interaction}/{etat}-{id}', name: 'app_add_interaction')]
     public function addInteraction(Request $request, UserRepository $userRepository, EntityManagerInterface $em): Response
     {
