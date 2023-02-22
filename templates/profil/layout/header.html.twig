@@ -9,27 +9,39 @@
 				</a>
 			{% endif %}
 		{% endfor %}
-        <div class="profil-dark-bar"></div>
+		<div class="profil-dark-bar"></div>
 	{% else %}
 		{% for user in userProfil %}
-			<a href="{{ path('app_user_detail', {slug: user.slug}) }}">
+			<a href="{{ path('app_user_detail', {slug: user.slug, id: user.id}) }}">
 				<div class="photo-profil">
 					<img id="image_profil1" class="rounded-circle" src="{{ user.image }}" alt="{{ user.nom }}" width="100px"/>
 				</div>
 			</a>
+			<div class="profil-dark-bar">
+				{% if user.id in followersIds %}
+					<a class="button-profil button-profil-1" href="{{path('app_add_follow', {followEtat: 'false', id: user.id})}}">Ne plus Suivre
+						<i class="fa-solid fa-ban icon"></i>
+					</a>
+				{% else %}
+					<a class="button-profil button-profil-1" href="{{path('app_add_follow', {followEtat: 'true', id: user.id})}}">Suivre
+						<i class="fa-solid fa-plus icon"></i>
+					</a>
+				{% endif %}
+				{% if user.id in amisIds %}
+					<a class="button-profil button-profil-2" href="{{ path('app_add_friend', {id: user.id, frendship: 'false'}) }}">Supprimer la relation
+						<i class="fa-solid fa-user-minus icon"></i>
+					</a>
+				{% else %}
+					<a class="button-profil button-profil-2" href="{{ path('app_add_friend', {id: user.id, frendship: 'true'}) }}">Ajouter En Ami
+						<i class="fa-solid fa-user-plus icon"></i>
+					</a>
+				{% endif %}
+				<a class="button-profil button-profil-3" href="#">Message
+					<i class="fa-solid fa-paper-plane icon"></i>
+				</a>
+			</div>
 		{% endfor %}
-        <div class="profil-dark-bar">
-		<a class="button-profil button-profil-1" href="#">Suivre
-			<i class="fa-solid fa-plus icon"></i>
-		</a>
-		<a class="button-profil button-profil-2" href="#">Invité en ami
-			<i class="fa-solid fa-user-plus icon"></i>
-		</a>
-		<a class="button-profil button-profil-3" href="#">Message
-			<i class="fa-solid fa-paper-plane icon"></i>
-		</a>
-	</div>
 	{% endif %}
 
-	
+
 </section>
