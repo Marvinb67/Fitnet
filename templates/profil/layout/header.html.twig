@@ -19,20 +19,20 @@
 			</a>
 			<div class="profil-dark-bar">
 				{% if user.id in followersIds %}
-					<a class="button-profil button-profil-1" href="{{path('app_add_follow', {followEtat: 'false', id: user.id})}}">Ne plus Suivre
+					<a class="button-profil button-profil-1" href="{{path('app_add_interaction', {interaction: 'ajout-follow', etat: 'false', id: user.id})}}">Ne plus Suivre
 						<i class="fa-solid fa-ban icon"></i>
 					</a>
 				{% else %}
-					<a class="button-profil button-profil-1" href="{{path('app_add_follow', {followEtat: 'true', id: user.id})}}">Suivre
+					<a class="button-profil button-profil-1" href="{{path('app_add_interaction', {interaction: 'ajout-follow', etat: 'true', id: user.id})}}">Suivre
 						<i class="fa-solid fa-plus icon"></i>
 					</a>
 				{% endif %}
 				{% if user.id in amisIds %}
-					<a class="button-profil button-profil-2" href="{{ path('app_add_friend', {id: user.id, frendship: 'false'}) }}">Supprimer la relation
+					<a class="button-profil button-profil-2" href="{{ path('app_add_interaction', {interaction: 'ajout-ami', etat: 'false', id: user.id}) }}">Supprimer la relation
 						<i class="fa-solid fa-user-minus icon"></i>
 					</a>
 				{% else %}
-					<a class="button-profil button-profil-2" href="{{ path('app_add_friend', {id: user.id, frendship: 'true'}) }}">Ajouter En Ami
+					<a class="button-profil button-profil-2" href="{{ path('app_add_interaction', {interaction: 'ajout-ami', etat: 'true', id: user.id}) }}">Ajouter En Ami
 						<i class="fa-solid fa-user-plus icon"></i>
 					</a>
 				{% endif %}

@@ -9,7 +9,7 @@
 						{{ ami.nom }}
 						{{ ami.prenom }}
 					</a>
-					<a class="button-profil mr-2" href="{{ path('app_add_friend', {id: ami.id, frendship: 'false'}) }}">Supprimer la relation
+					<a class="button-profil mr-2" href="{{ path('app_add_interaction', {interaction: 'ajout-ami', etat: 'false', id: ami.id}) }}">Supprimer la relation
 						<i class="fa-solid fa-user-minus icon"></i>
 					</a>
 				</div>
@@ -24,11 +24,11 @@
 				{{ amiOfAmi.nom }}
 			</a>
 			{% if amiOfAmi.idAmi in communAmis %}
-				<a class="button-profil mr-2" href="{{ path('app_add_friend', {id: amiOfAmi.idAmi, frendship: 'false'}) }}">Supprimer la relation
+				<a class="button-profil mr-2" href="{{ path('app_add_interaction', {interaction: 'ajout-ami', etat: 'false', id: amiOfAmi.idAmi}) }}">Supprimer la relation
 					<i class="fa-solid fa-user-minus icon"></i>
 				</a>
 			{% else %}
-				<a class="button-profil mr-2" href="{{ path('app_add_friend', {id: amiOfAmi.idAmi, frendship: 'true'}) }}">Ajouter en Ami
+				<a class="button-profil mr-2" href="{{ path('app_add_interaction', {interaction: 'ajout-ami', etat: 'true', id: amiOfAmi.idAmi}) }}">Ajouter en Ami
 					<i class="fa-solid fa-user-plus icon"></i>
 				</a>
 			{% endif %}
