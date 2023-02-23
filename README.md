@@ -2,7 +2,7 @@
 
 ## Comment installer un projet Symfony en local
 
-Assurez-vous que votre machine est équipée de PHP et de MySQL ou d'un autre système de gestion de base de données pris en charge par Symfony.
+Assurez-vous que votre machine est équipée de PHP8 et de MySQL ou d'un autre système de gestion de base de données pris en charge par Symfony.
 
 Installez Composer, un gestionnaire de dépendances pour PHP, en suivant les instructions sur le site web de Composer.
 
