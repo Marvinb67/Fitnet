@@ -94,6 +94,9 @@ class ProfilController extends AbstractController
             'nom' => $user->getnom() . ' ' . $user->getprenom(),
             'image' => $user->getimage(),
             'slug' => $user->getSlug(),
+            'bio' => $user->getMyProfil()->getBiographie(),
+            'age' => $user->getMyProfil()->getAge(),
+            'job' => $user->getMyProfil()->getJob(),
         ];
 
         foreach ($user->getAmis() as $ami) {

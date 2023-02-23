@@ -2,11 +2,10 @@
 	{% for user in users %}
 		{% if app.user.id is same as(user.id) %}
 			<div id="profils">
-				<h5 id="nom_profil">{{ user.nom }} {{ user.prenom }}</h5>
-				<span>Coach Fitness</span>
+				<h5 id="nom_profil">{{ user.nom }} {{ user.prenom }} {{user.myProfil.age}} ans</h5>
+			<span>{{user.myProfil.job}}</span>
 				<div>
-					<p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-					</p>
+					<p>{{user.myProfil.biographie}}</p>
 				</div>
 				<div class="buttons d-flex flex-row-reverse m-2">
 					<a id="modifie_profil" href="{{path('modif_pass', {slug: user.slug, id: user.id})}}" class="btn btn-outline-primary btns px-4">Modifier Profil</a>
@@ -18,10 +17,9 @@
     {% for user in userProfil %}
 		<div id="profils">
 			<h5 id="nom_profil">{{ user.nom }}</h5>
-			<span>Coach Fitness</span>
+			<span>{{user.job}} {{user.age}} ans</span>
 			<div>
-				<p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-				</p>
+				<p>{{user.bio}}</p>
 			</div>
         </div>
     {% endfor %}

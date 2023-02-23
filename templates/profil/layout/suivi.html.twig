@@ -2,7 +2,13 @@
 {% if suivis is defined %}
 	{% for suivi in suivis %}
 		<div class="d-flex justify-content-start ml-2">
-			<a id="suivi-{{suivi.id}}" class="link-secondary text-decoration-none suivis" href="{{ path('app_user_detail', { slug: suivi.slug, id: suivi.id }) }}"><img class="img-profil" src="{{ suivi.image }}" alt="{{ suivi.nom }}" width="50px" height="50px"/>
+			<a id="suivi-{{suivi.id}}" class="link-secondary text-decoration-none suivis" href="{{ path('app_user_detail', { slug: suivi.slug, id: suivi.id }) }}">
+					{% if 'https://www.gravatar.com/' in suivi.image %}
+					<img id="image_profil1" class="rounded-circle" src="{{ suivi.image }}" alt="{{ suivi.nom }}" width="100px"/>
+					{% else %}
+					<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ suivi.image) }}" alt="{{ suivi.nom }}" width="100px"/>
+					{% endif %}
+
 				{{ suivi.nom }}
 				{{ suivi.prenom }}</a>
 			<a class="button-profil mr-2" href="{{path('app_add_interaction', {interaction: 'ajout-follow', etat: 'false', id: suivi.id})}}">Ne plus Suivre
@@ -14,7 +20,11 @@
 	{% for suivi in followUsers %}
 		<div class="d-flex justify-content-start ml-2">
 			<a id="suivi-{{suivi.idFollowedUser}}" class="link-secondary text-decoration-none suivis" href="{{ path('app_user_detail', { slug: suivi.slug, id: suivi.idFollowedUser }) }}">
-				<img class="img-profil" src="{{ suivi.image }}" alt="{{ suivi.nom }}" width="50px" height="50px"/>
+				{% if 'https://www.gravatar.com/' in suivi.image %}
+					<img id="image_profil1" class="rounded-circle" src="{{ suivi.image }}" alt="{{ suivi.nom }}" width="100px"/>
+					{% else %}
+					<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ suivi.image) }}" alt="{{ suivi.nom }}" width="100px"/>
+					{% endif %}
 				{{ suivi.nom }}
 			</a>
 			{% if suivi.idFollowedUser in communFollows %}

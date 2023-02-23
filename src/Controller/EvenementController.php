@@ -8,7 +8,6 @@ use App\Entity\Commentaire;
 use App\Form\EvenementType;
 use App\Form\CommentaireType;
 use App\Entity\ProgrammationEvenement;
-use App\Repository\EvenementRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

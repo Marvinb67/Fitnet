@@ -12,7 +12,13 @@
                     {% endif %}
                 {% endfor %}
                 <li><a href="{{path('app_profil')}}">
-                <img src="{{ app.user.image }}" alt="{{ app.user.nom }} {{ app.user.nom }}" class="rounded-circle"   width="100px"/>
+                
+					{% if 'https://www.gravatar.com/' in app.user.image %}
+					<img id="image_profil1" class="rounded-circle" src="{{ app.user.image }}" alt="{{ app.user.nom }}" width="100px"/>
+					{% else %}
+					<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ app.user.image) }}" alt="{{ app.user.nom }}" width="100px"/>
+
+					{% endif %}
                 </a></li>
                 {% endif %}
             </div>

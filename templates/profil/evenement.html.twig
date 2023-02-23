@@ -1,4 +1,6 @@
+
 {% for event in app.user.evenements %}
+
                 <div class="evenement-card">
                     <div>
                         {% for key, img in event.mediaEvenement %}
@@ -12,6 +14,7 @@
 {#                    <p>Posté le : {{event.evenement.createdAt | date('Y/m/d')}}</p>#}
                     <div class="event-text">
                          <h2><a class="evenement-title" href="{{ path('app_evenement_show', {slug: event.slug, id: event.id}) }}">{{event.intitule}}</a></h2>
+                         <p>{{ event.description}}</p>
                         {# <p>Date de l'évènement : {{ event.startAt | date('Y/m/d') }}</p>
                         <p>De <span class="event-slot">{{ event.startAt | date('H:m') }}</span> <i class="fa-solid fa-arrow-right"></i> <span class="event-slot">{{ event.endAt | date('H:m') }}</span></p> #}
 {#                        <p>Lieu de l'évènement : {{ event.lieu }}</p>#}
@@ -21,7 +24,7 @@
 
 {#                        <p>Posté le : {{event.evenement.createdAt | date('Y/m/d')}}</p>#}
                         <div>
-                             <span class="bouton dark-ground">Participants : {{event.inscritEvenement | length}}</span>
+                             {# <span class="bouton dark-ground">Participants : {{event.inscritEvenement | length}}</span> #}
                             <a class="bouton blue-ground" href="{{ path('app_evenement_show', {slug: event.slug, id: event.id}) }}">En savoir plus</a>
                         </div>
                     </div>

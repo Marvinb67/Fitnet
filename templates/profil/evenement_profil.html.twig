@@ -1,33 +1,19 @@
 {% for event in evenementsUser %}
                 <div class="evenement-card">
                     <div>
-                        {% for key, img in event.evenement.mediaEvenement %}
+                        {% for key, img in event.mediaEvenement %}
                             {% if key == 0 %}
                                 <a href="{{ path('app_show_media', { slug: img.slug }) }}">
                                     <img class="card-img-top img-fluid" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{ img.titre }}"/></a>
                             {% endif %}
                         {% endfor %}
-                    </div>
-{#                     <p>{{event.user.nom}} {{event.user.prenom}}</p>#}
-{#                    <p>Posté le : {{event.evenement.createdAt | date('Y/m/d')}}</p>#}
-                    <div class="event-text">
-                         <h2><a class="evenement-title" href="{{ path('app_evenement_show', {slug: event.evenement.slug, id: event.evenement.id}) }}">{{event.evenement.intitule}}</a></h2>
-                        <p>Date de l'évènement : {{ event.startAt | date('Y/m/d') }}</p>
-                        <p>De <span class="event-slot">{{ event.startAt | date('H:m') }}</span> <i class="fa-solid fa-arrow-right"></i> <span class="event-slot">{{ event.endAt | date('H:m') }}</span></p>
-{#                        <p>Lieu de l'évènement : {{ event.lieu }}</p>#}
-{#                        <p>{{event.evenement.description}}</p>#}
-
-{#                         <a href="{{ path('app_evenement_edit', {id: event.id}) }}">Modifier l'évènement</a> <a href="{{ path('app_evenement_delete', {id: event.id}) }}">Supprimer l'évènement</a>#}
-
-{#                        <p>Posté le : {{event.evenement.createdAt | date('Y/m/d')}}</p>#}
-                        <div>
-                             <span class="bouton dark-ground">Participants : {{event.inscritEvenement | length}}</span>
-                            <a class="bouton blue-ground" href="{{ path('app_evenement_show', {slug: event.evenement.slug, id: event.evenement.id}) }}">En savoir plus</a>
+                        <p>Créer Par: {{event.user.nom}} {{event.user.prenom}}</p>
+                        <p>Posté le : {{event.createdAt | date('Y/m/d')}}</p>
+                            <h2><a class="evenement-title" href="{{ path('app_evenement_show', {slug: event.slug, id: event.id}) }}">{{event.intitule}}</a></h2>
+                        <div class="event-text">
+                            <p>{{event.description}}</p>
+                            <a class="bouton blue-ground" href="{{ path('app_evenement_show', {slug: event.slug, id: event.id}) }}">En savoir plus</a>
                         </div>
                     </div>
-{#                    <a href="{{ path('app_evenement_edit', {slug: event.evenement.slug}) }}">Modifier l'évènement</a>#}
-{#                    <a href="{{ path('app_evenement_delete', {slug: event.evenement.slug}) }}">Supprimer l'évènement</a>#}
-{#                    <a href="{{ path('app_inscription_evenement_add', {id: event.id}) }}" class="btn btn-primary">S'inscrire</a>#}
-{#                    <a href="{{ path('app_inscription_evenement_remove', {id: event.id}) }}" class="btn btn-danger">Désinscrire</a>#}
                 </div>
 {% endfor %}
