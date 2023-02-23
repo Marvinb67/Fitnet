@@ -29,33 +29,13 @@
 			</a>
 			{% if suivi.idFollowedUser in communFollows %}
 				<a class="button-profil mr-2" href="{{path('app_add_interaction', {interaction: 'ajout-follow', etat: 'false', id: suivi.idFollowedUser})}}">Ne plus Suivre
-
 					<i class="fa-solid fa-ban icon"></i>
 				</a>
-			</div>
-		{% endfor %}
-	{% else %}
-		{% for suivi in followUsers %}
-			<div  class="suivi-section">
-				<div>
-					<a id="suivi-{{suivi.idFollowedUser}}" class="link-secondary text-decoration-none suivis" href="{{ path('app_user_detail', { slug: suivi.slug, id: suivi.idFollowedUser }) }}">
-						<img class="img-profil" src="{{ suivi.image }}" alt="{{ suivi.nom }}" width="50px" height="50px"/>
-						{{ suivi.nom }}
-					</a>
-				</div>
-
-				<div>
-					{% if suivi.idFollowedUser in communFollows %}
-						<a class="button-profil mr-2" href="{{path('app_add_interaction', {interaction: 'ajout-follow', etat: 'false', id: suivi.idFollowedUser})}}">Ne plus Suivre
-							<i class="fa-solid fa-ban icon"></i>
-						</a>
-					{% else %}
-						<a class="button-profil mr-2" href="{{path('app_add_interaction', {interaction: 'ajout-follow', etat: 'true', id: suivi.idFollowedUser})}}">Suivre
-							<i class="fa-solid fa-plus icon"></i>
-						</a>
-					{% endif %}
-				</div>
-			</div>
-		{% endfor %}
-	{% endif %}
-</section>
+			{% else %}
+				<a class="button-profil mr-2" href="{{path('app_add_interaction', {interaction: 'ajout-follow', etat: 'true', id: suivi.idFollowedUser})}}">Suivre
+					<i class="fa-solid fa-plus icon"></i>
+				</a>
+			{% endif %}
+		</div>
+	{% endfor %}
+{% endif %}
