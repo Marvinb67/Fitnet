@@ -186,7 +186,7 @@ class SecurityController extends AbstractController
      * @param UserPasswordHasherInterface $passwordHasher
      * @return Response
      */
-    #[Route('/profil/parametre/{slug}{id}',  name: 'modif_pass', methods: ["GET","POST"])]
+    #[Route('/parametre/profil/{slug}{id}',  name: 'modif_pass', methods: ["GET","POST"])]
 
     public function modifPass(
         Request $request,

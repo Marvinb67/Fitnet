@@ -36,9 +36,17 @@ class GroupeController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
+            $image = $form->get('image')->getData();
+            $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+            $image->move(
+                $this->getParameter('medias_directory'),
+                $fichier
+            );
+
             $groupe
                 ->setUser($this->getUser())
                 ->setSlug($sluggerInterface->slug(strtolower($groupe->getIntitule())))
+                ->setImage($fichier);
             ;
 
             $em->persist($groupe);
@@ -86,6 +94,16 @@ class GroupeController extends AbstractController
     #[Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER') and groupe.getUser() == user")]
     public function delete(Groupe $groupe, EntityManagerInterface $em)
     {
+        $image = $groupe->getImage();
+
+        if ($image) {
+            $nomImage = $this->getParameter("image_upload").'/'.$image;
+
+            if(file_exists($nomImage)){
+                unlink($nomImage);
+            }
+        }
+
         $em->remove($groupe);
         $em->flush();
 

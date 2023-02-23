@@ -7,32 +7,35 @@
     height: 700px;
     right: 0;
     background-color: #f5f5f5;
-
 }
 
 .header-profil-section{
     height: 120px;
     width: 100%;
-    position: relative;
+    //position: relative;
+    background-color: #262626;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
-.profil-dark-bar{
-    background-color: #262626;
-    height: 80px;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-}
+//.profil-dark-bar{
+//    height: 100%;
+//    width: 100%;
+//    position: absolute;
+//    bottom: 0;
+//}
 
 .photo-profil{
     width: 100px;
     height: 100px;
     border-radius: 100px;
     background-color:aquamarine;
-    position: absolute;
-    bottom: 30px;
-    left: 20px;
+    //position: absolute;
+    //bottom: 30px;
+    //left: 20px;
     z-index: 1;
+    margin: 1rem;
 }
 
 .button-profil{
@@ -42,23 +45,23 @@
     border-radius: 100px;
 }
 
-.button-profil-1{
-    position: absolute;
-    top: 20px;
-    left: 160px;
-}
-
-.button-profil-2{
-    position: absolute;
-    top: 20px;
-    left: 330px;
-}
-
-.button-profil-3{
-    position: absolute;
-    top: 20px;
-    right: 50px;
-}
+//.button-profil-1{
+//    position: absolute;
+//    top: 20px;
+//    left: 160px;
+//}
+//
+//.button-profil-2{
+//    position: absolute;
+//    top: 20px;
+//    left: 330px;
+//}
+//
+//.button-profil-3{
+//    position: absolute;
+//    top: 20px;
+//    right: 50px;
+//}
 
 .icon{
     color: $primary_color;
@@ -87,7 +90,9 @@
 
 .public-profil-nav{
     width: 300px;
-    background-color: #3adb76;
+    height: 600px;
+    background-color: white;
+    padding: 1rem;
 }
 
 .public-profil-container{
@@ -95,7 +100,12 @@
     position: absolute;
     top: 0;
     left: 267px;
-    padding: 1rem;
+    height: 670px;
+    //padding: 1rem;
+    background-color: #f5f5f5;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 20px;
+    overflow: hidden;
 }
 
 .public-profil-div{
@@ -109,4 +119,14 @@
 
 .lespageprofil.active {
     display: block;
+}
+
+#profils{
+    padding: 1rem;
+}
+
+.suivi-section{
+    display: flex;
+    justify-content: space-between;
+    width: 400px;
 }
