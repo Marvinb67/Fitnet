@@ -32,6 +32,14 @@ Exécutez les migrations pour créer les tables de la base de données :
 php bin/console doctrine:migrations:migrate
 ```
 
+``` `
+npm install
+```
+
+``` `
+npm run build
+```
+
 Exécutez l'application en utilisant le serveur Web intégré de Symfony :
 
 ```bloc de code```
