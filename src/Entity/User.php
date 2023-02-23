@@ -92,6 +92,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Groupe::class, mappedBy: 'adherentsGroupe')]
     private Collection $mesGroupes;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Profil $myProfil = null;
+
     public function __toString()
     {
         return '' .$this->getNom().' '.$this->getPrenom();
@@ -603,6 +606,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->mesGroupes->removeElement($mesGroupe)) {
             $mesGroupe->removeAdherentsGroupe($this);
         }
+
+        return $this;
+    }
+
+    public function getMyProfil(): ?Profil
+    {
+        return $this->myProfil;
+    }
+
+    public function setMyProfil(Profil $myProfil): self
+    {
+        // set the owning side of the relation if necessary
+        if ($myProfil->getUser() !== $this) {
+            $myProfil->setUser($this);
+        }
+
+        $this->myProfil = $myProfil;
 
         return $this;
     }
