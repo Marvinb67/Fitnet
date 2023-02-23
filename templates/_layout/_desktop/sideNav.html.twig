@@ -10,7 +10,9 @@
                         <i class="fa-solid fa-house nav-icon"></i>
                         <i class="fa-solid fa-calendar nav-icon"></i>
                         <i class="fa-solid fa-user-group nav-icon"></i>
+                        {% if is_granted('ROLE_ADMIN') %}
                         <i class="fa-solid fa-unlock-keyhole nav-icon"></i>
+                        {% endif %}
                         <i class="fa-solid fa-right-from-bracket nav-icon"></i>
                     </div>
                     <div>
