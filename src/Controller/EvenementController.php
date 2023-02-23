@@ -22,10 +22,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class EvenementController extends AbstractController
 {
     #[Route('/evenement', name: 'app_evenement')]
-    public function index(ProgrammationEvenementRepository $peRepo): Response
+    public function index(ProgrammationEvenementRepository $peRepo) : Response
     {
         return $this->render('evenement/index.html.twig', [
             'peRepo' => $peRepo->findBy([], ['startAt' => 'DESC']),
+
         ]);
     }
 
