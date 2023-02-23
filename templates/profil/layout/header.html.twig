@@ -13,7 +13,7 @@
 				</a>
 			{% endif %}
 		{% endfor %}
-		<div class="profil-dark-bar"></div>
+{#		<div class="profil-dark-bar"></div>#}
 	{% else %}
 		{% for user in userProfil %}
 			<a href="{{ path('app_user_detail', {slug: user.slug, id: user.id}) }}">
@@ -45,9 +45,9 @@
 						<i class="fa-solid fa-user-plus icon"></i>
 					</a>
 				{% endif %}
-				<a class="button-profil button-profil-3" href="#">Message
-					<i class="fa-solid fa-paper-plane icon"></i>
-				</a>
+{#				<a class="button-profil button-profil-3" href="#">Message#}
+{#					<i class="fa-solid fa-paper-plane icon"></i>#}
+{#				</a>#}
 			</div>
 		{% endfor %}
 	{% endif %}

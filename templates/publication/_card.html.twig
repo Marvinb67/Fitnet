@@ -36,7 +36,7 @@
 						<img class="card-img-top img-fluid" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{ img.titre }}"/></a>
 				{% endif %}
 			{% endfor %}
-			<p>{{ publication.contenu }}</p>
+{#			<p>{{ publication.contenu }}</p>#}
 				{% for tag in publication.tagsPublication %}
 					<div>
 						<a href="{{ path('app_publication', {tag: tag.intitule})}}">
@@ -52,7 +52,7 @@
 			<div id="ajout-com">
 				{{form(formCommentaire)}}
 				</div>
-	<h3>Commentaires</h3>
+{#	<h3>Commentaires</h3>#}
 
 				{% for commentaire in publication.commentaires %}
 					{% if commentaire.parent == null %}

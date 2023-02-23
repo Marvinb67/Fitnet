@@ -4,13 +4,13 @@
             <li><img class="logo-black" src="{{ asset('build/images/fitnet-logo.png') }}" alt="image logo"/></li>
             <div>
             {{ render(controller('App\\Controller\\HomeController::searchForm')) }}
-                <li><i class="fa-solid fa-bell"></i></li>
+{#                <li><i class="fa-solid fa-bell"></i></li>#}
                 {% if app.user %}
-                {% for role in app.user.roles %}
-                    {% if role == "ROLE_SUPER_ADMIN" %}
-                    <li><a href="admin"><i class="fa fa-unlock-alt" aria-hidden="true"></i></a></li>
-                    {% endif %}
-                {% endfor %}
+{#                {% for role in app.user.roles %}#}
+{#                    {% if role == "ROLE_SUPER_ADMIN" %}#}
+{#                    <li><a href="admin"><i class="fa fa-unlock-alt" aria-hidden="true"></i></a></li>#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
                 <li><a href="{{path('app_profil')}}">
                 
 					{% if 'https://www.gravatar.com/' in app.user.image %}
