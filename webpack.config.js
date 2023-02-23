@@ -25,6 +25,23 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('publication', './assets/entries/publication.js')
+    .addEntry('userProfil', './assets/entries/userProfil.js')
+    .addEntry('social', './assets/entries/social.js')
+    // .addEntry('evenement', './assets/entries/evenement.js')
+    .addEntry('authentification', './assets/entries/authentification.js')
+    .addEntry('mobileHeader', './assets/entries/mobileHeader.js')
+    .addEntry('mobileFooter', './assets/entries/mobileFooter.js')
+    .addEntry('slideshow', './assets/entries/slideshow.js')
+
+
+    .addEntry('navDesktop', './assets/entries/navDesktop.js')
+    .addEntry('sideNavDesktop', './assets/entries/sideNavDesktop.js')
+    .addEntry('tchat', './assets/entries/tchat.js')
+
+    .copyFiles({
+        from: './assets/images',
+        to: 'images/[path][name].[hash:8].[ext]'
+    })
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

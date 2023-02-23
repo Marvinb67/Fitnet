@@ -1,0 +1,26 @@
+.nav-desktop{
+    width: 1200px;
+    margin: auto;
+}
+
+.nav-desktop ul{
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-desktop ul div{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-pp{
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    background-color: aquamarine;
+}
+
+.header-margin-desktop{
+    height: 150px;
+}

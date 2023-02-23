@@ -1,2 +1,25 @@
-<h1>Ajouter un évènement</h1>
-{{ form(formEvenement) }}
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des publications
+{% endblock %}
+{% block container %}
+	{% include '_layout/_desktop/nav.html.twig' %}
+	<div class="header-margin"></div>
+
+	<main class="publication-new-main wrapper-1200">
+	
+	{% include '_layout/_desktop/sideNav.html.twig' %}
+
+		<div class="new-publication-container white-bloc">
+			<h3>Créer un évènement</h3>
+			{{ form_start(formEvenement) }}
+						{{ form_row(formEvenement.intitule) }}
+						{{ form_row(formEvenement.description) }}
+						{{ form_widget(formEvenement.historiqueEvenements.vars.prototype) }}
+			{{ form_end(formEvenement) }}
+		</div>
+
+	{% include '_layout/_desktop/tchat.html.twig' %}
+
+	</main>
+{% endblock %}

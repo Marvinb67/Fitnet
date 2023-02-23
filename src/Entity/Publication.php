@@ -2,9 +2,12 @@
 
 namespace App\Entity;
 
+use App\Entity\Media;
+use App\Entity\Commentaire;
 use Doctrine\DBAL\Types\Types;
 use App\Entity\Trait\SlugTrait;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\ReactionPublication;
 use App\Entity\Trait\EditedAtTrait;
 use Doctrine\ORM\Mapping\PreUpdate;
 use App\Entity\Trait\CreatedAtTrait;
@@ -13,6 +16,8 @@ use App\Repository\PublicationRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\Count;
 
 #[HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: PublicationRepository::class)]
@@ -25,6 +30,7 @@ class Publication
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('publication:read')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -34,26 +40,26 @@ class Publication
     private ?string $contenu = null;
 
     #[ORM\Column(type: 'boolean')]
-    private $isActive = false;
+    private $isActive = true;
 
     #[ORM\ManyToOne(inversedBy: 'publications')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Commentaire::class)]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Commentaire::class, cascade: ['remove'])]
     private Collection $commentaires;
 
-    #[ORM\OneToMany(mappedBy: 'Publication', targetEntity: ReactionPublication::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: ReactionPublication::class, orphanRemoval: true)]
     private Collection $reactionPublications;
 
-    #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'publication')]
+    #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'publication', cascade: ['persist'])]
     private Collection $mediaPublication;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'publication')]
     private Collection $tagsPublication;
 
-
-
+    #[ORM\ManyToOne(inversedBy: 'publications')]
+    private ?Groupe $groupe = null;
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
@@ -62,13 +68,6 @@ class Publication
         $this->tagsPublication = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
     }
-
-    public function __toString()
-    {
-        $date = $this->getCreatedAt();
-        return $date->format('Y');
-    }
-
     #[PrePersist]
     public function prepesist()
     {
@@ -214,7 +213,7 @@ class Publication
     /**
      * @return Collection<int, Tag>
      */
-    public function gettagsPublication(): Collection
+    public function getTagsPublication(): Collection
     {
         return $this->tagsPublication;
     }
@@ -246,6 +245,18 @@ class Publication
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getGroupe(): ?Groupe
+    {
+        return $this->groupe;
+    }
+
+    public function setGroupe(?Groupe $groupe): self
+    {
+        $this->groupe = $groupe;
 
         return $this;
     }

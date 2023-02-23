@@ -1,38 +1,36 @@
+@import "variables";
 
-
-body {
-  background-color: #EDEDED;
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: none;
+  font-size: 1rem;
 }
 
-*{
+p {
   margin: 0;
   padding: 0;
 }
 
-a{
-  text-decoration: none;
-}
-
-li{
-  list-style: none;
-}
-
-footer nav ul{
-  justify-content: space-between;
-  padding: 2rem;
-  background-color: #262626;
-}
 
 ul li i{
-  font-size: 2rem;
-  color: white;
+font-size: 1.5rem;
+color: white;
 }
 
 .publication-card{
   background-color: white;
-  margin: 1rem;
-  border-radius: 5px;
+  margin: 1rem 0;
+  border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 1rem;
+  width: 665px;
+}
+
+.futur-pp{
+  width: 40px;
+  height: 40px;
 }
 
 .futur-pp{
@@ -45,4 +43,280 @@ ul li i{
 .user-publication{
   display: flex;
   align-items: center;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+.user-publication-show{
+  display: flex;
+  gap: 0.5rem;
+}
+
+.mobile-header{
+  display: grid;
+}
+
+header{
+  padding: 1rem 0;
+  background-color: #262626;
+  z-index: 9999;
+}
+
+.bottom-line{
+  height: 3px;
+  width: 100%;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.search-input{
+  width: 100%;
+  border-radius: 50px;
+}
+
+.search-and-menu{
+  display: flex;
+  gap: 1rem;
+}
+
+.fa-bars{
+  font-size: 1.5rem;
+  color: white;
+}
+
+.logo-black{
+  width: 120px;
+  margin: auto;
+}
+
+.fa-shuffle{
+  font-size: 1.5rem;
+}
+
+.filter-menu{
+  padding: 1rem 0 0 0;
+}
+
+.reaction-publication{
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.3rem;
+}
+
+.reaction-publication i{
+  font-size: 1.2rem;
+}
+
+.infos-user-publication{
+  display: flex;
+  flex-direction: column;
+}
+
+.infos-user-publication p:first-child{
+  font-weight: bold;
+}
+
+.user-publication-left-side{
+  display: flex;
+  gap: 0.5rem;
+}
+
+h2 a{
+  color: $primary_color;
+}
+
+.header-margin{
+  margin-top: 200px;
+  
+}
+
+.main-publication{
+  display: flex;
+}
+
+.publication-wrapper{
+  position: absolute;
+  top: 0;
+  left: 267px;
+}
+
+.publication-wrapper-desktop{
+  display: none;
+}
+
+@media screen and (min-width: 1200px) {
+  .publication-wrapper-mobile{
+    display: none;
+  }
+
+  .publication-wrapper-desktop{
+    display: block;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .publication-card{
+    width: 100%;
+  }
+  
+  .publication-wrapper{
+    position: static;
+    margin: 0 1rem;
+  }
+}
+
+.j-aime{
+  color: $primary_color;
+}
+.j-aimePas{
+  color: red;
+}
+
+
+.j-aime {
+  color: $primary_color !important;
+}
+.j-aimePas {
+  color: red !important;
+}
+.fa-thumbs-up,
+.fa-thumbs-down, #popular_filter, #old_filter, #new_filter {
+  cursor: pointer;
+}
+/* Popup container - can be anything you want */
+.popup {
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.popuptext:empty {
+  visibility: hidden;
+}
+/* The actual popup */
+.popup .popuptext {
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 10px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 115%;
+  right: 1%;
+  margin-right: -20px;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: var(--popAfterLeft, 50%);
+  margin-left: -15px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Show publication 
+
+.main-show-publication{
+  margin: auto;
+}
+
+.commentaire-card{
+  background-color: #e0f6ff;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 0.5rem;
+}
+
+.reponse-card{
+  margin-left: 2rem;
+}
+
+.reponse-commentaire{
+  background-color: #eeeeee;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 0.5rem;
+  margin-left: 2rem;
+  
+}
+
+// modal 
+
+.modal-menu-publication{
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 25px;
+  background-color: white;
+  padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 5px;
+
+}
+
+.menu-publication{
+  position: relative;
+}
+
+.publication-modal{
+  display: none;
+}
+
+// new publication 
+
+.new-publication-container{
+  width: 665px;
+  position: absolute;
+  top: 0;
+  left: 267px;
+  padding: 1rem;
+}
+
+.modal-filtre-publication{
+  display: none;
+}
+
+.img-publication{
+  margin-top: 1rem;
+}
+
+.tag-div{
+  display: flex;
 }

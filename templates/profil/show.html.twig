@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page Profil {% endblock %}
+
+{% block container %}
+	{% include '_layout/_desktop/nav.html.twig' %}
+	<div class="header-margin"></div>
+	<div class="container-fluid wrapper-1200">
+		<div class="row">
+			<div class="col my-2">
+				{% include '_layout/_desktop/sideNav.html.twig' %}
+			</div>
+			<section class="public-profil-container">
+			{% include 'profil/layout/header.html.twig' %}
+            <div class="public-profil-div">
+					<div class="public-profil-nav">
+						<nav>
+							<ul>
+								<li><a class="btn-profil profil-user" href="#page-profil">Profil</a></li>
+								<li><a class="btn-profil list-amis" href="#page-ami">Ami</a></li>
+								<li><a class="btn-profil list-suivis" href="#page-suivi">Suivi</a></li>
+							</ul>
+						</nav>
+					</div>
+
+					<div class="public-profil-na">
+						<div class="lespageprofil active profil-user" id="page-profil">
+							{% include 'profil/layout/profil.html.twig' %}
+						</div>
+
+						<div class="lespageprofil list-amis" id="page-ami">
+							{% include 'profil/layout/listAmi.html.twig' %}
+						</div>
+
+						<div class="lespageprofil list-suivis" id="page-suivi">
+							{% include 'profil/layout/suivi.html.twig' %}
+						</div>
+            <div class="buttons d-flex flex-row-reverse m-2">
+				<a id="modifie_profil" href="{{ path('app_profil') }}" class="btn btn-outline-primary btns px-4">Retour à mon Profil</a>
+			</div>
+					</div>
+				</div>
+			</section>
+
+			</div>
+		</div>
+
+		
+		{% block javascripts %}
+			{{ parent() }}
+			{{ encore_entry_script_tags('userProfil') }}
+		{% endblock %}
+
+
+	{% endblock %}

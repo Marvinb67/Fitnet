@@ -1,0 +1,63 @@
+$primary : #00AEF7;
+
+body{
+  height: 100vh;
+}
+
+.formulaire{
+  padding: 2rem;
+}
+
+.circle{
+  background-color: #262626;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle:last-child{
+  position: absolute;
+  bottom: 0;
+  border-radius: 200px 200px 0px 0px / 100px 100px 0px 0px;
+  height: 140px;
+  width: 100%;
+  border-top: 4px solid $primary;
+}
+
+.circle:first-child{
+  border-radius: 0px 0px 200px 200px / 0px 0px 50px 50px;
+  height: 220px;
+  width: 100%;
+  border-bottom: 4px solid $primary;
+}
+
+.form-control{
+  border-radius: 50px;
+  background-color: #F2F2F2;
+  border: none;
+}
+
+.btn-primary{
+  width: 100%;
+  border-radius: 50px;
+  background-color: #262626;
+  border: none;
+}
+
+.formulaire h1{
+  text-align: center;
+}
+
+.rgpd{
+  font-size: 0.9rem;
+}
+
+.go-login h5{
+  font-size: 1rem;
+}
+
+.circle img{
+  width: 300px;
+}
+
+

@@ -38,20 +38,24 @@ class Evenement
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'evenement', targetEntity: InscriptionEvenement::class)]
+    #[ORM\OneToMany(mappedBy: 'evenement', cascade: ['persist','remove'], targetEntity: ProgrammationEvenement::class)]
     private Collection $historiqueEvenements;
 
-    #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'evenement')]
+    #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'evenement', cascade: ['persist'])]
     private Collection $mediaEvenement;
 
-    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'evenement')]
+    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'evenement', cascade: ['persist', 'remove'])]
     private Collection $tagsEvenement;
+
+    #[ORM\OneToMany(mappedBy: 'evenement', targetEntity: Commentaire::class)]
+    private Collection $commentaires;
 
     public function __construct()
     {
         $this->historiqueEvenements = new ArrayCollection();
         $this->mediaEvenement = new ArrayCollection();
         $this->tagsEvenement = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
 
     #[PrePersist]
@@ -110,14 +114,14 @@ class Evenement
     }
 
     /**
-     * @return Collection<int, InscriptionEvenement>
+     * @return Collection<int, ProgrammationEvenement>
      */
     public function getHistoriqueEvenements(): Collection
     {
         return $this->historiqueEvenements;
     }
 
-    public function addHistoriqueEvenement(InscriptionEvenement $historiqueEvenement): self
+    public function addHistoriqueEvenement(ProgrammationEvenement $historiqueEvenement): self
     {
         if (!$this->historiqueEvenements->contains($historiqueEvenement)) {
             $this->historiqueEvenements->add($historiqueEvenement);
@@ -127,7 +131,7 @@ class Evenement
         return $this;
     }
 
-    public function removeHistoriqueEvenement(InscriptionEvenement $historiqueEvenement): self
+    public function removeHistoriqueEvenement(ProgrammationEvenement $historiqueEvenement): self
     {
         if ($this->historiqueEvenements->removeElement($historiqueEvenement)) {
             // set the owning side to null (unless already changed)
@@ -188,6 +192,36 @@ class Evenement
     {
         if ($this->tagsEvenement->removeElement($tagsEvenement)) {
             $tagsEvenement->removeEvenement($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commentaire>
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): self
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires->add($commentaire);
+            $commentaire->setEvenement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): self
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getEvenement() === $this) {
+                $commentaire->setEvenement(null);
+            }
         }
 
         return $this;

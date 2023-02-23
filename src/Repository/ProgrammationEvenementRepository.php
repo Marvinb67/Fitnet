@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\InscriptionEvenement;
+use App\Entity\ProgrammationEvenement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<InscriptionEvenement>
+ * @extends ServiceEntityRepository<ProgrammationEvenement>
  *
- * @method InscriptionEvenement|null find($id, $lockMode = null, $lockVersion = null)
- * @method InscriptionEvenement|null findOneBy(array $criteria, array $orderBy = null)
- * @method InscriptionEvenement[]    findAll()
- * @method InscriptionEvenement[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ProgrammationEvenement|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ProgrammationEvenement|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ProgrammationEvenement[]    findAll()
+ * @method ProgrammationEvenement[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class InscriptionEvenementRepository extends ServiceEntityRepository
+class ProgrammationEvenementRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, InscriptionEvenement::class);
+        parent::__construct($registry, ProgrammationEvenement::class);
     }
 
-    public function save(InscriptionEvenement $entity, bool $flush = false): void
+    public function save(ProgrammationEvenement $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class InscriptionEvenementRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(InscriptionEvenement $entity, bool $flush = false): void
+    public function remove(ProgrammationEvenement $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class InscriptionEvenementRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return InscriptionEvenement[] Returns an array of InscriptionEvenement objects
+//     * @return ProgrammationEvenement[] Returns an array of ProgrammationEvenement objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class InscriptionEvenementRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?InscriptionEvenement
+//    public function findOneBySomeField($value): ?ProgrammationEvenement
 //    {
 //        return $this->createQueryBuilder('i')
 //            ->andWhere('i.exampleField = :val')

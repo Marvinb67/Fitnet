@@ -33,14 +33,17 @@ class Commentaire
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'commentaires')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Publication $publication = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'reponse')]
     private ?self $parent = null;
 
-    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class, cascade: ['persist', 'remove'])]
     private Collection $reponse;
+
+    #[ORM\ManyToOne(inversedBy: 'commentaires')]
+    private ?Evenement $evenement = null;
 
     public function __construct()
     {
@@ -139,6 +142,18 @@ class Commentaire
                 $reponse->setParent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEvenement(): ?Evenement
+    {
+        return $this->evenement;
+    }
+
+    public function setEvenement(?Evenement $evenement): self
+    {
+        $this->evenement = $evenement;
 
         return $this;
     }

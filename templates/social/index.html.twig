@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SocialController!{% endblock %}
+
+{% block container %}
+
+{% include 'layout/_mobileNavBar.html.twig' %}
+<section class="social-section">
+    <a href="{{path('app_evenement')}}"><div class="social-div"></div></a>
+    <a href="#"><div class="social-div"></div></a>
+</section>
+{% include 'layout/_mobileFooter.html.twig' %}
+{% endblock %}

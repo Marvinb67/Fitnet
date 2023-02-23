@@ -1,0 +1,36 @@
+{% if users is defined %}
+{% for user in users %}
+	{% if app.user.id is same as(user.id) %}
+		<div id="profils">
+			<h5 id="nom_profil">{{ user.nom }} {{ user.prenom }}</h5>
+			<span>Coach Fitness</span>
+			<div>
+				<p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+				</p>
+			</div>
+            <div class="buttons d-flex flex-row-reverse m-2">
+				<a id="modifie_profil" href="{{path('modif_pass', {slug: user.slug, id: user.id})}}" class="btn btn-outline-primary btns px-4">Modifier Profil</a>
+			</div>
+		</div>
+		{% endif %}
+	{% endfor %}
+	{% else %}
+    {% for user in userProfil %}
+		<div id="profils">
+			<h5 id="nom_profil">{{ user.nom }}</h5>
+			<span>Coach Fitness</span>
+			<div>
+				<p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+				</p>
+			</div>
+        </div>
+    {% endfor %}
+    {% endif %}
+
+		{#            <div class="buttons">#}
+	{#                <button class="btn btn-outline-primary btns px-4">Message</button>#}
+		{#                <button class="btn btn-outline-primary btns px-4">Contact</button>#}
+		{#                {% if user.id is same as(app.user.id) %}#}
+		{#                    <a id="modifie_profil" href="{{path('modif_pass', {slug: user.slug, id: user.id})}}" class="btn btn-outline-primary btns px-4">Modifier Profil</a>#}
+		{#                {% endif %}#}
+		{#            </div>#}

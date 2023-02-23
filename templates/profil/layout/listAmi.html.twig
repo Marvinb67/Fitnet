@@ -1,0 +1,37 @@
+<h4>Les Amis</h4>
+{% if users is defined %}
+	{% for user in users %}
+		{% if app.user.id is same as(user.id) %}
+			{% for ami in user.amis %}
+				<div class="d-flex justify-content-start ml-2">
+					<a id="ami-{{ami.id}}" class="link-secondary text-decoration-none amis" href="{{ path('app_user_detail', { slug: ami.slug, id: ami.id }) }}">
+						<img class="img-profil mr-2" src="{{ ami.image }}" alt="{{ ami.nom }}" width="50px" height="50px"/>
+						{{ ami.nom }}
+						{{ ami.prenom }}
+					</a>
+					<a class="button-profil mr-2" href="{{ path('app_add_interaction', {interaction: 'ajout-ami', etat: 'false', id: ami.id}) }}">Supprimer la relation
+						<i class="fa-solid fa-user-minus icon"></i>
+					</a>
+				</div>
+			{% endfor %}
+		{% endif %}
+	{% endfor %}
+{% else %}
+	{% for amiOfAmi in amisOfAmi %}
+		<div class="d-flex justify-content-start ml-2">
+			<a id="ami-{{amiOfAmi.idAmi}}" class="link-secondary text-decoration-none amis" href="{{ path('app_user_detail', { slug: amiOfAmi.slug, id: amiOfAmi.idAmi }) }}">
+				<img class="img-profil mr-2" src="{{ amiOfAmi.image }}" alt="{{ amiOfAmi.nom }}" width="50px" height="50px"/>
+				{{ amiOfAmi.nom }}
+			</a>
+			{% if amiOfAmi.idAmi in communAmis %}
+				<a class="button-profil mr-2" href="{{ path('app_add_interaction', {interaction: 'ajout-ami', etat: 'false', id: amiOfAmi.idAmi}) }}">Supprimer la relation
+					<i class="fa-solid fa-user-minus icon"></i>
+				</a>
+			{% else %}
+				<a class="button-profil mr-2" href="{{ path('app_add_interaction', {interaction: 'ajout-ami', etat: 'true', id: amiOfAmi.idAmi}) }}">Ajouter en Ami
+					<i class="fa-solid fa-user-plus icon"></i>
+				</a>
+			{% endif %}
+		</div>
+	{% endfor %}
+{% endif %}

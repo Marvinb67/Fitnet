@@ -1,1 +1,2 @@
-console.log('coucou')
+import '../js/likes';
+import '../js/paginationOnScroll';

@@ -8,6 +8,7 @@ use App\Entity\Publication;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @extends ServiceEntityRepository<Publication>
@@ -43,34 +44,63 @@ class PublicationRepository extends ServiceEntityRepository
     }
 
     /**
-     * Recupére les produits en lien avec une recherche
+     * Recupére les publications en lien avec une recherche
      *
      * @return Publication[]
      */
-    public function findSearch(SearchData $search): array
+    public function findSearch(SearchData $search, int $limit = 6): array
     {
-        // return $this->findAll();
         $query = $this
             ->findActivePublicationQuery()
             ->select('u', 'p')
-            ->join('p.user', 'u');
+            ->join('p.user', 'u')
+            ->setMaxResults($limit)
+            ->setFirstResult(($search->getPage() * $limit) - $limit);
+
         if (!empty($search->getQ())) {
-            $query = $query
-                ->andWhere('p.titre LIKE :q')
+            $query = $query->andWhere('p.titre LIKE :q OR p.contenu LIKE :q')
                 ->setParameter('q', "%{$search->getQ()}%");
+            // les mots a chercher exploser la chaine de string et les mettre dans un tableau
+            $mots = explode(" ", $search->getQ());
+            // parcourir le tableau de mots
+            for ($i = 0; $i < count($mots); $i++) {
+                // accepter la recherche seulement si le mot a plus de 2 lettres
+                if (strlen($mots[$i]) > 2) {
+                    // si le compteur est a zero ajouter WHERE a la requete
+                    $query = $query->orWhere($query->expr()->orX(
+                        $query->expr()->like('p.titre',  ':q' . $i),
+                        // $query->expr()->like('p.contenu',  ':q' . $i)
+                    ))->setParameter('q' . $i, "%{$mots[$i]}%");
+                }
+            }
         }
-        // if (!empty($search->getAmis())) {
-        //     $query = $query
-        //         ->andWhere('u.id IN (:user)')
-        //         ->setParameter('amis', $search->getAmis());
-        // }
+        if (!empty($search->getTag())) {
+            $query = $query
+                ->innerJoin('p.tagsPublication ', 'tp')
+                ->andWhere('tp.intitule = :tag')
+                ->setParameter('tag', $search->getTag());
+            // dd($query);
+        }
         // if (!empty($search->getDates())) {
         //     $query = $query
         //         ->andWhere('p.createdAt = :dates')
         //         ->setParameter('amis', $search->getDates());
         // }
-
-        return $query->getQuery()->getResult();
+        $paginator = new Paginator($query);
+        $data = $paginator->getQuery()->getResult();
+        if (empty($data)) {
+            return [];
+        }
+        $pages = ceil($paginator->count() / $limit);
+        $result = [
+            'data' => $data,
+            'pages' => $pages,
+            'limit' => $limit,
+            'page' => $search->getPage(),
+            'q' => $search->getQ(),
+            'tag' => $search->getTag(),
+        ];
+        return $result;
     }
 
     /**
@@ -79,7 +109,8 @@ class PublicationRepository extends ServiceEntityRepository
     private function findActivePublicationQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.isActive = true');
+            ->where('p.isActive = true')
+            ->orderBy('p.createdAt', 'DESC');
     }
     /**
      * Trouver tous les Publications actives
@@ -114,8 +145,15 @@ class PublicationRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    // public function findPublicationsPaginated(int $page, string $slug, int $limit = 8): array
+    // {
+    //     $limit =abs($limit);
+    //     $result = [];
 
-
+    //     $query = $this->findActivePublicationQuery()
+    //                     ->
+    //     return $result;
+    // }
     //    /**
     //     * @return Publication[] Returns an array of Publication objects
     //     */

@@ -3,18 +3,24 @@
 namespace App\Entity;
 
 use App\Entity\Publication;
+use App\Entity\Trait\SlugTrait;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
+#[HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: "Cet e-mail est déjà utiliser..!")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use SlugTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -59,9 +65,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Evenement::class)]
     private Collection $evenements;
 
-    #[ORM\OneToMany(mappedBy: 'users', targetEntity: InscriptionEvenement::class)]
-    private Collection $mesEvenements;
-
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ReactionPublication::class, orphanRemoval: true)]
     private Collection $reactionPublications;
 
@@ -75,13 +78,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinTable(name: 'user_amis')]
     private Collection $amis;
 
-    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'myfollowers')]
+    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'followedByUsers')]
     #[ORM\JoinTable(name: 'user_follows')]
-    private Collection $followers;
+    private Collection $followUsers;
 
-    #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'followers')]
-    #[ORM\JoinTable(name: 'user_followers')]
-    private Collection $myfollowers;
+    #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'followUsers')]
+    #[ORM\JoinTable(name: 'user_follows')]
+    private Collection $followedByUsers;
+
+    #[ORM\ManyToMany(targetEntity: ProgrammationEvenement::class, mappedBy: 'inscritEvenement')]
+    private Collection $programmationEvenements;
+
+    #[ORM\ManyToMany(targetEntity: Groupe::class, mappedBy: 'adherentsGroupe')]
+    private Collection $mesGroupes;
 
     public function __toString()
     {
@@ -113,13 +122,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->commentaires = new ArrayCollection();
         $this->groupes = new ArrayCollection();
         $this->evenements = new ArrayCollection();
-        $this->mesEvenements = new ArrayCollection();
         $this->reactionPublications = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->messageRecus = new ArrayCollection();
         $this->amis = new ArrayCollection();
-        $this->followers = new ArrayCollection();
-        $this->myfollowers = new ArrayCollection();
+        $this->followUsers = new ArrayCollection();
+        $this->followedByUsers = new ArrayCollection();
+        $this->programmationEvenements = new ArrayCollection();
+        $this->mesGroupes = new ArrayCollection();
+    }
+
+    #[PrePersist]
+    public function prepesist()
+    {
+        $this->slug = str_replace(' ', '-',trim(strtolower($this->nom.' '.$this->prenom)));
     }
 
     public function getId(): ?int
@@ -349,36 +365,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, InscriptionEvenement>
-     */
-    public function getMesEvenements(): Collection
-    {
-        return $this->mesEvenements;
-    }
-
-    public function addMesEvenement(InscriptionEvenement $mesEvenement): self
-    {
-        if (!$this->mesEvenements->contains($mesEvenement)) {
-            $this->mesEvenements->add($mesEvenement);
-            $mesEvenement->setUsers($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMesEvenement(InscriptionEvenement $mesEvenement): self
-    {
-        if ($this->mesEvenements->removeElement($mesEvenement)) {
-            // set the owning side to null (unless already changed)
-            if ($mesEvenement->getUsers() === $this) {
-                $mesEvenement->setUsers(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, ReactionPublication>
      */
     public function getReactionPublications(): Collection
@@ -495,23 +481,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, self>
      */
-    public function getFollowers(): Collection
+    public function getFollowUsers(): Collection
     {
-        return $this->followers;
+        return $this->followUsers;
     }
 
-    public function addFollower(self$follower): self
+    public function addFollowUser(self$followUser): self
     {
-        if (!$this->followers->contains($follower)) {
-            $this->followers->add($follower);
+        if (!$this->followUsers->contains($followUser)) {
+            $this->followUsers->add($followUser);
         }
 
         return $this;
     }
 
-    public function removeFollower(self$follower): self
+    public function removeFollowUser(self$followUser): self
     {
-        $this->followers->removeElement($follower);
+        $this->followUsers->removeElement($followUser);
 
         return $this;
     }
@@ -519,25 +505,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, self>
      */
-    public function getMyfollowers(): Collection
+    public function getFollowedByUsers(): Collection
     {
-        return $this->myfollowers;
+        return $this->followedByUsers;
     }
 
-    public function addMyfollower(self$myfollower): self
+    public function addFollowedByUser(self$followedByUser): self
     {
-        if (!$this->myfollowers->contains($myfollower)) {
-            $this->myfollowers->add($myfollower);
-            $myfollower->addFollower($this);
+        if (!$this->followedByUsers->contains($followedByUser)) {
+            $this->followedByUsers->add($followedByUser);
+            $followedByUser->addFollowUser($this);
         }
 
         return $this;
     }
 
-    public function removeMyfollower(self$myfollower): self
+    public function removeFollowedByUser(self$followedByUser): self
     {
-        if ($this->myfollowers->removeElement($myfollower)) {
-            $myfollower->removeFollower($this);
+        if ($this->followedByUsers->removeElement($followedByUser)) {
+            $followedByUser->removeFollowUser($this);
         }
 
         return $this;
@@ -563,6 +549,60 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setResetToken(?string $resetToken): self
     {
         $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProgrammationEvenement>
+     */
+    public function getProgrammationEvenements(): Collection
+    {
+        return $this->programmationEvenements;
+    }
+
+    public function addProgrammationEvenement(ProgrammationEvenement $programmationEvenement): self
+    {
+        if (!$this->programmationEvenements->contains($programmationEvenement)) {
+            $this->programmationEvenements->add($programmationEvenement);
+            $programmationEvenement->addInscritEvenement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProgrammationEvenement(ProgrammationEvenement $programmationEvenement): self
+    {
+        if ($this->programmationEvenements->removeElement($programmationEvenement)) {
+            $programmationEvenement->removeInscritEvenement($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Groupe>
+     */
+    public function getMesGroupes(): Collection
+    {
+        return $this->mesGroupes;
+    }
+
+    public function addMesGroupe(Groupe $mesGroupe): self
+    {
+        if (!$this->mesGroupes->contains($mesGroupe)) {
+            $this->mesGroupes->add($mesGroupe);
+            $mesGroupe->addAdherentsGroupe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMesGroupe(Groupe $mesGroupe): self
+    {
+        if ($this->mesGroupes->removeElement($mesGroupe)) {
+            $mesGroupe->removeAdherentsGroupe($this);
+        }
 
         return $this;
     }
