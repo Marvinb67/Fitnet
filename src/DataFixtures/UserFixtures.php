@@ -5,10 +5,11 @@ namespace App\DataFixtures;
 
 use App\Entity\User;
 use Faker\Factory as Faker;
+use Ottaviano\Faker\Gravatar;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture
 {
@@ -24,7 +25,8 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $faker = Faker::create('fr_FR');
-
+        $faker->addProvider(new Gravatar($faker));
+        
         for ($i = 0; $i < 20; $i++) {
             $user = new User;
             $user
@@ -32,7 +34,7 @@ class UserFixtures extends Fixture
                 ->setNom($faker->lastName())
                 ->setPrenom($faker->firstName())
                 ->setPassword($this->passwordHasher->hashPassword($user, '123456789'))
-                ->setImage($faker->imageUrl(360, 360, 'user', true, ($user->getNom() . ' ' . $user->getPrenom()), false, 'png'))
+                ->setImage($faker->gravatarUrl())
                 ->setIsVerified(rand(0, 1))
                 ->setSlug($this->sluggerInterface->slug(strtolower($user->getNom().' '.$user->getPrenom())));
             //  1er user avec role admin
