@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Data\SearchData;
-use App\Entity\Publication;
 use App\Form\SearchFormType;
 use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,8 +12,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
+    /**
+     * Page d'accueil avec liste des publications
+     *
+     * @param PublicationRepository $publicationRepository
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/', name: 'home')]
-
     public function index(PublicationRepository $publicationRepository, Request $request): Response
     {
         if(!$this->getUser()){
@@ -30,6 +35,13 @@ class HomeController extends AbstractController
         ]);
     }
 
+    /**
+     * Géstion du formulaire de recherche des publications
+     *
+     * @param PublicationRepository $publicationRepository
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/search-form', name: 'search_form')]
     public function searchForm(PublicationRepository $publicationRepository, Request $request): Response
     {

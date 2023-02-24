@@ -11,20 +11,20 @@
 {% include '_layout/_desktop/sideNav.html.twig' %}
 
     <section class="groupe-show-container">
-        <h2>{{groupe.intitule}}</h2>
-        <p>Créer le : {{groupe.createdAt | date('Y/m/d')}}</p> <p>Créateur : {{groupe.user}}</p>
+{#        <h2>{{groupe.intitule}}</h2>#}
+{#        <p>Créer le : {{groupe.createdAt | date('Y/m/d')}}</p> <p>Créateur : {{groupe.user}}</p>#}
         <div id="membres">
-            <h3>Membres du groupe:</h3>
-            {% if groupe.adherentsGroupe == null %}
-                <p>Aucun membre pour le moment</p>
-            {% else %}
-                <ul>
-                    {% for membre in groupe.adherentsGroupe %}
-                        <li>{{ membre.prenom }} {{ membre.nom }}</li>
-                    {% endfor %}
-                </ul>
-                <a href="{{ path('app_groupe_desinscription', {'id': groupe.id}) }}">Se désinscrire</a>
-            {% endif %}
+{#            <h3>Membres du groupe:</h3>#}
+{#            {% if groupe.adherentsGroupe == null %}#}
+{#                <p>Aucun membre pour le moment</p>#}
+{#            {% else %}#}
+{#                <ul>#}
+{#                    {% for membre in groupe.adherentsGroupe %}#}
+{#                        <li>{{ membre.prenom }} {{ membre.nom }}</li>#}
+{#                    {% endfor %}#}
+{#                </ul>#}
+                <a class="dark-round" href="{{ path('app_groupe_desinscription', {'id': groupe.id}) }}">Se désinscrire</a>
+{#            {% endif %}#}
         </div>
 
         {# <div id="publications">
@@ -77,15 +77,12 @@
                             <div class="modal-menu-publication" id="publication-modal">
                                 <ul>
                                     {% if app.user.id is same as publication.user.id  %}
-                                        <a href="#">Enregistrer</a>
                                         <a class="edit-publication-btn" href="{{ path('app_publication_edit', { id: publication.id, slug: publication.slug }) }}">Modifier</a>
                                         <a class="delete-publication-btn" href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer</a>
-                                    {% else %}
-                                        <a href="#">Enregistrer</a>
                                     {% endif %}
                                 </ul>
                             </div>  
-                            <i class="fas fa-ellipsis-v" data-modal="{{publication.id}}"></i>
+{#                            <i class="fas fa-ellipsis-v" data-modal="{{publication.id}}"></i>#}
                         </div>
                     </div>
                     <h2>
@@ -108,7 +105,7 @@
 
     </section>
 
-{% include '_layout/_desktop/tchat.html.twig' %}
+{#{% include '_layout/_desktop/tchat.html.twig' %}#}
 </main>
 
 {% endblock %}

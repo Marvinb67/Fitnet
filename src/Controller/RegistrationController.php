@@ -19,8 +19,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class RegistrationController extends AbstractController
 {
     public function __construct(private EmailVerifier $emailVerifier)
-    {
-    }
+    {}
 
     #[Route('/inscription', name: 'app_register')]
     public function register(

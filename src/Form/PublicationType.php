@@ -32,12 +32,13 @@ class PublicationType extends AbstractType
                 ],
                 'label' => 'Description'
             ])
-            ->add('tagsPublication', TextType::class, [
+           /* ->add('tagsPublication', TextType::class, [
                 'attr' => [
                     'class' => 'form-control my-2'
                 ],
-                'label' => 'Les Tags'
-            ])
+                'label' => 'Les Tags',
+                'required' => false,
+            ])*/
              ->add('mediaPublication', FileType::class, [
                 'label' => false,
                 'multiple' => true,
@@ -58,11 +59,11 @@ class PublicationType extends AbstractType
                 'attr' => [
                     'class' => 'mt-3 dark-round'
                 ],
-                'label' => 'Envoyer'
+                'label' => 'Envoyer',
             ])
         ;
 
-        $builder->get('tagsPublication')->addModelTransformer($this->tagsData);
+        // $builder->get('tagsPublication')->addModelTransformer($this->tagsData);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

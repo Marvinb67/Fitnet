@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('reaction/', name: 'app_reaction_stats', methods: ['GET'])]
+#[Route('reaction/')]
 class ReactionController extends AbstractController
 {
     /**

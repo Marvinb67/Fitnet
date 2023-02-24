@@ -186,7 +186,7 @@ class SecurityController extends AbstractController
      * @param UserPasswordHasherInterface $passwordHasher
      * @return Response
      */
-    #[Route('/profil/parametre/{slug}{id}',  name: 'modif_pass', methods: ["GET","POST"])]
+    #[Route('/parametre/profil/{slug}{id}',  name: 'modif_pass', methods: ["GET","POST"])]
 
     public function modifPass(
         Request $request,
@@ -232,6 +232,14 @@ class SecurityController extends AbstractController
             $formProfilChange->handleRequest($request);
             
             if ($formProfilChange->isSubmitted() && $formProfilChange->isValid()){
+
+                $image = $formProfilChange->get('image')->getData();
+                    $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+                    $image->move(
+                    $this->getParameter('medias_directory'),
+                    $fichier
+                );
+                $user->setImage($fichier);
                 $entityManager->persist($user);
                 $entityManager->flush();
                 // message de succee

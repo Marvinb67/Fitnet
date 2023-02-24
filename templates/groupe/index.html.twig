@@ -13,7 +13,7 @@
 
         <div class="publication-scroll-header">
             <div id="filter-modal" class="filter-div">
-                <p>Filtrer<i class="fa-solid fa-caret-down"></i></p>
+{#                <p>Filtrer<i class="fa-solid fa-caret-down"></i></p>#}
                 <div class="modal-filtre-publication">
                     <li>Popularité</li>
                     <li>Ancienneté</li>
@@ -25,6 +25,9 @@
         </div>
             {% for groupe in groupes %}
                 <div class="groupe-card">
+                    <div class="groupe-image">
+                        <img src="{{asset('/uploads/' ~ groupe.image)}}" alt="">
+                    </div>
                     <p><a href="{{ path('app_groupe_show', {slug: groupe.slug, id: groupe.id}) }}">{{ groupe.intitule }}</a></p>
                     <p class="dark-round">
                         <a href="{{path('app_groupe_rejoindre', {id: groupe.id}) }}">Rejoindre ce groupe</a>
@@ -33,7 +36,7 @@
                 </div>
             {% endfor %}
         </div>
-        {% include '_layout/_desktop/tchat.html.twig' %}
+{#        {% include '_layout/_desktop/tchat.html.twig' %}#}
     </main>
 
 {# <a href="{{path('app_groupe_new')}}" class="btn btn-primary">Créer un groupe</a> #}

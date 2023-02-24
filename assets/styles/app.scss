@@ -23,7 +23,22 @@ a{
 .filter{
     display: block;
     position: sticky;
-    top: 20px;
+    // top: 20px;
+    position: relative;
+}
+// submit button search  form 
+.search-form-btn{
+    position: absolute;
+    top: 0;
+    right: -2px;
+    border: unset;
+    border-radius: 40px;
+    background-color: var(--bs-body-color);
+    padding: 7px 14px;
+}
+.search-form-btn:hover{
+    background-color: white;
+    color: var(--bs-body-color);
 }
 #flash-messages{
     z-index: 9999;

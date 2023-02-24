@@ -36,9 +36,17 @@ class GroupeController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
+            $image = $form->get('image')->getData();
+            $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+            $image->move(
+                $this->getParameter('medias_directory'),
+                $fichier
+            );
+
             $groupe
                 ->setUser($this->getUser())
                 ->setSlug($sluggerInterface->slug(strtolower($groupe->getIntitule())))
+                ->setImage($fichier);
             ;
 
             $em->persist($groupe);
@@ -63,7 +71,7 @@ class GroupeController extends AbstractController
     }
 
     #[Route('groupe/edit/{slug}', requirements: ['slug' => '[a-z0-9\-]*'], name:'app_groupe_edit')]
-    #[Security("is_granted('ROLE_USER') or is_granted('ROLE_SUPER_ADMIN') and groupe.getUser() == user")]
+    #[Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER') and groupe.getUser() == user")]
     public function edit(Groupe $groupe, Request $request, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(GroupeType::class, $groupe);
@@ -83,8 +91,19 @@ class GroupeController extends AbstractController
     }
 
     #[Route('groupe/delete/{slug}', requirements: ['slug' => '[a-z0-9\-]*'], name: 'app_groupe_delete')]
+    #[Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER') and groupe.getUser() == user")]
     public function delete(Groupe $groupe, EntityManagerInterface $em)
     {
+        $image = $groupe->getImage();
+
+        if ($image) {
+            $nomImage = $this->getParameter("image_upload").'/'.$image;
+
+            if(file_exists($nomImage)){
+                unlink($nomImage);
+            }
+        }
+
         $em->remove($groupe);
         $em->flush();
 
