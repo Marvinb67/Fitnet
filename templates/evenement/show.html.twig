@@ -141,13 +141,11 @@
       x[slideIndex-1].style.display = "block";  
     }
 
-    window.onload = () => {
 		document.querySelector(".card-title").value = "{{ evenement.intitule }}"
 		document.querySelectorAll("[data-reply]").forEach(element => {
 		element.addEventListener("click", function () {
 		document.querySelector("#commentaire_parentId").value = this.dataset.id})
 		})
-		}
 	</script>
 {% endblock %}
 
