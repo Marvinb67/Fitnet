@@ -232,6 +232,14 @@ class SecurityController extends AbstractController
             $formProfilChange->handleRequest($request);
             
             if ($formProfilChange->isSubmitted() && $formProfilChange->isValid()){
+
+                $image = $formProfilChange->get('image')->getData();
+                    $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+                    $image->move(
+                    $this->getParameter('medias_directory'),
+                    $fichier
+                );
+                $user->setImage($fichier);
                 $entityManager->persist($user);
                 $entityManager->flush();
                 // message de succee

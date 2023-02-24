@@ -4,17 +4,26 @@
 			{% if app.user.id is same as(user.id) %}
 				<a href="{{ path('app_profil') }}">
 					<div class="photo-profil">
-						<img id="image_profil1" class="rounded-circle" src="{{ app.user.image }}" alt="{{ app.user.nom }} {{ app.user.prenom }}" width="100px"/>
+					{% if 'gravatar' in app.user.image %}
+					<img id="image_profil1" class="rounded-circle" src="{{ app.user.image }}" alt="{{ app.user.nom }} {{ app.user.prenom }}" width="100px"/>
+					{% else %}
+						<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ app.user.image) }}" alt="{{ app.user.nom }} {{ app.user.prenom }}" width="100px"/>
+						{% endif %}
 					</div>
 				</a>
 			{% endif %}
 		{% endfor %}
-		<div class="profil-dark-bar"></div>
+{#		<div class="profil-dark-bar"></div>#}
 	{% else %}
 		{% for user in userProfil %}
 			<a href="{{ path('app_user_detail', {slug: user.slug, id: user.id}) }}">
 				<div class="photo-profil">
+					{% if 'https://www.gravatar.com/' in user.image %}
 					<img id="image_profil1" class="rounded-circle" src="{{ user.image }}" alt="{{ user.nom }}" width="100px"/>
+					{% else %}
+					<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ user.image) }}" alt="{{ user.nom }}" width="100px"/>
+
+					{% endif %}
 				</div>
 			</a>
 			<div class="profil-dark-bar">
@@ -36,9 +45,9 @@
 						<i class="fa-solid fa-user-plus icon"></i>
 					</a>
 				{% endif %}
-				<a class="button-profil button-profil-3" href="#">Message
-					<i class="fa-solid fa-paper-plane icon"></i>
-				</a>
+{#				<a class="button-profil button-profil-3" href="#">Message#}
+{#					<i class="fa-solid fa-paper-plane icon"></i>#}
+{#				</a>#}
 			</div>
 		{% endfor %}
 	{% endif %}

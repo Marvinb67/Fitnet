@@ -34,7 +34,7 @@
             <p>{{evenement.user.nom}} {{evenement.user.prenom}}</p>
           </div>
           <div class="event-reaction">
-            <i class="fa-regular fa-heart"></i>
+{#            <i class="fa-regular fa-heart"></i>#}
             <i class="fa-solid fa-comment-dots"></i>
           </div>
         </div>
@@ -63,7 +63,13 @@
 
           <div>
             <p>Participant <span class="dark-round">{{peRepo.InscritEvenement | length}}</span></p>
-            <a class="dark-round" href="{{ path('app_inscription_evenement_add', {'id': evenement.id}) }}">S'inscrire</a>
+{#            <a class="dark-round" href="{{ path('app_inscription_evenement_add', {'id': evenement.id}) }}">S'inscrire</a>#}
+
+          {% if app.user in peRepo.inscritEvenement %}
+              <a class="dark-round" href="{{ path('app_inscription_evenement_remove', {'id': evenement.id}) }}">Se désinscrire</a>
+          {% else %}
+              <a class="dark-round" href="{{ path('app_inscription_evenement_add', {'id': evenement.id}) }}">S'inscrire</a>
+          {% endif %}
           </div>
           {# {% endfor %} #}
 
@@ -76,8 +82,8 @@
           {% endfor %}
 
           <section class="event-map">
-            <h3>Lieu de l'évènement</h3>
-            <img class="map-img" src="{{ asset('build/images/map.PNG') }}" alt="">
+{#            <h3>Lieu de l'évènement</h3>#}
+{#            <img class="map-img" src="{{ asset('build/images/map.PNG') }}" alt="">#}
           </section>
         </section>
 
@@ -115,7 +121,7 @@
   </div>
 </section>
 
-  {% include '_layout/_desktop/tchat.html.twig' %}
+{#  {% include '_layout/_desktop/tchat.html.twig' %}#}
 
 </main>
 		

@@ -8,7 +8,6 @@ use App\Entity\Commentaire;
 use App\Form\EvenementType;
 use App\Form\CommentaireType;
 use App\Entity\ProgrammationEvenement;
-use App\Repository\EvenementRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,10 +21,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class EvenementController extends AbstractController
 {
     #[Route('/evenement', name: 'app_evenement')]
-    public function index(ProgrammationEvenementRepository $peRepo): Response
+    public function index(ProgrammationEvenementRepository $peRepo) : Response
     {
         return $this->render('evenement/index.html.twig', [
             'peRepo' => $peRepo->findBy([], ['startAt' => 'DESC']),
+
         ]);
     }
 

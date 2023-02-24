@@ -10,24 +10,33 @@
                         <i class="fa-solid fa-house nav-icon"></i>
                         <i class="fa-solid fa-calendar nav-icon"></i>
                         <i class="fa-solid fa-user-group nav-icon"></i>
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <i class="fa-solid fa-unlock-keyhole nav-icon"></i>
+                        {% endif %}
+                        <i class="fa-solid fa-right-from-bracket nav-icon"></i>
+
                     </div>
                     <div>
                         <a href="{{path('home')}}">Accueil</a>
                         <a href="{{path('app_evenement')}}">Evènements</a>
                         <a href="{{ path('app_groupe')}}">Groupes</a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('admin')}}">Administration</a>
+                        {% endif %}
+                        <a href="{{ path('app_logout')}}">Déconnexion</a>
                     </div>
                 </ul>
             </nav>
         </section>
-        <section class="side-nav-section">
-            <div class="side-nav-title">
-                <h3>Evènements en cours</h3>
-            </div>
-        </section>
-        <section class="side-nav-section">
-            <div class="side-nav-title">
-                <h3>Mes groupes</h3>
-            </div>
-        </section>
+{#        <section class="side-nav-section">#}
+{#            <div class="side-nav-title">#}
+{#                <h3>Evènements en cours</h3>#}
+{#            </div>#}
+{#        </section>#}
+{#        <section class="side-nav-section">#}
+{#            <div class="side-nav-title">#}
+{#                <h3>Mes groupes</h3>#}
+{#            </div>#}
+{#        </section>#}
     </div>
 </aside>

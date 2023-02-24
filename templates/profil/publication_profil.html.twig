@@ -1,6 +1,9 @@
-{% block title %}Mes Publications
+{% block title %}Publications
 {% endblock %}
-		{% for publication in app.user.publications %}
+{% if publicationsUser|length == 0 %}
+<h2>Aucune Publication..!</h2>
+{% endif %}
+		{% for publication in publicationsUser %}
 			<div class="publication-card">
 				<div class="user-publication">
 					<div class="user-publication-left-side">
