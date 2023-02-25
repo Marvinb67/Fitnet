@@ -70,11 +70,13 @@
                         <a href="{{ path('app_publication_show', { id: publication.id, slug: publication.slug }) }}">{{ publication.titre }}</a>
                     </h2>
                     <div>{{ publication.contenu }}</div>
-                    {% include '/publication/reaction.html.twig' %}
                     <div class="tag-div">
-                    {% for tag in publication.tagsPublication %}
-                        <a href="{{ path('app_publication', {tag: tag.intitule})}}"><span class="badge badge-pill badge-info text-info">#{{ tag.intitule }}</span></a>
-                    {% endfor %}
+                        <div>
+                            {% for tag in publication.tagsPublication %}
+                                <a href="{{ path('app_publication', {tag: tag.intitule})}}"><span class="badge badge-pill badge-info text-info">#{{ tag.intitule }}</span></a>
+                            {% endfor %}
+                        </div>
+                        {% include '/publication/reaction.html.twig' %}
                     </div>
                 </div>
             {% endfor %}
