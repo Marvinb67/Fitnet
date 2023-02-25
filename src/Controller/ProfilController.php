@@ -41,9 +41,11 @@ class ProfilController extends AbstractController
         $data->setPage($request->get('page', 1));
             $users = $userRepository->findSearch($data);
 
+            $amis = [];
             foreach ($user->getAmis() as $ami) {
                 $amis[] = $ami;
             }
+            $suivis = [];
             foreach ($user->getFollowUsers() as $follow) {
                 $suivis[] = $follow;
             };

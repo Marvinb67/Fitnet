@@ -186,7 +186,7 @@ class SecurityController extends AbstractController
      * @param UserPasswordHasherInterface $passwordHasher
      * @return Response
      */
-    #[Route('/parametre/profil/{slug}{id}',  name: 'modif_pass', methods: ["GET","POST"])]
+    #[Route('/parametre/profil/{slug}&{id}',  name: 'modif_pass', methods: ["GET","POST"])]
 
     public function modifPass(
         Request $request,
@@ -205,8 +205,6 @@ class SecurityController extends AbstractController
             // Formulaire du changement de mot de passe
             $formPassChange = $this->createForm(ModifPassType::class);
             $formPassChange->handleRequest($request);
-
-
             if ($formPassChange->isSubmitted() && $formPassChange->isValid()) {
                 // get l'ancien mot de passe
                 $oldPassword = $request->get('modif_pass')['actuelPassword'];

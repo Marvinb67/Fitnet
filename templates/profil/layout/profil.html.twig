@@ -1,11 +1,36 @@
 {% if users is defined %}
 	{% for user in users %}
 		{% if app.user.id is same as(user.id) %}
-			<div class="profils">
+    
+    
+    
+
+<div class="profils">
 				<h6 id="nom_profil">{{user.myProfil.age}} ans</h6>
 				{# <span>Profession : {{user.myProfil.job}}</span> #}
 				{# <div class="buttons d-flex flex-row-reverse m-2">
-					<a id="modifie_profil" href="{{path('modif_pass', {slug: user.slug, id: user.id})}}" class="btn btn-outline-primary btns px-4">Modifier Profil</a>
+        
+        
+
+
+			<div id="profils">
+			{% if user.myProfil %}
+				<h5 id="nom_profil">{{ user.nom }} {{ user.prenom }} {{user.myProfil.age}} ans</h5>
+			<span>{{user.myProfil.job}}</span>
+				<div>
+					<p>{{user.myProfil.biographie}}</p>
+				</div>
+				{% else %}
+					<span>Modifier votre profil pour permettre à vous amis de mieux vous connaitre!</span>
+			{% endif %}
+			
+				<div class="buttons d-flex flex-row-reverse m-2">
+        
+        
+        
+        
+
+<a id="modifie_profil" href="{{path('modif_pass', {slug: user.slug, id: user.id})}}" class="btn btn-outline-primary btns px-4">Modifier Profil</a>
 				</div> #}
 
 				<h6>Biographie</h6>
