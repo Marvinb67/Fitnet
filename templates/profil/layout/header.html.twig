@@ -1,16 +1,23 @@
-<section class="header-profil-section">
+<section>
 	{% if users is defined %}
 		{% for user in users %}
 			{% if app.user.id is same as(user.id) %}
-				<a href="{{ path('app_profil') }}">
-					<div class="photo-profil">
-					{% if 'gravatar' in app.user.image %}
-					<img id="image_profil1" class="rounded-circle" src="{{ app.user.image }}" alt="{{ app.user.nom }} {{ app.user.prenom }}" width="100px"/>
-					{% else %}
-						<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ app.user.image) }}" alt="{{ app.user.nom }} {{ app.user.prenom }}" width="100px"/>
-						{% endif %}
+				<section class="header-profil-section">
+					<a href="{{ path('app_profil') }}">
+						<div class="photo-profil">
+						{% if 'gravatar' in app.user.image %}
+						<img id="image_profil1" class="rounded-circle" src="{{ app.user.image }}" alt="{{ app.user.nom }} {{ app.user.prenom }}" width="100px"/>
+						{% else %}
+							<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ app.user.image) }}" alt="{{ app.user.nom }} {{ app.user.prenom }}" width="100px"/>
+							{% endif %}
+						</div>
+					</a>
+					<div class="nom-profil">
+						<h5>{{ user.nom }}</h5>
+						<h5>{{ user.prenom }}</h5>
 					</div>
-				</a>
+					
+				</section>
 			{% endif %}
 		{% endfor %}
 {#		<div class="profil-dark-bar"></div>#}

@@ -1,12 +1,12 @@
 <h4>Utilisateurs Suivi</h4>
 {% if suivis is defined %}
 	{% for suivi in suivis %}
-		<div class="d-flex justify-content-start ml-2">
+		<div>
 			<a id="suivi-{{suivi.id}}" class="link-secondary text-decoration-none suivis" href="{{ path('app_user_detail', { slug: suivi.slug, id: suivi.id }) }}">
 					{% if 'https://www.gravatar.com/' in suivi.image %}
-					<img id="image_profil1" class="rounded-circle" src="{{ suivi.image }}" alt="{{ suivi.nom }}" width="100px"/>
+					<img id="image_profil1" class="rounded-circle" src="{{ suivi.image }}" alt="{{ suivi.nom }}"/>
 					{% else %}
-					<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ suivi.image) }}" alt="{{ suivi.nom }}" width="100px"/>
+					<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ suivi.image) }}" alt="{{ suivi.nom }}"/>
 					{% endif %}
 
 				{{ suivi.nom }}
@@ -18,12 +18,12 @@
 	{% endfor %}
 {% else %}
 	{% for suivi in followUsers %}
-		<div class="d-flex justify-content-start ml-2">
+		<div>
 			<a id="suivi-{{suivi.idFollowedUser}}" class="link-secondary text-decoration-none suivis" href="{{ path('app_user_detail', { slug: suivi.slug, id: suivi.idFollowedUser }) }}">
 				{% if 'https://www.gravatar.com/' in suivi.image %}
-					<img id="image_profil1" class="rounded-circle" src="{{ suivi.image }}" alt="{{ suivi.nom }}" width="100px"/>
+					<img id="image_profil1" class="rounded-circle" src="{{ suivi.image }}" alt="{{ suivi.nom }}"/>
 					{% else %}
-					<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ suivi.image) }}" alt="{{ suivi.nom }}" width="100px"/>
+					<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ suivi.image) }}" alt="{{ suivi.nom }}"/>
 					{% endif %}
 				{{ suivi.nom }}
 			</a>
