@@ -65,21 +65,21 @@
 .public-profil-nav{
     width: 250px;
     height: 100%;
-    background-color: #262626;
+    background-color: #ffffff;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     top: 0;
 }
 
 .public-profil-nav nav{
-    color: white;
+    color: #262626;
     padding: 1rem;
 }
 
 .public-profil-nav li{
-    background-color: white;
-    border-bottom: 1px solid #262626;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid $primary_color;
     padding: 0.2rem 1rem;
-    border-radius: 50px;
+    // border-radius: 50px;
     margin: 0.2rem 0;
 }
 
@@ -94,7 +94,7 @@
     top: 0;
     left: 267px;
     height: 670px;
-    background-color: white;
+    background-color: #f5f5f5;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 20px;
     padding: 0;
@@ -135,19 +135,54 @@
 .nom-profil{
     display: flex;
     gap: 0.5rem;
-    color: white;
+    color: #262626;
 }
 
 .bio-div{
-    background-color: #262626;
-    padding: 0.5rem;
+    // background-color: #262626;
+    padding: 0 1rem 1rem 1rem;
     border-radius: 15px;
     border-top: 2px solid white;
     border-bottom: 2px solid white;
-    color: white;
+    color: #262626;
+    height: 100px;
+    overflow: auto;
 }
 
  h6{
-    color: white;
+    color: #262626;
     padding: 0 1rem;
+}
+
+.ami-suivi-div{
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
+    margin: 5px;
+    align-items: center;
+    background-color: white;
+    padding: 0.5rem;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+}
+
+.img-profil{
+    width: 50px;
+    height: 50px;
+}
+
+.button-profil{
+    height: fit-content;
+    background-color: #f5f5f5;
+    margin: 5px 0.5rem;
+}
+
+.profil-dark-bar{
+    display: flex;
+    flex-direction: column;
+}
+
+.dark-round a{
+    color: white;
 }

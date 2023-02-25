@@ -46,13 +46,13 @@
 					{% endif %}
 				{% endfor %}
 				<div>{{ publication.contenu }}</div>
-				{% include '/publication/reaction.html.twig' %}
-				{% for tag in publication.tagsPublication %}
+				<div class="tag-div">
 					<div>
-						<a href="{{ path('app_publication', {tag: tag.intitule})}}">
-							<span class="badge badge-pill badge-info text-info">#{{ tag.intitule }}</span>
-						</a>
+						{% for tag in publication.tagsPublication %}
+							<a href="{{ path('app_publication', {tag: tag.intitule})}}"><span class="badge badge-pill badge-info text-info">#{{ tag.intitule }}</span></a>
+						{% endfor %}
 					</div>
-				{% endfor %}
+					{% include '/publication/reaction.html.twig' %}
+				</div>
 			</div>
 		{% endfor %}

@@ -1,7 +1,7 @@
 {% if users is defined %}
 	{% for user in users %}
 		{% if app.user.id is same as(user.id) %}
-			<div id="profils">
+			<div class="profils">
 				<h6 id="nom_profil">{{user.myProfil.age}} ans</h6>
 				{# <span>Profession : {{user.myProfil.job}}</span> #}
 				{# <div class="buttons d-flex flex-row-reverse m-2">
@@ -15,12 +15,14 @@
 			</div>
 		{% endif %}
 	{% endfor %}
+
 {% else %}
+
     {% for user in userProfil %}
-		<div id="profils">
-			<h5 id="nom_profil">{{ user.nom }}</h5>
-			<span>{{user.job}} {{user.age}} ans</span>
-			<div>
+		<div class="profils">
+			{# <span>{{user.job}} {{user.age}} ans</span> #}
+			<h6>Biographie</h6>
+			<div class="bio-div">
 				<p>{{user.bio}}</p>
 			</div>
         </div>

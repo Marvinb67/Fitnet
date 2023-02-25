@@ -8,17 +8,18 @@
 
 	<div class="wrapper-1200">
 		<div class="row">
-			<div class="col my-2">
-				{% include '_layout/_desktop/sideNav.html.twig' %}
-			</div>
+
+			{% include '_layout/_desktop/sideNav.html.twig' %}
 
 			<section class="public-profil-container">
 
-			{% include 'profil/layout/header.html.twig' %}
-
-            <div class="public-profil-div">
+				<div class="public-profil-div">
 
 					<div class="public-profil-nav">
+
+						{% include 'profil/layout/header.html.twig' %}
+						{% include 'profil/layout/profil.html.twig' %}
+						
 						<nav>
 							<ul>
 								<li><a class="btn-profil list-publications" href="#page-publications">Publications </a></li>

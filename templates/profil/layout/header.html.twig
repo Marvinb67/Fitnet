@@ -22,17 +22,27 @@
 		{% endfor %}
 {#		<div class="profil-dark-bar"></div>#}
 	{% else %}
-		{% for user in userProfil %}
-			<a href="{{ path('app_user_detail', {slug: user.slug, id: user.id}) }}">
-				<div class="photo-profil">
-					{% if 'https://www.gravatar.com/' in user.image %}
-					<img id="image_profil1" class="rounded-circle" src="{{ user.image }}" alt="{{ user.nom }}" width="100px"/>
-					{% else %}
-					<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ user.image) }}" alt="{{ user.nom }}" width="100px"/>
 
-					{% endif %}
+		{% for user in userProfil %}
+			<section class="header-profil-section">
+
+				<a href="{{ path('app_user_detail', {slug: user.slug, id: user.id}) }}">
+					<div class="photo-profil">
+						{% if 'https://www.gravatar.com/' in user.image %}
+						<img id="image_profil1" class="rounded-circle" src="{{ user.image }}" alt="{{ user.nom }}" width="100px"/>
+						{% else %}
+						<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ user.image) }}" alt="{{ user.nom }}" width="100px"/>
+
+						{% endif %}
+					</div>
+				</a>
+
+				<div class="nom-profil">
+					<h5>{{ user.nom }}</h5>
 				</div>
-			</a>
+
+			</section>
+
 			<div class="profil-dark-bar">
 				{% if user.id in followersIds %}
 					<a class="button-profil button-profil-1" href="{{path('app_add_interaction', {interaction: 'ajout-follow', etat: 'false', id: user.id})}}">Ne plus Suivre
@@ -44,7 +54,7 @@
 					</a>
 				{% endif %}
 				{% if user.id in amisIds %}
-					<a class="button-profil button-profil-2" href="{{ path('app_add_interaction', {interaction: 'ajout-ami', etat: 'false', id: user.id}) }}">Supprimer la relation
+					<a class="button-profil button-profil-2" href="{{ path('app_add_interaction', {interaction: 'ajout-ami', etat: 'false', id: user.id}) }}">Retirer
 						<i class="fa-solid fa-user-minus icon"></i>
 					</a>
 				{% else %}
