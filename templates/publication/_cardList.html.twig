@@ -2,6 +2,8 @@
 	<div class="publication-wrapper">
 
 		{% if publications|length == 0 %}
+        <a class="dark-round" href="{{path('app_publication_new')}}">Créer une publication<i class="fa-solid fa-plus"></i>
+				</a>
 			<h2>Aucune publication trouvée!</h2>
 		{% else %}
 
@@ -16,7 +18,6 @@
 						<li>Nouveauté</li>
 					</div>
 				</div>
-
 				<a class="dark-round" href="{{path('app_publication_new')}}">Créer une publication<i class="fa-solid fa-plus"></i>
 				</a>
 			</div>
