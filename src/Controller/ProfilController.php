@@ -117,13 +117,15 @@ class ProfilController extends AbstractController
                 'image' => $follow->getimage(),
             ];
         };
-        // foreach ($user->getFollowedByUsers() as $followedBy) {
-        //     $followedByUsers[] = [
-        //         'idFollowedBy' => $followedBy->getId(),
-        //         'slug' => $followedBy->getSlug(),
-        //         'nom' => $followedBy->getNom() . ' ' . $followedBy->getPrenom(),
-        //     ];
-        // };
+        
+        /* foreach ($user->getFollowedByUsers() as $followedBy) {
+            $followedByUsers[] = [
+                'idFollowedBy' => $followedBy->getId(),
+                'slug' => $followedBy->getSlug(),
+                'nom' => $followedBy->getNom() . ' ' . $followedBy->getPrenom(),
+            ];
+        };*/
+
             // Les amis en commun avec l'utlisateur connecté
         $communAmis = array_intersect($user->getAmis()->toArray(), $connectedUser->getAmis()->toArray());
         foreach ($communAmis as $communAmi) {

@@ -1,0 +1,14 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Accès restreint{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <section class="row">
+            <div class="col-12">
+                <h1>Accès restreint</h1>
+                <p>Vous n'avez pas le droit d'afficher se contenu..! <a href="{{ path('home') }}">retourner à la page d'accueil</a>.</p>
+            </div>
+        </section>
+    </main>
+{% endblock %}

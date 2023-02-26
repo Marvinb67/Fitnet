@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+
 use App\Entity\Media;
 use App\Entity\Commentaire;
 use Doctrine\DBAL\Types\Types;
@@ -17,7 +18,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: PublicationRepository::class)]
@@ -34,6 +35,13 @@ class Publication
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le titre de l\'article ne peut pas être vide')]
+    #[Assert\Length(
+        min: 5,
+        max: 150,
+        minMessage: 'Le titre doit faire au moins {{ limit }} caractères',
+        maxMessage: 'Le titre ne doit pas faire plus de {{ limit }} caractères'
+    )]
     private ?string $titre = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -52,7 +60,7 @@ class Publication
     #[ORM\OneToMany(mappedBy: 'publication', targetEntity: ReactionPublication::class, orphanRemoval: true)]
     private Collection $reactionPublications;
 
-    #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'publication', cascade: ['persist'])]
+    #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'publication', orphanRemoval: true, cascade: ['persist'])]
     private Collection $mediaPublication;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'publication')]
