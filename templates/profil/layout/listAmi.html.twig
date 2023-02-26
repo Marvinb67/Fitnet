@@ -1,33 +1,38 @@
-<h4>Les Amis</h4>
+<div class="ami-suivi-div mt-3">
+	<h5>Amis</h5>
+</div>
 {% if users is defined %}
+
 	{% for user in users %}
 		{% if app.user.id is same as(user.id) %}
 			{% for ami in user.amis %}
-				<div class="d-flex justify-content-start ml-2">
+				<div class="ami-suivi-div">
 					<a id="ami-{{ami.id}}" class="link-secondary text-decoration-none amis" href="{{ path('app_user_detail', { slug: ami.slug, id: ami.id }) }}">
 					{% if 'https://www.gravatar.com/' in ami.image %}
-					<img id="image_profil1" class="rounded-circle" src="{{ ami.image }}" alt="{{ ami.nom }}" width="100px"/>
+					<img id="image_profil1" class="rounded-circle img-profil" src="{{ ami.image }}" alt="{{ ami.nom }}"/>
 					{% else %}
-					<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ ami.image) }}" alt="{{ ami.nom }}" width="100px"/>
+					<img id="image_profil1" class="rounded-circle img-profil" src="{{ asset('/uploads/' ~ ami.image) }}" alt="{{ ami.nom }}"/>
 					{% endif %}
 						{{ ami.nom }}
 						{{ ami.prenom }}
 					</a>
-					<a class="button-profil mr-2" href="{{ path('app_add_interaction', {interaction: 'ajout-ami', etat: 'false', id: ami.id}) }}">Supprimer la relation
+					<a class="button-profil mr-2" href="{{ path('app_add_interaction', {interaction: 'ajout-ami', etat: 'false', id: ami.id}) }}">retirer
 						<i class="fa-solid fa-user-minus icon"></i>
 					</a>
 				</div>
 			{% endfor %}
 		{% endif %}
 	{% endfor %}
+
 {% else %}
+
 	{% for amiOfAmi in amisOfAmi %}
-		<div class="d-flex justify-content-start ml-2">
+		<div class="ami-suivi-div">
 			<a id="ami-{{amiOfAmi.idAmi}}" class="link-secondary text-decoration-none amis" href="{{ path('app_user_detail', { slug: amiOfAmi.slug, id: amiOfAmi.idAmi }) }}">
 					{% if 'https://www.gravatar.com/' in amiOfAmi.image %}
-					<img id="image_profil1" class="rounded-circle" src="{{ amiOfAmi.image }}" alt="{{ amiOfAmi.nom }}" width="100px"/>
+					<img id="image_profil1" class="rounded-circle" src="{{ amiOfAmi.image }}" alt="{{ amiOfAmi.nom }}"/>
 					{% else %}
-					<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ amiOfAmi.image) }}" alt="{{ amiOfAmi.nom }}" width="100px"/>
+					<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ amiOfAmi.image) }}" alt="{{ amiOfAmi.nom }}"/>
 					{% endif %}
 				{{ amiOfAmi.nom }}
 			</a>
@@ -42,4 +47,5 @@
 			{% endif %}
 		</div>
 	{% endfor %}
+
 {% endif %}

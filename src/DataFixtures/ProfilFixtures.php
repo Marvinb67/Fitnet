@@ -26,7 +26,7 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
             $profil = new Profil;
             $profil
                 ->setBiographie($faker->paragraph())
-                ->setAge($faker->numberBetween(16, 56))
+                ->setAge($faker->dateTimeBetween('-60 years', '-15 years'))
                 ->setJob($faker->word())
                 ->setUser($users[$i]);
                 

@@ -5,15 +5,22 @@
 {% block container %}
 	{% include '_layout/_desktop/nav.html.twig' %}
 	<div class="header-margin"></div>
-	<div class="container-fluid wrapper-1200">
+
+	<div class="wrapper-1200">
 		<div class="row">
-			<div class="col my-2">
-				{% include '_layout/_desktop/sideNav.html.twig' %}
-			</div>
+
+			{% include '_layout/_desktop/sideNav.html.twig' %}
+
 			<section class="public-profil-container">
-			{% include 'profil/layout/header.html.twig' %}
-            <div class="public-profil-div">
+
+				<div class="public-profil-div">
+
+				<div class="public-profil-navv">
+
 					<div class="public-profil-nav">
+						{% include 'profil/layout/header.html.twig' %}
+						{% include 'profil/layout/profil.html.twig' %}
+						
 						<nav>
 							<ul>
 								<li><a class="btn-profil list-publications" href="#page-publications">Publications </a></li>
@@ -25,6 +32,8 @@
 							</ul>
 						</nav>
 					</div>
+
+				</div>
 
 					<div class="public-profil-na">
 
@@ -51,10 +60,13 @@
 						<div class="lespageprofil list-suivis" id="page-suivi">
 							{% include 'profil/layout/suivi.html.twig' %}
 						</div>
-            <div class="buttons d-flex flex-row-reverse m-2">
-				<a id="modifie_profil" href="{{ path('app_profil') }}" class="btn btn-outline-primary btns px-4">Retour à mon Profil</a>
-			</div>
+
+						<div class="buttons d-flex flex-row-reverse m-2">
+							<a id="modifie_profil" href="{{ path('app_profil') }}" class="btn btn-outline-primary btns px-4">Retour à mon Profil</a>
+						</div>
+
 					</div>
+
 				</div>
 			</section>
 

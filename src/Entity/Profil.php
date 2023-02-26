@@ -2,9 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\ProfilRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProfilRepository;
+use DateTime;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 #[ORM\Entity(repositoryClass: ProfilRepository::class)]
 class Profil
@@ -20,12 +23,15 @@ class Profil
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $job = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $age = null;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?DateTime $age = null;
 
     #[ORM\OneToOne(inversedBy: 'myProfil', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {}
 
     public function getId(): ?int
     {
@@ -56,12 +62,12 @@ class Profil
         return $this;
     }
 
-    public function getAge(): ?int
+    public function getAge(): ?\DateTime
     {
         return $this->age;
     }
 
-    public function setAge(?int $age): self
+    public function setAge(\DateTime $age): self
     {
         $this->age = $age;
 
