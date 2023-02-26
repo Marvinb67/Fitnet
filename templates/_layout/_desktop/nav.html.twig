@@ -1,7 +1,7 @@
 <header class="header-desktop fixed-nav">
     <nav class="nav-desktop">
         <ul>
-            <li><img class="logo-black" src="{{ asset('build/images/fitnet-logo.png') }}" alt="image logo"/></li>
+            <a href="{{path('home')}}"><img class="logo-black" src="{{ asset('build/images/fitnet-logo.png') }}" alt="image logo"/></a>
             <div>
             {{ render(controller('App\\Controller\\HomeController::searchForm')) }}
 {#                <li><i class="fa-solid fa-bell"></i></li>#}
