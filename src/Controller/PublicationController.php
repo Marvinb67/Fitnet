@@ -41,7 +41,29 @@ class PublicationController extends AbstractController
         }
             $data->setTag($request->get('tag'));
             // dd($data);
-            $publications = $publicationRepository->findSearch($data, $user);
+            $publications = $publicationRepository->findSearch($data);
+
+        return $this->render('publication/index.html.twig', [
+            'publications' => $publications,
+        ]);
+    }
+
+    #[Route('/publication/personalise', name: 'app_publication_personnalise')]
+    public function feedPersonalise(PublicationRepository $publicationRepository, Request $request): Response
+    {
+        $user = $this->getUser();
+        $data = new SearchData();
+        $form = $this->createForm(SearchFormType::class, $data);
+        $form->handleRequest($request);
+        $data->setPage($request->get('page', 1));
+
+        if (!$user) {
+            $this->addFlash('danger', 'vous n\'êtes pas connecté!');
+            return $this->redirectToRoute('app_login');
+        }
+            $data->setTag($request->get('tag'));
+            // dd($data);
+            $publications = $publicationRepository->findSearchFeedAmis($data, $user);
 
         return $this->render('publication/index.html.twig', [
             'publications' => $publications,

@@ -20,6 +20,9 @@
 				</div>
 				<a class="dark-round" href="{{path('app_publication_new')}}">Créer une publication<i class="fa-solid fa-plus"></i>
 				</a>
+                <div id="feed" class="dark-round">
+                    <a href="{{ path('app_publication') }}" class="dark-round">Feed générale</a> | <a class="dark-round" href="{{ path('app_publication_personnalise') }}">Feed personnalisé</a>
+                </div>
 			</div>
 
 			{% for publication in publications.data %}
