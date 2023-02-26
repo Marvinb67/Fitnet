@@ -28,18 +28,10 @@ class ProfilFormType extends AbstractType
                 ],
                 'label' => 'Métier'
             ])
-            ->add('age', BirthdayType::class, [
-                // 'mapped' => true,
-                'required' => false,
+            ->add('age', BirthdayType::class,[
                 'placeholder' => [
-                    'month' => 'Mois',
-                    'year' => 'Année',
-                    'day' => 'Jour',
+                    'year' => 'L\'année', 'month' => 'Le mois', 'day' => 'Le jour',
                 ],
-                'label' => 'Date De Naissance',
-                'attr' => [
-                    'class' => 'form-select form-select-sm my-2'
-                ]
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Valider',

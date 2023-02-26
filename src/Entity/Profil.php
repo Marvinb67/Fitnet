@@ -23,26 +23,15 @@ class Profil
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $job = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?DateTime $age = null;
 
     #[ORM\OneToOne(inversedBy: 'myProfil', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    // public static function loadValidatorMetadata(ClassMetadata $metadata)
-    // {
-    //     $metadata->addPropertyConstraint('age', new Assert\LessThan('-15 years'));
-    //     $metadata->addPropertyConstraint('age', new Assert\Date());
-    // }
-     /**
-     * Comment constructor.
-     */
-    public function __construct()
-    {
-        $this->age = new \DateTime();
-    }
-
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {}
 
     public function getId(): ?int
     {

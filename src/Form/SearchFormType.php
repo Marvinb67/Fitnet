@@ -29,47 +29,9 @@ class SearchFormType extends AbstractType
                     'class' => 'form-control search-input'
                 ]
             ])
-            // ->add('amis', EntityType::class, [
-            //     'label' => false,
-            //     'class' => User::class,
-            //     // 'query_builder' =>  function (EntityRepository $er) {
-            //     //     return $er->createQueryBuilder('u')
-            //     //         ->select('CONCAT(u.nom, " ", u.prenom) as ami')
-            //     //         ->leftJoin('u.id', 'ami.id')
-            //     //         ->where('u.id = *LOGGED USER ID*')
-            //     //         ;
-            //     // },
-            //     // function(){
-            //     //     $user = $this->getUser();
-            //     //     foreach ($user->getAmis() as $ami) {
-            //     //         $amis = $ami->getNom().' '.$ami->getPrenom();
-            //     //         $amis;
-            //     //     }
-            //     // },
-            //     'required' => false,
-            //     'expanded' => true,
-            //     'multiple' => true,
-            // ])
-            // ->add('dates', EntityType::class, [
-            //     'label' => false,
-            //     'required' => false,
-            //     'class' => Publication::class,
-            //     'expanded' => true,
-            //     'multiple' => true,
-            //     'attr' => [
-            //         'class' => 'js-datepicker',
-            //     ],
-            // ])
            ;
     }
-    // private function detectUri()
-    // {
-    //     $request = new Request();
-    //     $uri = $request->getUri();
-    //     $route = $uri === '/profil/' ? $this->urlGenerator->generate("search_user_form") : $this->urlGenerator->generate("search_form");
-    //     // dd($route);
-    //     return $route;
-    // }
+    
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

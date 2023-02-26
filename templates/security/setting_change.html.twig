@@ -2,8 +2,10 @@
 {% block title %}Paramètres Profil
 {% endblock %}
 {% block container %}
+{% include '_layout/_desktop/nav.html.twig' %}
+	<div class="header-margin"></div>
 	<div class="container rounded bg-white mt-5 mb-5">
-		<div class="row">
+		<div class="row bg-secondary bg-gradient">
 			<div class="col-md-3 border-right">
 				<div class="d-flex flex-column align-items-center text-center p-3 py-5">
 					{% if 'https://www.gravatar.com/' in app.user.image %}
@@ -16,7 +18,7 @@
 							{{ app.user.prenom}}</span>
 					</a>
 					<span class="text-black-50">{{ app.user.email}}</span>
-					<span></span>
+					<span><a href="{{path('app_profil')}}" class="link-dark px-4 fs-1"><i class="fa-solid fa-backward fs-1"></i> Profil</a></span>
 				</div>
 			</div>
 			<div class="col-md-5 border-right">
@@ -40,19 +42,12 @@
 							{{ form_row(changeProfilForm.image) }}</div>
 					</div>
 					<div class="mt-5 text-center">
-						<button type="submit" class="btn btn-primary btn-lg mt-3 profile-button">Valider</button>
 						{{ form_end(changeProfilForm) }}
 					</div>
 				</div>
 			</div>
 			<div class="col-md-4">
-				<div
-					class="p-3 py-5">
-					{# <div class="d-flex justify-content-between align-items-center experience">
-																<span>Edit Experience</span>
-																<span class="border px-3 p-1 add-experience">
-																	<i class="fa fa-plus"></i>&nbsp;Experience</span>
-															</div><br> #}
+				<div class="p-3 py-5">
 					<div class="col-md-12">
 						<h5>Changement du Mot de Passe</h5>
 						{{ form(modifPassForm) }}
@@ -62,28 +57,34 @@
 					</div>
 				</div>
 			</div><hr>
-			<div class="row">
-			<div class="col-12 border-right">
-				<div class="p-3 py-5">
-					<div class="d-flex justify-content-between align-items-center mb-3">
-						<h4 class="text-right">Paramètres Additionnels</h4>
-					</div>
-					<div class="row mt-2">
-						<div class="col-md-12">
-							{{ form_row(profilForm.biographie) }}</div>
-					</div>
-					<div class="row mt-2">
-						<div class="col-md-6">
-							{{ form_row(profilForm.job) }}</div>
-						<div class="col-md-6">
-							{{ form_row(profilForm.age) }}</div>
-					</div>
-					<div class="mt-5 text-center">
-						{{ form_end(profilForm) }}
+			<div class="row bg-secondary bg-gradient">
+				<div class="col-12 border-right">
+					<div class="p-3 py-5">
+						<div class="d-flex justify-content-between align-items-center mb-3">
+							<h4 class="text-right">Paramètres Additionnels</h4>
+						</div>
+						<div class="row mt-2">
+							{{ form_start(profilForm) }}
+							<div class="col-md-12">
+								{{ form_row(profilForm.biographie) }}</div>
+						</div>
+						<div class="row mt-2">
+							<div class="col-md-6">
+								{{ form_row(profilForm.job) }}</div>
+							<div class="col-md-6">
+							{{ form_label(profilForm.age) }}
+							<div class="form-control my-2">
+								{{ form_widget(profilForm.age.day) }}
+								{{ form_widget(profilForm.age.month) }}
+								{{ form_widget(profilForm.age.year) }}
+							</div></div>
+						</div>
+						<div class="mt-5 text-center">
+							{{ form_end(profilForm) }}
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-		</div>
 {% endblock %}

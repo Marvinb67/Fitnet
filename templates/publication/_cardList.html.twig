@@ -1,146 +1,153 @@
 <main class="main-publication">
-        <div class="publication-wrapper">
+	<div class="publication-wrapper">
 
-            {% if publications|length == 0 %}
-        <h2>Aucune publication trouvée!</h2>
-            {% else %}
+		{% if publications|length == 0 %}
+			<h2>Aucune publication trouvée!</h2>
+		{% else %}
 
 
-        <div class="publication-scroll-header">
-            <div id="filter-modal" class="filter-div">
-{#                <p>Filtrer<i class="fa-solid fa-caret-down"></i></p>#}
-                <div class="modal-filtre-publication">
-                    <li>Popularité</li>
-                    <li>Ancienneté</li>
-                    <li>Nouveauté</li>
-                </div>
-            </div>
+			<div class="publication-scroll-header">
+				<div
+					id="filter-modal" class="filter-div">
+					{#                <p>Filtrer<i class="fa-solid fa-caret-down"></i></p>#}
+					<div class="modal-filtre-publication">
+						<li>Popularité</li>
+						<li>Ancienneté</li>
+						<li>Nouveauté</li>
+					</div>
+				</div>
 
-            <a class="dark-round" href="{{path('app_publication_new')}}">Créer une publication<i class="fa-solid fa-plus"></i></a>
-        </div>
+				<a class="dark-round" href="{{path('app_publication_new')}}">Créer une publication<i class="fa-solid fa-plus"></i>
+				</a>
+			</div>
 
-            {% for publication in publications.data %}
-   
+			{% for publication in publications.data %}
 
-                <div class="publication-card">
-                    <div class="user-publication">
-                        <div class="user-publication-left-side">
-                            <div class="futur-pp"></div>
-                            <div class="infos-user-publication">
-                                <p>{{ publication.user.nom }}
-                                    {{ publication.user.prenom }}</p>
-                                <p>Posté le :
-                                    {{publication.createdAt | date('d/m/Y à H:i')}}</p>
-                                {% if (publication.editedAt | date('d/m/Y à H:i') >
+
+				<div class="publication-card">
+					<div class="user-publication">
+						<div class="user-publication-left-side">
+							<div class="futur-pp">
+								{% if 'gravatar' in publication.user.image %}
+									<img id="image_profil1" class="rounded-circle" src="{{ publication.user.image }}" alt="{{ publication.user.nom }} {{ publication.user.prenom }}" width="50px"/>
+								{% else %}
+									<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ publication.user.image) }}" alt="{{ publication.user.nom }} {{ publication.user.prenom }}" width="50px"/>
+								{% endif %}
+							</div>
+							<div class="infos-user-publication">
+								<p>{{ publication.user.nom }}
+									{{ publication.user.prenom }}</p>
+								<p>Posté le :
+									{{publication.createdAt | date('d/m/Y à H:i')}}</p>
+								{% if (publication.editedAt | date('d/m/Y à H:i') >
                                     publication.createdAt | date('d/m/Y à H:i')) and (app.user) %}
-                                    <p>
-                                        Modifié le :
-                                        {{publication.editedAt | date('d/m/Y à H:i')
+									<p>
+										Modifié le :
+										{{publication.editedAt | date('d/m/Y à H:i')
                                         }}<small>
-                                            Par
-                                            {{ app.user.nom }}
-                                            {{ app.user.prenom }}</small>
-                                    </p>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="menu-publication">
-                            <div class="modal-menu-publication" id="publication-modal">
-                                <ul>
-                                    {% if (app.user) and (app.user.id is same as publication.user.id)  %}
-                                        <a class="edit-publication-btn" href="{{ path('app_publication_edit', { id: publication.id, slug: publication.slug }) }}">Modifier</a>
-                                        <a class="delete-publication-btn" href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer</a>
-                                    {% endif %}
-                                </ul>
-                            </div>
-                            {% if (app.user) and (app.user.id is same as publication.user.id)  %}
+											Par
+											{{ app.user.nom }}
+											{{ app.user.prenom }}</small>
+									</p>
+								{% endif %}
+							</div>
+						</div>
+						<div class="menu-publication">
+							<div class="modal-menu-publication" id="publication-modal">
+								<ul>
+									{% if (app.user) and (app.user.id is same as publication.user.id)  %}
+										<a class="edit-publication-btn" href="{{ path('app_publication_edit', { id: publication.id, slug: publication.slug }) }}">Modifier</a>
+										<a class="delete-publication-btn" href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer</a>
+									{% endif %}
+								</ul>
+							</div>
+							{% if (app.user) and (app.user.id is same as publication.user.id)  %}
 
-                            <i class="fas fa-ellipsis-v" data-modal="{{publication.id}}"></i>
-                            {% endif %}
+								<i class="fas fa-ellipsis-v" data-modal="{{publication.id}}"></i>
+							{% endif %}
 
-                        </div>
-                    </div>
-                    {% for key, img in publication.mediaPublication %}
-                        {% if key == 0 %}
-                            <a  href="{{ path('app_show_media', { slug: img.slug }) }}">
-                                <img class="img-publication card-img-top img-fluid" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{ img.titre }}"/></a>
-                        {% endif %}
-                    {% endfor %}
-                    <h2>
-                        <a href="{{ path('app_publication_show', { id: publication.id, slug: publication.slug }) }}">{{ publication.titre }}</a>
-                    </h2>
-                    <div>{{ publication.contenu }}</div>
-                    {% include '/publication/reaction.html.twig' %}
-                    <div class="tag-div">
-                    {% for tag in publication.tagsPublication %}
-                        <a href="{{ path('app_publication', {tag: tag.intitule})}}"><span class="badge badge-pill badge-info text-info">#{{ tag.intitule }}</span></a>
-                    {% endfor %}
-                    </div>
-                </div>
-            {% endfor %}
-            {% set path = 'app_publication' %}
-            {% set pages = publications.pages %}
-            {% set q = publications.q %}
-            {% set currentPage = publications.page %}
-            {% include '/_partials/_pagination.html.twig' %}
-        </div>
-    </main>
+						</div>
+					</div>
+					{% for key, img in publication.mediaPublication %}
+						{% if key == 0 %}
+							<a href="{{ path('app_show_media', { slug: img.slug }) }}">
+								<img class="img-publication card-img-top img-fluid" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{ img.titre }}"/></a>
+						{% endif %}
+					{% endfor %}
+					<h2>
+						<a href="{{ path('app_publication_show', { id: publication.id, slug: publication.slug }) }}">{{ publication.titre }}</a>
+					</h2>
+					<div>{{ publication.contenu }}</div>
+					{% include '/publication/reaction.html.twig' %}
+					<div class="tag-div">
+						{% for tag in publication.tagsPublication %}
+							<a href="{{ path('app_publication', {tag: tag.intitule})}}">
+								<span class="badge badge-pill badge-info text-info">#{{ tag.intitule }}</span>
+							</a>
+						{% endfor %}
+					</div>
+				</div>
+			{% endfor %}
+			{% set path = 'app_publication' %}
+			{% set pages = publications.pages %}
+			{% set q = publications.q %}
+			{% set currentPage = publications.page %}
+			{% include '/_partials/_pagination.html.twig' %}
+		</div>
+	</main>
 
-{% set foo = publications.data|length  %}
+	{% set foo = publications.data|length  %}
 
-            {% endif %}
+{% endif %}
 {% block javascript %}
-<script>
-    const menuPublications = document.querySelectorAll('.menu-publication');
+	<script>
+		const menuPublications = document.querySelectorAll('.menu-publication');
 
-    // Pour chaque élément avec la classe "menu-publication", ajouter un écouteur d'événements pour le clic sur l'icône
-    menuPublications.forEach(function(menuPublication) {
-        const modalPublication = menuPublication.querySelector('.modal-menu-publication');
-        const editPublicationBtn = menuPublication.querySelector('.edit-publication-btn');
-        const deletePublicationBtn = menuPublication.querySelector('.delete-publication-btn');
-        const ellipsisIcon = menuPublication.querySelector('.fas.fa-ellipsis-v');
+// Pour chaque élément avec la classe "menu-publication", ajouter un écouteur d'événements pour le clic sur l'icône
+menuPublications.forEach(function (menuPublication) {
+const modalPublication = menuPublication.querySelector('.modal-menu-publication');
+const editPublicationBtn = menuPublication.querySelector('.edit-publication-btn');
+const deletePublicationBtn = menuPublication.querySelector('.delete-publication-btn');
+const ellipsisIcon = menuPublication.querySelector('.fas.fa-ellipsis-v');
 
-        ellipsisIcon.addEventListener('click', function() {
-            // Fermer toutes les modales ouvertes
-            document.querySelectorAll('.modal-menu-publication').forEach(function(modal) {
-                modal.style.display = 'none';
-            });
+ellipsisIcon.addEventListener('click', function () { // Fermer toutes les modales ouvertes
+document.querySelectorAll('.modal-menu-publication').forEach(function (modal) {
+modal.style.display = 'none';
+});
 
-            // Ouvrir la modal correspondant à l'icône cliquée
-            modalPublication.style.display = 'block';
-        });
-    });
+// Ouvrir la modal correspondant à l'icône cliquée
+modalPublication.style.display = 'block';
+});
+});
 
-    // Ajouter un écouteur d'événements pour le clic sur l'écran pour fermer les modales
-    document.addEventListener('click', function(event) {
-        if (!event.target.matches('.fas.fa-ellipsis-v') && !event.target.matches('.modal-menu-publication *')) {
-            document.querySelectorAll('.modal-menu-publication').forEach(function(modal) {
-                modal.style.display = 'none';
-            });
-        }
-    });
+// Ajouter un écouteur d'événements pour le clic sur l'écran pour fermer les modales
+document.addEventListener('click', function (event) {
+if (! event.target.matches('.fas.fa-ellipsis-v') && ! event.target.matches('.modal-menu-publication *')) {
+document.querySelectorAll('.modal-menu-publication').forEach(function (modal) {
+modal.style.display = 'none';
+});
+}
+});
 
 
-       // Sélectionne l'élément i qui doit activer la modal
+// Sélectionne l'élément i qui doit activer la modal
 const filterButton = document.querySelector("#filter-modal i");
 
 // Sélectionne l'élément de la modal
 const filterModal = document.querySelector("#filter-modal .modal-filtre-publication");
 
 // Ajoute un écouteur d'événements sur le bouton pour afficher la modal
-filterButton.addEventListener("click", function() {
-  filterModal.style.display = "block";
+filterButton.addEventListener("click", function () {
+filterModal.style.display = "block";
 });
 
 // Ajoute un écouteur d'événements à l'ensemble du document pour masquer la modal lorsqu'on clique ailleurs
-document.addEventListener("click", function(event) {
-  if (!filterModal.contains(event.target) && event.target !== filterButton) {
-    filterModal.style.display = "none";
-  }
+document.addEventListener("click", function (event) {
+if (! filterModal.contains(event.target) && event.target !== filterButton) {
+filterModal.style.display = "none";
+}
 });
 
 console.log('hello')
-</script>
+	</script>
 {% endblock %}
-
-
