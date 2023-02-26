@@ -30,7 +30,23 @@
     position: absolute;
     width: 665px;
     left: 267px;
-//     display: flex;
-//     flex-direction: column;
-//     gap: 0.5rem;
+    // display: flex;
+    // flex-direction: column;
+    // gap: 0.5rem;
+}
+
+@media screen and (max-width: 1200px) {
+    .groupe-show-container{
+        position: static !important;
+    }
+    
+    .groupe-container{
+        position: static !important;
+        width: 100%;
+
+    }
+
+    .groupe-card{
+        margin: 5px;
+    }
 }
