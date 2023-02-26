@@ -2,9 +2,20 @@
   <nav>
     <ul class="d-flex mb-0">
       <li><a href="{{path('home')}}"><i class="fa-solid fa-house"></i></a></li>
-      <li><a href="{{path('app_social')}}"><i class="fa-solid fa-user-group"></i></a></li>
-      <li><a><i class="fa-solid fa-paper-plane"></i></a></li>
-      <li><a><i class="fa-solid fa-user"></i></a></li>
+      <li><a href="{{path('app_evenement')}}"><i class="fa-solid fa-calendar"></i></a></li>
+      <li><a href="{{ path('app_groupe')}}"><i class="fa-solid fa-user-group"></i></a></li>
+      {% if is_granted('ROLE_ADMIN') %}
+      <li><a href="{{ path('admin')}}"><i class="fa-solid fa-unlock-keyhole"></i></a></li>
+      {% endif %}
+      <li><a href="{{path('app_profil')}}">
+                
+					{% if 'https://www.gravatar.com/' in app.user.image %}
+					<img class="mobile-profil" id="image_profil1" class="rounded-circle" src="{{ app.user.image }}" alt="{{ app.user.nom }}"/>
+					{% else %}
+					<img class="mobile-profil" id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ app.user.image) }}" alt="{{ app.user.nom }}"/>
+
+					{% endif %}
+                </a></li>
     </ul>
   </nav>
 </footer>

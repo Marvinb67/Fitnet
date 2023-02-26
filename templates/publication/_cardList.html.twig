@@ -9,7 +9,6 @@
 			<div class="publication-scroll-header">
 				<div
 					id="filter-modal" class="filter-div">
-					{#                <p>Filtrer<i class="fa-solid fa-caret-down"></i></p>#}
 					<div class="modal-filtre-publication">
 						<li>Popularité</li>
 						<li>Ancienneté</li>
@@ -17,8 +16,7 @@
 					</div>
 				</div>
 
-				<a class="dark-round" href="{{path('app_publication_new')}}">Créer une publication<i class="fa-solid fa-plus"></i>
-				</a>
+				<a class="dark-round" href="{{path('app_publication_new')}}">Créer une publication<i class="fa-solid fa-plus"></i></a>
 			</div>
 
 			{% for publication in publications.data %}

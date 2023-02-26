@@ -1,5 +1,65 @@
 @import "variables";
 
+@media screen and (max-width: 1200px) {
+    .public-profil-container{
+        position: static !important;
+        width: 100% !important;
+        height: 100vh !important;
+    }
+
+    .public-profil-navv{
+        width: 100% !important;
+    }
+    
+    .public-profil-div{
+        flex-direction: column;
+    }
+
+    .bio-div{
+        padding: 0 0 0 1rem !important;
+    }
+
+    .public-profil-navv nav{
+        padding: 0 !important;
+    }
+
+    .mobile-header-profil{
+        display: flex;
+        padding: 1rem;
+        align-items: flex-end;
+    }
+
+    .ami-suivi-div{
+        width: 100% !important;
+    }
+
+    .public-profil-na{
+        padding: 1rem;
+    }
+
+    .public-profil-nav nav ul{
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .public-profil-navv li{
+        width: 120px !important;
+        text-align: center;
+    }
+
+    .modif-profil{
+        width: fit-content !important;
+    }
+
+    .modif-div{
+        width: 100% !important;
+        display: flex;
+        justify-content: center;
+        padding: 0.5rem;
+    }
+
+  }
 
 .profil-container{
     position: absolute;
@@ -64,7 +124,6 @@
 
 .public-profil-navv{
     width: 250px;
-    height: 100%;
     background-color: #ffffff;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     top: 0;

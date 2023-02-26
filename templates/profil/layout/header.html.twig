@@ -4,7 +4,7 @@
 			{% if app.user.id is same as(user.id) %}
 				<section class="header-profil-section">
 					<a href="{{ path('app_profil') }}">
-						<div class="photo-profil">
+						<div>
 						{% if 'gravatar' in app.user.image %}
 						<img id="image_profil1" class="rounded-circle" src="{{ app.user.image }}" alt="{{ app.user.nom }} {{ app.user.prenom }}" width="100px"/>
 						{% else %}
@@ -69,3 +69,6 @@
 		{% endfor %}
 	{% endif %}
 </section>
+
+
+
