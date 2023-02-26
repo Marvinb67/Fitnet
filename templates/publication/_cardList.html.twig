@@ -41,64 +41,59 @@
 									{{publication.createdAt | date('d/m/Y à H:i')}}</p>
 								{% if (publication.editedAt | date('d/m/Y à H:i') >
                                     publication.createdAt | date('d/m/Y à H:i')) and (app.user) %}
-									<p>
-										Modifié le :
-										{{publication.editedAt | date('d/m/Y à H:i')
-                                        }}<small>
-											Par
-											{{ app.user.nom }}
-											{{ app.user.prenom }}</small>
-									</p>
-								{% endif %}
-							</div>
-						</div>
-						<div class="menu-publication">
-							<div class="modal-menu-publication" id="publication-modal">
-								<ul>
-									{% if (app.user) and (app.user.id is same as publication.user.id)  %}
-										<a class="edit-publication-btn" href="{{ path('app_publication_edit', { id: publication.id, slug: publication.slug }) }}">Modifier</a>
-										<a class="delete-publication-btn" href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer</a>
-									{% endif %}
-								</ul>
-							</div>
-							{% if (app.user) and (app.user.id is same as publication.user.id)  %}
+									<p>Modifié le : {{publication.editedAt | date('d/m/Y à H:i')}}
+                    <small>Par {{ app.user.nom }} {{ app.user.prenom }}</small>
+                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="menu-publication">
+                            <div class="modal-menu-publication" id="publication-modal">
+                                <ul>
+                                    {% if (app.user) and (app.user.id is same as publication.user.id)  %}
+                                        <a class="edit-publication-btn" href="{{ path('app_publication_edit', { id: publication.id, slug: publication.slug }) }}">Modifier</a>
+                                        <a class="delete-publication-btn" href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer</a>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                            {% if (app.user) and (app.user.id is same as publication.user.id)  %}
 
-								<i class="fas fa-ellipsis-v" data-modal="{{publication.id}}"></i>
-							{% endif %}
+                            <i class="fas fa-ellipsis-v" data-modal="{{publication.id}}"></i>
+                            {% endif %}
 
-						</div>
-					</div>
-					{% for key, img in publication.mediaPublication %}
-						{% if key == 0 %}
-							<a href="{{ path('app_show_media', { slug: img.slug }) }}">
-								<img class="img-publication card-img-top img-fluid" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{ img.titre }}"/></a>
-						{% endif %}
-					{% endfor %}
-					<h2>
-						<a href="{{ path('app_publication_show', { id: publication.id, slug: publication.slug }) }}">{{ publication.titre }}</a>
-					</h2>
-					<div>{{ publication.contenu }}</div>
-					{% include '/publication/reaction.html.twig' %}
-					<div class="tag-div">
-						{% for tag in publication.tagsPublication %}
-							<a href="{{ path('app_publication', {tag: tag.intitule})}}">
-								<span class="badge badge-pill badge-info text-info">#{{ tag.intitule }}</span>
-							</a>
-						{% endfor %}
-					</div>
-				</div>
-			{% endfor %}
-			{% set path = 'app_publication' %}
-			{% set pages = publications.pages %}
-			{% set q = publications.q %}
-			{% set currentPage = publications.page %}
-			{% include '/_partials/_pagination.html.twig' %}
-		</div>
-	</main>
+                        </div>
+                    </div>
+                    {% for key, img in publication.mediaPublication %}
+                        {% if key == 0 %}
+                            <a  href="{{ path('app_show_media', { slug: img.slug }) }}">
+                                <img class="img-publication card-img-top img-fluid" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{ img.titre }}"/></a>
+                        {% endif %}
+                    {% endfor %}
+                    <h2>
+                        <a href="{{ path('app_publication_show', { id: publication.id, slug: publication.slug }) }}">{{ publication.titre }}</a>
+                    </h2>
+                    <div>{{ publication.contenu }}</div>
+                    <div class="tag-div">
+                        <div>
+                            {% for tag in publication.tagsPublication %}
+                                <a href="{{ path('app_publication', {tag: tag.intitule})}}"><span class="badge badge-pill badge-info text-info">#{{ tag.intitule }}</span></a>
+                            {% endfor %}
+                        </div>
+                        {% include '/publication/reaction.html.twig' %}
+                    </div>
+                </div>
+            {% endfor %}
+            {% set path = 'app_publication' %}
+            {% set pages = publications.pages %}
+            {% set q = publications.q %}
+            {% set currentPage = publications.page %}
+            {% include '/_partials/_pagination.html.twig' %}
+        </div>
+    </main>
 
-	{% set foo = publications.data|length  %}
+{% set foo = publications.data|length  %}
 
-{% endif %}
+            {% endif %}
 {% block javascript %}
 	<script>
 		const menuPublications = document.querySelectorAll('.menu-publication');
