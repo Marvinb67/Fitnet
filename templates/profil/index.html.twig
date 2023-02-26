@@ -26,7 +26,6 @@
 								{# <li><a class="btn-profil profil-user" href="#page-profil">Profil</a></li> #}
 								<li><a class="btn-profil list-amis" href="#page-ami">Ami</a></li>
 								<li><a class="btn-profil list-suivis" href="#page-suivi">Suivi</a></li>
-
 							</ul>
 						</nav>
 					</div>
@@ -34,6 +33,7 @@
 					{% for user in users %}
 						{% if app.user.id is same as(user.id) %}
 							<a id="modifie_profil" href="{{path('modif_pass', {slug: user.slug, id: user.id})}}" class="btn btn-outline-primary btns px-4 modif-profil">Modifier Profil</a>
+							<li><a href="{{ path('app_profil_suppression') }}" class="btn btn-outline-primary btns px-4 modif-profil">Supprimer le compte</a></li>
 						{% endif %}
 					{% endfor %}
 				{% endif %}
