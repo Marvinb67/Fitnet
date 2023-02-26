@@ -86,7 +86,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinTable(name: 'user_follows')]
     private Collection $followedByUsers;
 
-    #[ORM\ManyToMany(targetEntity: ProgrammationEvenement::class, mappedBy: 'inscritEvenement', orphanRemoval: true)]
+    #[ORM\ManyToMany(targetEntity: ProgrammationEvenement::class, mappedBy: 'inscritEvenement')]
     private Collection $programmationEvenements;
 
     #[ORM\ManyToMany(targetEntity: Groupe::class, mappedBy: 'adherentsGroupe', orphanRemoval: true)]
