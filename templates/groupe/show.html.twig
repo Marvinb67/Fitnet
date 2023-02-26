@@ -11,10 +11,10 @@
 {% include '_layout/_desktop/sideNav.html.twig' %}
 
     <section class="groupe-show-container">
-    <a href="{{ path('app_publication_groupe', {'groupId': groupe.id}) }}">Créer une publication pour ce groupe</a>
 {#        <h2>{{groupe.intitule}}</h2>#}
 {#        <p>Créer le : {{groupe.createdAt | date('Y/m/d')}}</p> <p>Créateur : {{groupe.user}}</p>#}
-        <div id="membres">
+        <div id="membres" class="publication-scroll-header">
+            <a class="dark-round" href="{{ path('app_publication_groupe', {'groupId': groupe.id}) }}">Créer une publication pour ce groupe</a>
 {#            <h3>Membres du groupe:</h3>#}
 {#            {% if groupe.adherentsGroupe == null %}#}
 {#                <p>Aucun membre pour le moment</p>#}
@@ -24,7 +24,7 @@
 {#                        <li>{{ membre.prenom }} {{ membre.nom }}</li>#}
 {#                    {% endfor %}#}
 {#                </ul>#}
-                <a class="dark-round" href="{{ path('app_groupe_desinscription', {'id': groupe.id}) }}">Se désinscrire</a>
+            <a class="dark-round" href="{{ path('app_groupe_desinscription', {'id': groupe.id}) }}">Se désinscrire</a>
 {#            {% endif %}#}
         </div>
 
