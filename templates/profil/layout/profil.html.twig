@@ -2,8 +2,9 @@
 	{% for user in users %}
 		{% if app.user.id is same as(user.id) %}
 			<div id="profils">
-			{% if user.myProfil %}
-				<h5 id="nom_profil">{{ user.nom }} {{ user.prenom }} {{user.myProfil.age}} ans</h5>
+				{% if user.myProfil %}
+				{% set difference = date("now").diff(date(user.myProfil.age)) %}
+				<h5 id="nom_profil">{{ user.nom }} {{ user.prenom }} {{difference.y}} ans</h5>
 			<span>{{user.myProfil.job}}</span>
 				<div>
 					<p>{{user.myProfil.biographie}}</p>
@@ -20,9 +21,10 @@
 	{% endfor %}
 {% else %}
     {% for user in userProfil %}
+	{% set difference = date("now").diff(date(user.age)) %}
 		<div id="profils">
 			<h5 id="nom_profil">{{ user.nom }}</h5>
-			<span>{{user.job}} {{user.age}} ans</span>
+			<span>{{user.job}} {{difference.y}} ans</span>
 			<div>
 				<p>{{user.bio}}</p>
 			</div>

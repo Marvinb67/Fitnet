@@ -7,9 +7,9 @@
 			<div class="col-md-3 border-right">
 				<div class="d-flex flex-column align-items-center text-center p-3 py-5">
 					{% if 'https://www.gravatar.com/' in app.user.image %}
-					<img id="image_profil1" class="rounded-circle" src="{{ app.user.image }}" alt="{{ app.user.nom }}" width="100px"/>
+						<img id="image_profil1" class="rounded-circle" src="{{ app.user.image }}" alt="{{ app.user.nom }}" width="100px"/>
 					{% else %}
-					<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ app.user.image) }}" alt="{{ app.user.nom }}" width="100px"/>
+						<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ app.user.image) }}" alt="{{ app.user.nom }}" width="100px"/>
 					{% endif %}
 					<a href="{{path('app_profil')}}" class="link-dark px-4">
 						<span class="font-weight-bold">{{ app.user.nom}}
@@ -40,28 +40,50 @@
 							{{ form_row(changeProfilForm.image) }}</div>
 					</div>
 					<div class="mt-5 text-center">
-					<button type="submit" class="btn btn-primary btn-lg mt-3 profile-button">Envoyer</button>
-					{{ form_end(changeProfilForm) }}
+						<button type="submit" class="btn btn-primary btn-lg mt-3 profile-button">Valider</button>
+						{{ form_end(changeProfilForm) }}
 					</div>
 				</div>
 			</div>
 			<div class="col-md-4">
-				<div class="p-3 py-5">
+				<div
+					class="p-3 py-5">
 					{# <div class="d-flex justify-content-between align-items-center experience">
-						<span>Edit Experience</span>
-						<span class="border px-3 p-1 add-experience">
-							<i class="fa fa-plus"></i>&nbsp;Experience</span>
-					</div><br> #}
+																<span>Edit Experience</span>
+																<span class="border px-3 p-1 add-experience">
+																	<i class="fa fa-plus"></i>&nbsp;Experience</span>
+															</div><br> #}
 					<div class="col-md-12">
 						<h5>Changement du Mot de Passe</h5>
 						{{ form(modifPassForm) }}
 						</div>
 						<br>
-						{# <div class="col-md-12">
-							<label class="labels">Additional Details</label><input type="text" class="form-control" placeholder="additional details" value=""></div> #}
+
+					</div>
+				</div>
+			</div><hr>
+			<div class="row">
+			<div class="col-12 border-right">
+				<div class="p-3 py-5">
+					<div class="d-flex justify-content-between align-items-center mb-3">
+						<h4 class="text-right">Paramètres Additionnels</h4>
+					</div>
+					<div class="row mt-2">
+						<div class="col-md-12">
+							{{ form_row(profilForm.biographie) }}</div>
+					</div>
+					<div class="row mt-2">
+						<div class="col-md-6">
+							{{ form_row(profilForm.job) }}</div>
+						<div class="col-md-6">
+							{{ form_row(profilForm.age) }}</div>
+					</div>
+					<div class="mt-5 text-center">
+						{{ form_end(profilForm) }}
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>{% endblock %}
+		</div>
+{% endblock %}
