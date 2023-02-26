@@ -42,8 +42,10 @@
 					{% if users is defined %}
 						{% for user in users %}
 							{% if app.user.id is same as(user.id) %}
-								<div class='modif-div'><a id="modifie_profil" href="{{path('modif_pass', {slug: user.slug, id: user.id})}}" class="btn btn-outline-primary btns px-4 modif-profil">Modifier Profil</a></div>
-							  <li><a href="{{ path('app_profil_suppression') }}" class="btn btn-outline-primary btns px-4 modif-profil">Supprimer le compte</a></li>
+								<div class='modif-div'>
+									<a id="modifie_profil" href="{{path('modif_pass', {slug: user.slug, id: user.id})}}" class="btn btn-outline-primary btns px-4 modif-profil">Modifier Profil</a>
+								</div>
+							  		<a href="{{ path('app_profil_suppression') }}" class="btn btn-outline-primary btns  modif-profil">Supprimer le compte</a>
               {% endif %}
 						{% endfor %}
 					{% endif %}

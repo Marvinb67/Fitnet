@@ -1,5 +1,7 @@
-<a class="dark-round" href="{{path('app_publication_new')}}">Créer une publication<i class="fa-solid fa-plus"></i>
-</a>
+<div class="add-content-profil-link publication-scroll-header"><a class="dark-round add-content-profil-link" href="{{path('app_publication_new')}}">Créer une publication<i class="fa-solid fa-plus"></i>
+</a></div>
+
+
 {% for publication in app.user.publications %}
 	<div class="publication-card">
 		<div class="user-publication">

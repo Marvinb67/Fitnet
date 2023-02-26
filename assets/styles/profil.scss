@@ -55,8 +55,10 @@
     .modif-div{
         width: 100% !important;
         display: flex;
-        justify-content: center;
+        align-items: center;
         padding: 0.5rem;
+        flex-direction: column;
+        gap: 0.5rem;
     }
 
   }
@@ -248,4 +250,5 @@
 
 .modif-profil{
     margin: 0 1rem;
+    height: fit-content;
 }
