@@ -45,7 +45,7 @@ class Groupe
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'mesGroupes')]
     private Collection $adherentsGroupe;
 
-    #[ORM\OneToMany(mappedBy: 'groupe', targetEntity: Publication::class)]
+    #[ORM\OneToMany(mappedBy: 'groupe', targetEntity: Publication::class, orphanRemoval: true)]
     private Collection $publications;
 
     #[ORM\Column(length: 255, nullable: true)]

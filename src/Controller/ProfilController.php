@@ -263,7 +263,7 @@ class ProfilController extends AbstractController
     }
 
     #[Route('/profil/suppression', name: 'app_profil_suppression')]
-    #[Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER') and this.getUser() == user")]
+    #[Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER')")]
     public function suppressionCompte(EntityManagerInterface $em)
     {
         $user = $this->getUser();
@@ -273,7 +273,6 @@ class ProfilController extends AbstractController
 
         $em->remove($user);
         $em->flush();
-
         return $this->redirectToRoute('app_login');
     }
 }

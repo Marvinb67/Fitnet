@@ -2,6 +2,8 @@
 	<div class="publication-wrapper">
 
 		{% if publications|length == 0 %}
+        <a class="dark-round" href="{{path('app_publication_new')}}">Créer une publication<i class="fa-solid fa-plus"></i>
+				</a>
 			<h2>Aucune publication trouvée!</h2>
 		{% else %}
 
@@ -16,7 +18,11 @@
 					</div>
 				</div>
 
-				<a class="dark-round" href="{{path('app_publication_new')}}">Créer une publication<i class="fa-solid fa-plus"></i></a>
+				<a class="dark-round" href="{{path('app_publication_new')}}">Créer une publication<i class="fa-solid fa-plus"></i>
+				</a>
+                <div id="feed" class="dark-round">
+                    <a href="{{ path('app_publication') }}" class="dark-round">Feed générale</a> | <a class="dark-round" href="{{ path('app_publication_personnalise') }}">Feed personnalisé</a>
+                </div>
 			</div>
 
 			{% for publication in publications.data %}
@@ -33,8 +39,14 @@
 								{% endif %}
 							</div>
 							<div class="infos-user-publication">
+                                {% if publication.user.nom is null %}
+                                <p>Utilisateur supprimé</p>
+                                {% else %}
 								<p>{{ publication.user.nom }}
-									{{ publication.user.prenom }}</p>
+									{{ publication.user.prenom }}
+                                </p>
+                                {% endif %}
+                                
 								<p>Posté le :
 									{{publication.createdAt | date('d/m/Y à H:i')}}</p>
 								{% if (publication.editedAt | date('d/m/Y à H:i') >

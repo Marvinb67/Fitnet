@@ -45,12 +45,67 @@ class PublicationRepository extends ServiceEntityRepository
         }
     }
 
+    public function findSearch(SearchData $search, int $limit = 6): array
+    {
+        $query = $this
+            ->findActivePublicationQuery()
+            ->select('u', 'p')
+            ->join('p.user', 'u')
+            ->setMaxResults($limit)
+            ->setFirstResult(($search->getPage() * $limit) - $limit);
+
+        if (!empty($search->getQ())) {
+            $query = $query->andWhere('p.titre LIKE :q OR p.contenu LIKE :q')
+                ->setParameter('q', "%{$search->getQ()}%");
+            // les mots a chercher exploser la chaine de string et les mettre dans un tableau
+            $mots = explode(" ", $search->getQ());
+            // parcourir le tableau de mots
+            for ($i = 0; $i < count($mots); $i++) {
+                // accepter la recherche seulement si le mot a plus de 2 lettres
+                if (strlen($mots[$i]) > 2) {
+                    // si le compteur est a zero ajouter WHERE a la requete
+                    $query = $query->orWhere($query->expr()->orX(
+                        $query->expr()->like('p.titre',  ':q' . $i),
+                        // $query->expr()->like('p.contenu',  ':q' . $i)
+                    ))->setParameter('q' . $i, "%{$mots[$i]}%");
+                }
+            }
+        }
+        if (!empty($search->getTag())) {
+            $query = $query
+                ->innerJoin('p.tagsPublication ', 'tp')
+                ->andWhere('tp.intitule = :tag')
+                ->setParameter('tag', $search->getTag());
+            // dd($query);
+        }
+        // if (!empty($search->getDates())) {
+        //     $query = $query
+        //         ->andWhere('p.createdAt = :dates')
+        //         ->setParameter('amis', $search->getDates());
+        // }
+        $paginator = new Paginator($query);
+        $data = $paginator->getQuery()->getResult();
+        if (empty($data)) {
+            return [];
+        }
+        $pages = ceil($paginator->count() / $limit);
+        $result = [
+            'data' => $data,
+            'pages' => $pages,
+            'limit' => $limit,
+            'page' => $search->getPage(),
+            'q' => $search->getQ(),
+            'tag' => $search->getTag(),
+        ];
+        return $result;
+    }
+
     /**
      * Recupére les publications en lien avec une recherche
      *
      * @return Publication[]
      */
-    public function findSearch(SearchData $search, User $user, int $limit = 6): array
+    public function findSearchFeedAmis(SearchData $search, User $user, int $limit = 6): array
     {
         $query = $this
             ->findActivePublicationQuery()

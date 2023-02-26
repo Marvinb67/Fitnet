@@ -51,10 +51,10 @@ class Publication
     private $isActive = true;
 
     #[ORM\ManyToOne(inversedBy: 'publications')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Commentaire::class, cascade: ['remove'])]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Commentaire::class, cascade: ['remove'], orphanRemoval: true)]
     private Collection $commentaires;
 
     #[ORM\OneToMany(mappedBy: 'publication', targetEntity: ReactionPublication::class, orphanRemoval: true)]
