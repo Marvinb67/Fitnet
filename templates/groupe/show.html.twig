@@ -11,6 +11,7 @@
 {% include '_layout/_desktop/sideNav.html.twig' %}
 
     <section class="groupe-show-container">
+    <a href="{{ path('app_publication_groupe', {'groupId': groupe.id}) }}">Créer une publication pour ce groupe</a>
 {#        <h2>{{groupe.intitule}}</h2>#}
 {#        <p>Créer le : {{groupe.createdAt | date('Y/m/d')}}</p> <p>Créateur : {{groupe.user}}</p>#}
         <div id="membres">
@@ -56,6 +57,24 @@
                         <div class="user-publication-left-side">
                             <div class="futur-pp"></div>
                             <div class="infos-user-publication">
+                                {% if publication.user is null %}
+
+                                <p>Utilisateur supprimé</p>
+                                <p>Posté le :
+                                    {{publication.createdAt | date('d/m/Y à H:i')}}</p>
+                                {% if (publication.editedAt | date('d/m/Y à H:i') >
+                                    publication.createdAt | date('d/m/Y à H:i')) and (app.user) %}
+                                    <p>
+                                        Modifié le :
+                                        {{publication.editedAt | date('d/m/Y à H:i')
+                                        }}<small>
+                                            Par
+                                            Utilisateur supprimé</small>
+                                    </p>
+                                {% endif %}
+
+                                {% else %}
+
                                 <p>{{ publication.user.nom }}
                                     {{ publication.user.prenom }}</p>
                                 <p>Posté le :
@@ -71,16 +90,20 @@
                                             {{ app.user.prenom }}</small>
                                     </p>
                                 {% endif %}
+
+                                {% endif %}
                             </div>
                         </div>
                         <div class="menu-publication">
                             <div class="modal-menu-publication" id="publication-modal">
+                                {% if publication.user is not null %}
                                 <ul>
                                     {% if app.user.id is same as publication.user.id  %}
                                         <a class="edit-publication-btn" href="{{ path('app_publication_edit', { id: publication.id, slug: publication.slug }) }}">Modifier</a>
                                         <a class="delete-publication-btn" href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer</a>
                                     {% endif %}
                                 </ul>
+                                {% endif %}
                             </div>  
 {#                            <i class="fas fa-ellipsis-v" data-modal="{{publication.id}}"></i>#}
                         </div>

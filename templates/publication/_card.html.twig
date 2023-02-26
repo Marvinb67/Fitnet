@@ -5,7 +5,7 @@
 				<div class="user-publication-show">
 					<div class="futur-pp"></div>
 					<div class="infos-user-publication">
-        				{% if publication.user.nom is null %}
+        				{% if publication.user is null %}
                             <p>Utilisateur supprimé</p>
                             {% else %}
 							<p>{{ publication.user.nom }}
