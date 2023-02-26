@@ -20,6 +20,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class EvenementController extends AbstractController
 {
+    /**
+     * Affiche la liste des événements.
+     *
+     * @param ProgrammationEvenementRepository $peRepo Le repository pour les programmations d'événements.
+     * @return Response La réponse HTTP contenant la vue Twig.
+    */
     #[Route('/evenement', name: 'app_evenement')]
     public function index(ProgrammationEvenementRepository $peRepo) : Response
     {
@@ -29,7 +35,16 @@ class EvenementController extends AbstractController
         ]);
     }
 
+    /**
+     * Affiche le formulaire pour créer un nouvel événement.
+     *
+     * @param ManagerRegistry $doctrine Le gestionnaire de doctrine.
+     * @param Request $request La requête HTTP contenant les données du formulaire.
+     * @param SluggerInterface $slugger Le slugger pour générer les slugs.
+     * @return Response La réponse HTTP contenant la vue Twig.
+    */
     #[Route('/evenement/new', name:'app_evenement_new')]
+    #[Security("is_granted('ROLE_USER')")]
     public function new(ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
     {
         $evenement = new Evenement();
@@ -76,6 +91,16 @@ class EvenementController extends AbstractController
         ]);
     }
 
+    /**
+     * Affiche les détails d'un événement.
+     *
+     * @param Evenement $evenement L'événement à afficher.
+     * @param ProgrammationEvenementRepository $peRepo Le repository pour les programmations d'événements.
+     * @param ProgrammationEvenementRepository $events Le repository pour les événements.
+     * @param Request $request La requête HTTP contenant les données du formulaire.
+     * @param EntityManagerInterface $em L'EntityManager pour persister les commentaires.
+     * @return Response La réponse HTTP contenant la vue Twig.
+    */
     #[Route('evenement/{slug}-{id}',requirements: ['id' => '\d+', 'slug' => '[a-z0-9\-]*'], methods: ['GET', 'POST'], name:'app_evenement_show')]
     public function show(Evenement $evenement, ProgrammationEvenement $peRepo, ProgrammationEvenementRepository $events, Request $request, EntityManagerInterface $em)
     {
@@ -124,6 +149,14 @@ class EvenementController extends AbstractController
         ]);
     }
 
+    /**
+     * Affiche le formulaire pour modifier un événement existant.
+     *
+     * @param Evenement $evenement L'événement à modifier.
+     * @param Request $request La requête HTTP contenant les données du formulaire.
+     * @param ManagerRegistry $doctrine Le gestionnaire de doctrine.
+     * @return Response La réponse HTTP contenant la vue Twig.
+    */
     #[Route('evenement/edit/{slug}', requirements: ['slug' => '[a-z0-9\-]*'], name:'app_evenement_edit')]
     #[Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER') and evenement.getUser() == user")]
     public function edit(Evenement $evenement, Request $request, ManagerRegistry $doctrine): Response
@@ -145,6 +178,13 @@ class EvenementController extends AbstractController
         ]);
     }
 
+    /**
+     * Supprime un événement et tous les médias associés.
+     *
+     * @param Evenement $evenement L'événement à supprimer.
+     * @param ManagerRegistry $doctrine Le registre de gestionnaires d'entités.
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse La réponse de redirection vers la liste des événements.
+    */
     #[Route('evenement/delete/{slug}', requirements: ['slug' => '[a-z0-9\-]*'], name: 'app_evenement_delete')]
     #[Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER') and evenement.getUser() == user")]
     public function delete(Evenement $evenement, ManagerRegistry $doctrine)

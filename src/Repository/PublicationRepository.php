@@ -5,9 +5,11 @@ namespace App\Repository;
 use Doctrine\ORM\Query;
 use App\Data\SearchData;
 use App\Entity\Publication;
+use App\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
@@ -48,12 +50,16 @@ class PublicationRepository extends ServiceEntityRepository
      *
      * @return Publication[]
      */
-    public function findSearch(SearchData $search, int $limit = 6): array
+    public function findSearch(SearchData $search, User $user, int $limit = 6): array
     {
         $query = $this
             ->findActivePublicationQuery()
             ->select('u', 'p')
             ->join('p.user', 'u')
+            ->leftJoin('u.amis', 'a')
+            ->leftJoin('u.followedByUsers', 'f')
+            ->where('a.id = :userId OR f.id = :userId')
+            ->setParameter('userId', $user->getId())
             ->setMaxResults($limit)
             ->setFirstResult(($search->getPage() * $limit) - $limit);
 
@@ -143,6 +149,19 @@ class PublicationRepository extends ServiceEntityRepository
         return $this->findActivePublicationQuery()
             ->getQuery()
             ->getResult();
+    }
+
+    public function findActivePublicationsOfFriends(User $user): array
+    {
+        $queryBuilder = $this->findActivePublicationQuery();
+
+        $queryBuilder->innerJoin('p.user', 'u')
+            ->leftJoin('u.amis', 'a')
+            ->leftJoin('u.followedByUsers', 'f')
+            ->where('a.id = :userId OR f.id = :userId')
+            ->setParameter('userId', $user->getId());
+
+        return $queryBuilder->getQuery()->getResult();
     }
 
     // public function findPublicationsPaginated(int $page, string $slug, int $limit = 8): array

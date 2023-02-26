@@ -10,6 +10,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -254,5 +256,20 @@ class ProfilController extends AbstractController
         // Enregistrement du changement dans la base des données.
         $em->flush();
         return $this->redirectToRoute('app_profil');
+    }
+
+    #[Route('/profil/suppression', name: 'app_profil_suppression')]
+    #[Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER') and this.getUser() == user")]
+    public function suppressionCompte(EntityManagerInterface $em)
+    {
+        $user = $this->getUser();
+        
+        $session = new Session();
+        $session->invalidate();
+
+        $em->remove($user);
+        $em->flush();
+
+        return $this->redirectToRoute('app_login');
     }
 }

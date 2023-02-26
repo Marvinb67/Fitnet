@@ -30,7 +30,6 @@ class PublicationController extends AbstractController
     {
         $user = $this->getUser();
         $data = new SearchData();
-
         $form = $this->createForm(SearchFormType::class, $data);
         $form->handleRequest($request);
         $data->setPage($request->get('page', 1));
@@ -41,7 +40,7 @@ class PublicationController extends AbstractController
         }
             $data->setTag($request->get('tag'));
             // dd($data);
-            $publications = $publicationRepository->findSearch($data);
+            $publications = $publicationRepository->findSearch($data, $user);
 
         return $this->render('publication/index.html.twig', [
             'publications' => $publications,
