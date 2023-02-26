@@ -25,9 +25,9 @@
         </div>
             {% for groupe in groupes %}
                 <div class="groupe-card">
-                    <div class="groupe-image">
+                    {# <div class="groupe-image">
                         <img src="{{asset('/uploads/' ~ groupe.image)}}" alt="">
-                    </div>
+                    </div> #}
                     <p><a href="{{ path('app_groupe_show', {slug: groupe.slug, id: groupe.id}) }}">{{ groupe.intitule }}</a></p>
                     <p class="dark-round">
                         <a href="{{path('app_groupe_rejoindre', {id: groupe.id}) }}">Rejoindre ce groupe</a>

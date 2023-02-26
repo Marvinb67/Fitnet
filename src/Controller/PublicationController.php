@@ -22,6 +22,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use function Symfony\Component\String\u;
 
 class PublicationController extends AbstractController
 {
@@ -58,6 +59,7 @@ class PublicationController extends AbstractController
         $publication = new Publication();
         $form = $this->createForm(PublicationType::class, $publication);
         $form->handleRequest($request);
+            dd($form);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // recevoir l'id du groupe si il esxist
@@ -82,7 +84,7 @@ class PublicationController extends AbstractController
             $user = $this->getUser();
             if (!$user) return $this->redirectToRoute('app_login');
             $publication->setUser($user);
-            $publication->setSlug($sluggerInterface->slug(strtolower($publication->getTitre())));
+            $publication->setSlug($sluggerInterface->slug(strtolower(u($publication->getTitre()))));
             $em = $doctrine->getManager();
             $em->persist($publication);
             $em->flush();
