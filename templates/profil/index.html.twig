@@ -13,21 +13,32 @@
 
 			<div class="public-profil-div">
 
-				<div class="public-profil-nav">
-					{% include 'profil/layout/header.html.twig' %}
-					{% include 'profil/layout/profil.html.twig' %}
+				<div class="public-profil-navv">
+					<div class="public-profil-nav">
+						{% include 'profil/layout/header.html.twig' %}
+						{% include 'profil/layout/profil.html.twig' %}
 
-					<nav>
-						<ul>
-							<li><a class="btn-profil list-publications" href="#page-publications">Publications</a></li>
-							<li><a class="btn-profil list-evenements" href="#page-evenements">Evénements</a></li>
-							<li><a class="btn-profil list-groupes" href="#page-groupes">Groupes</a></li>
-							{# <li><a class="btn-profil profil-user" href="#page-profil">Profil</a></li> #}
-							<li><a class="btn-profil list-amis" href="#page-ami">Ami</a></li>
-							<li><a class="btn-profil list-suivis" href="#page-suivi">Suivi</a></li>
-						</ul>
-					</nav>
+						<nav>
+							<ul>
+								<li><a class="btn-profil list-publications" href="#page-publications">Publications</a></li>
+								<li><a class="btn-profil list-evenements" href="#page-evenements">Evénements</a></li>
+								<li><a class="btn-profil list-groupes" href="#page-groupes">Groupes</a></li>
+								{# <li><a class="btn-profil profil-user" href="#page-profil">Profil</a></li> #}
+								<li><a class="btn-profil list-amis" href="#page-ami">Ami</a></li>
+								<li><a class="btn-profil list-suivis" href="#page-suivi">Suivi</a></li>
+
+							</ul>
+						</nav>
+					</div>
+				{% if users is defined %}
+					{% for user in users %}
+						{% if app.user.id is same as(user.id) %}
+							<a id="modifie_profil" href="{{path('modif_pass', {slug: user.slug, id: user.id})}}" class="btn btn-outline-primary btns px-4">Modifier Profil</a>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
 				</div>
+
 
 				<div class="public-profil-na">
 
@@ -41,10 +52,6 @@
 
 					<div class="lespageprofil profil-groupes" id="page-groupes">
 					{% include "profil/groupe.html.twig" %}
-					</div>
-
-					<div class="lespageprofil active profil-user" id="page-profil">
-						{% include 'profil/layout/profil.html.twig' %}
 					</div>
 
 					<div class="lespageprofil list-amis" id="page-ami">

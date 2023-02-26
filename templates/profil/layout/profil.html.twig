@@ -11,8 +11,6 @@
 				{# <div class="buttons d-flex flex-row-reverse m-2">
         
         
-
-
 			<div id="profils">
 			{% if user.myProfil %}
 				<h5 id="nom_profil">{{ user.nom }} {{ user.prenom }} {{user.myProfil.age}} ans</h5>
@@ -29,7 +27,6 @@
         
         
         
-
 <a id="modifie_profil" href="{{path('modif_pass', {slug: user.slug, id: user.id})}}" class="btn btn-outline-primary btns px-4">Modifier Profil</a>
 				</div> #}
 
