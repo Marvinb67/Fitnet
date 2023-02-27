@@ -122,10 +122,12 @@
     display: block;
 }
 
-// #profils{
-//     width: 600px;
-// }
-
+.nom-profil, .btn-profil{
+    transition: transform .2s; /* Animation */
+}
+.nom-profil:hover, .btn-profil:hover{
+    transform: scale(1.5); 
+}
 .suivi-section{
     display: flex;
     justify-content: space-between;

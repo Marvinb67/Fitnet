@@ -3,7 +3,7 @@
   <ul class="pagination justify-content-center">
     <li class="page-item">
       {% if currentPage > 1 %}
-      <a class="page-link" href="{{ path(path, {page: currentPage - 1, q: q})}}" tabindex="-1">Précedent</a>
+      <a class="page-link" href="{{ path(path, {page: currentPage - 1, q: q, tag: tag})}}" tabindex="-1">Précedent</a>
       {% else %}
       <a class="page-link disabled">Précedent</a>
       {% endif %}
@@ -15,13 +15,13 @@
     </li>
       {% else %}
     <li id="page-{{ page }}" class="page-item" page-id="{{ page }}" >
-      <a class="page-link" href="{{ path(path, {page: page, q: q})}}">{{ page }}</a>
+      <a class="page-link" href="{{ path(path, {page: page, q: q, tag: tag})}}">{{ page }}</a>
     </li>
       {% endif %}
     {% endfor %}
     <li class="page-item">
       {% if currentPage < pages %}
-      <a class="page-link" href="{{ path(path, {page: currentPage + 1, q: q})}}" tabindex="-1">Suivant</a>
+      <a class="page-link" href="{{ path(path, {page: currentPage + 1, q: q, tag: tag})}}" tabindex="-1">Suivant</a>
       {% else %}
       <a class="page-link disabled">Suivant</a>
       {% endif %}

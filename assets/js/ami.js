@@ -7,6 +7,10 @@ navLinks.forEach(link => {
 
         // Masque toutes les pages et retire la classe active
         pageDivs.forEach(pageDiv => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
             pageDiv.classList.remove('active');
         });
 

@@ -40,9 +40,9 @@ class PublicationController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
             $data->setTag($request->get('tag'));
-            // dd($data);
-            $publications = $publicationRepository->findSearch($data, $user);
+            $publications = $publicationRepository->findSearch($data);
 
+            // dd($publications);
         return $this->render('publication/index.html.twig', [
             'publications' => $publications,
         ]);
@@ -58,7 +58,6 @@ class PublicationController extends AbstractController
         $publication = new Publication();
         $form = $this->createForm(PublicationType::class, $publication);
         $form->handleRequest($request);
-            dd($form);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // recevoir l'id du groupe si il esxist

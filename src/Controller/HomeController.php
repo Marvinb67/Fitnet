@@ -29,7 +29,7 @@ class HomeController extends AbstractController
 
         $data->setPage($request->get('page', 1));
 
-        $publications = $publicationRepository->findSearch($data, $this->getUser());
+        $publications = $publicationRepository->findSearch($data);
         return $this->render('publication/index.html.twig', [
             'publications' => $publications,
         ]);
