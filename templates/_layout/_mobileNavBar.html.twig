@@ -4,11 +4,9 @@
 	<div
 		class="search-and-menu">
 		    {{ render(controller('App\\Controller\\HomeController::searchForm')) }}
-		<a href="#">
-			<i class="fa-solid fa-bars"></i>
-		</a>
+			<a href="{{ path('app_logout')}}"><i class="fa-solid fa-right-from-bracket"></i></a>
 	</div>
-	<div class="filter-menu">
+	{# <div class="filter-menu">
 		<i class="fa-solid fa-shuffle"></i>
 		<div class="d-flex justify-content-around">
 			<li id="popular_filter" class="link-light nav-link"><i class="fa fa-fire-flame-curved"></i> Popularité</li>
@@ -16,7 +14,7 @@
 			<li id="new_filter" class="link-light nav-link"><i class="fa-solid fa-rocket"></i> Nouveauté</li>
 		</div>
 		<div class="bottom-line"></div>
-	</div>
+	</div> #}
 </header>
 
 <div class="header-margin"></div>

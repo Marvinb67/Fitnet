@@ -3,11 +3,15 @@
 {% block title %}Page Profil {% endblock %}
 
 {% block container %}
+<div class="publication-wrapper-desktop">
 	{% include '_layout/_desktop/nav.html.twig' %}
 	<div class="header-margin"></div>
+</div>
 
 	<div class="wrapper-1200">
-		{% include '_layout/_desktop/sideNav.html.twig' %}
+		<div class="publication-wrapper-desktop">
+            {% include '_layout/_desktop/sideNav.html.twig' %}
+        </div>
 
 		<section class="public-profil-container">
 
@@ -15,28 +19,36 @@
 
 				<div class="public-profil-navv">
 					<div class="public-profil-nav">
-						{% include 'profil/layout/header.html.twig' %}
-						{% include 'profil/layout/profil.html.twig' %}
+						<div class="mobile-header-profil">
+							{% include 'profil/layout/header.html.twig' %}
+							{% include 'profil/layout/profil.html.twig' %}
+						</div>
 
 						<nav>
 							<ul>
-								<li><a class="btn-profil list-publications" href="#page-publications">Publications</a></li>
-								<li><a class="btn-profil list-evenements" href="#page-evenements">Evénements</a></li>
-								<li><a class="btn-profil list-groupes" href="#page-groupes">Groupes</a></li>
-								{# <li><a class="btn-profil profil-user" href="#page-profil">Profil</a></li> #}
-								<li><a class="btn-profil list-amis" href="#page-ami">Ami</a></li>
-								<li><a class="btn-profil list-suivis" href="#page-suivi">Suivi</a></li>
-
+								<div>
+									<li><a class="btn-profil list-publications" href="#page-publications">Publications</a></li>
+									<li><a class="btn-profil list-evenements" href="#page-evenements">Evénements</a></li>
+									<li><a class="btn-profil list-groupes" href="#page-groupes">Groupes</a></li>
+								</div>
+								<div>
+									{# <li><a class="btn-profil profil-user" href="#page-profil">Profil</a></li> #}
+									<li><a class="btn-profil list-amis" href="#page-ami">Ami</a></li>
+									<li><a class="btn-profil list-suivis" href="#page-suivi">Suivi</a></li>
+								</div>
 							</ul>
 						</nav>
 					</div>
-				{% if users is defined %}
-					{% for user in users %}
-						{% if app.user.id is same as(user.id) %}
-							<a id="modifie_profil" href="{{path('modif_pass', {slug: user.slug, id: user.id})}}" class="btn btn-outline-primary btns px-4 modif-profil">Modifier Profil</a>
-						{% endif %}
-					{% endfor %}
-				{% endif %}
+					{% if users is defined %}
+						{% for user in users %}
+							{% if app.user.id is same as(user.id) %}
+								<div class='modif-div'>
+									<a id="modifie_profil" href="{{path('modif_pass', {slug: user.slug, id: user.id})}}" class="btn btn-outline-primary btns px-4 modif-profil">Modifier Profil</a>
+								</div>
+							  		<a href="{{ path('app_profil_suppression') }}" class="btn btn-outline-primary btns  modif-profil">Supprimer le compte</a>
+              {% endif %}
+						{% endfor %}
+					{% endif %}
 				</div>
 
 
@@ -66,6 +78,9 @@
 
 		</section>
 
+		<div class="publication-wrapper-mobile">
+			{% include '_layout/_mobileFooter.html.twig' %}
+		</div>
 	</div>
 
 		{# <div class="profil-wrapper-desktop " id="contain">

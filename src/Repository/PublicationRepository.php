@@ -45,12 +45,13 @@ class PublicationRepository extends ServiceEntityRepository
         }
     }
 
+   
     /**
      * Recupére les publications en lien avec une recherche
      *
      * @return Publication[]
      */
-    public function findSearch(SearchData $search, int $limit = 6): array
+    public function findSearch(SearchData $search, User $user, int $limit = 6): array
     {
         $query = $this
             ->findActivePublicationQuery()

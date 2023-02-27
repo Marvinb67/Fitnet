@@ -11,15 +11,18 @@
 			<div class="publication-scroll-header">
 				<div
 					id="filter-modal" class="filter-div">
-					{#                <p>Filtrer<i class="fa-solid fa-caret-down"></i></p>#}
 					<div class="modal-filtre-publication">
 						<li>Popularité</li>
 						<li>Ancienneté</li>
 						<li>Nouveauté</li>
 					</div>
 				</div>
+
 				<a class="dark-round" href="{{path('app_publication_new')}}">Créer une publication<i class="fa-solid fa-plus"></i>
 				</a>
+                <div id="feed" class="dark-round">
+                    <a href="{{ path('app_publication') }}" class="dark-round">Feed générale</a> | <a class="dark-round" href="{{ path('app_publication_personnalise') }}">Feed personnalisé</a>
+                </div>
 			</div>
 
 			{% for publication in publications.data %}
@@ -36,8 +39,14 @@
 								{% endif %}
 							</div>
 							<div class="infos-user-publication">
+                                {% if publication.user.nom is null %}
+                                <p>Utilisateur supprimé</p>
+                                {% else %}
 								<p>{{ publication.user.nom }}
-									{{ publication.user.prenom }}</p>
+									{{ publication.user.prenom }}
+                                </p>
+                                {% endif %}
+                                
 								<p>Posté le :
 									{{publication.createdAt | date('d/m/Y à H:i')}}</p>
 								{% if (publication.editedAt | date('d/m/Y à H:i') >

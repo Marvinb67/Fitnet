@@ -2,27 +2,29 @@
 
 namespace App\Controller;
 
+use App\Entity\Media;
 use App\Data\SearchData;
 use App\Entity\Commentaire;
-use App\Entity\Media;
 use App\Entity\Publication;
 use App\Form\SearchFormType;
 use App\Form\CommentaireType;
 use App\Form\PublicationType;
 use App\Entity\ReactionPublication;
+use App\Repository\GroupeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use function Symfony\Component\String\u;
 use App\Repository\PublicationRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use function Symfony\Component\String\u;
 
 class PublicationController extends AbstractController
 {
@@ -40,6 +42,7 @@ class PublicationController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
             $data->setTag($request->get('tag'));
+            // dd($data);
             $publications = $publicationRepository->findSearch($data);
 
             // dd($publications);
@@ -95,6 +98,73 @@ class PublicationController extends AbstractController
         return $this->render('publication/new.html.twig', [
             'formPublication' => $form->createView(),
             'publication' => $publication
+        ]);
+    }
+
+    
+    #[IsGranted('ROLE_USER')]
+    #[Route('/publication/new/{groupId}', name: 'app_publication_groupe')]
+    public function publicationGroupe(
+        ManagerRegistry $doctrine,
+        Request $request,
+        SluggerInterface $sluggerInterface,
+        GroupeRepository $groupeRepo
+    ): Response {
+
+        $groupId = $request->get('groupId');
+        $group = null;
+
+        if($groupId)
+        {
+            $group = $groupeRepo->findOneBy(['id' => $groupId]);
+        }
+        
+        $publication = new Publication();
+        $form = $this->createForm(PublicationType::class, $publication);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            // recevoir l'id du groupe si il esxist
+            // $publication-> setGroupe(id)
+            // On récupère les images
+            $images = $form->get('mediaPublication')->getData();
+            foreach ($images as $image) {
+                //On génère un nouveau nom de fichier
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+                //On copie e fichier dans le dossier upload
+                $image->move(
+                    $this->getParameter('medias_directory'),
+                    $fichier
+                );
+                //On stocke l'image dans la base de données
+                $img = new Media();
+                $img->setLien($fichier);
+                $img->setTitre($publication->getTitre());
+                $img->setSlug($sluggerInterface->slug($img->getTitre()));
+                $publication->addMediaPublication($img);
+            }
+            $user = $this->getUser();
+            if (!$user) return $this->redirectToRoute('app_login');
+            $publication->setUser($user);
+            $publication->setSlug($sluggerInterface->slug(strtolower(($publication->getTitre()))));
+            $publication->setGroupe($group);
+            $em = $doctrine->getManager();
+            $em->persist($publication);
+            $em->flush();
+
+            $this->addFlash('success', 'Publication envoyé avec succès');
+
+            return $this->redirectToRoute('app_groupe_show', [
+                'slug' => $group->getSlug(),
+                'id' => $group->getId()
+            ]);
+        }
+        
+
+        return $this->render('publication/new.html.twig', [
+            'formPublication' => $form->createView(),
+            'publication' => $publication,
+            'group' => $group,
         ]);
     }
 
