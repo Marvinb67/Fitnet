@@ -16,10 +16,24 @@
   .evenement-container{
     position: static !important;
   }
-
+  
   .evenement-card{
     width: 100% !important;
   }
+  
+  .evenement-card{
+    flex-direction: column;
+  }
+  
+  .event-text{
+    width: 100% !important;
+  }
+  
+  .show-evenement-container{
+    position: static !important;
+    width: 100%;
+  }
+
 }
 
 .main-evenement{

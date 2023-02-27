@@ -18,9 +18,6 @@ class Tag
     #[ORM\Column(length: 255)]
     private ?string $intitule = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class)]
-    private Collection $user;
-
     #[ORM\ManyToMany(targetEntity: Publication::class, inversedBy: 'tagsPublication')]
     private Collection $publication;
 
@@ -29,7 +26,6 @@ class Tag
 
     public function __construct()
     {
-        $this->user = new ArrayCollection();
         $this->publication = new ArrayCollection();
         $this->evenement = new ArrayCollection();
     }
@@ -47,30 +43,6 @@ class Tag
     public function setIntitule(string $intitule): self
     {
         $this->intitule = $intitule;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUser(): Collection
-    {
-        return $this->user;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->user->contains($user)) {
-            $this->user->add($user);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        $this->user->removeElement($user);
 
         return $this;
     }
@@ -127,4 +99,5 @@ class Tag
     {
         return $this->intitule;
     }
+
 }

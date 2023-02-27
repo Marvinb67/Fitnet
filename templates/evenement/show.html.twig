@@ -3,123 +3,30 @@
 {% block title %}Evénements{% endblock %}
 
 {% block container %}
-{% include '_layout/_desktop/nav.html.twig' %}
-<div class="header-margin"></div>
+
+<div class="publication-wrapper-desktop">
+  {% include '_layout/_desktop/nav.html.twig' %}
+  <div class="header-margin"></div>
+</div>
+
+<div class="publication-wrapper-mobile">
+  {% include '_layout/_mobileNavBar.html.twig' %}
+  <div class="header-margin"></div>
+</div>
 
 
 <main class="main-show-evenement wrapper-1200">
 
-  {% include '_layout/_desktop/sideNav.html.twig' %}
 
-  <div class="show-evenement-container white-bloc">
-      <div class="img-container">
-        <button class="left-button" onclick="plusDivs(-1)">
-          <i class="fa-solid fa-angle-left"></i>
-        </button>
-        {% for img in evenement.mediaEvenement %}
-        <a href="{{ path('app_show_media', {'slug': img.slug}) }}">
-          <img class="mySlides" src="{{asset(asset('/uploads/' ~ img.lien))}}" alt="{{img.titre}}">
-        </a>
-        {% endfor %}
-        <button class="right-button" onclick="plusDivs(1)">
-          <i class="fa-solid fa-chevron-right"></i>
-        </button>
-      </div>
-
-<section class="event-section">
-      <div class="event-content">
-        <div class="event-header">
-          <div class="user-container">
-            <div class="futur-pp"></div>
-            <p>{{evenement.user.nom}} {{evenement.user.prenom}}</p>
-          </div>
-          <div class="event-reaction">
-{#            <i class="fa-regular fa-heart"></i>#}
-            <i class="fa-solid fa-comment-dots"></i>
-          </div>
-        </div>
-
-        <section class="event-show-text">
-          <h2 class="card-title">{{evenement.intitule}}</h2>
-          <p>{{evenement.description}}</p>
-          {# <p>Posté le : {{evenement.createdAt | date('Y/m/d')}}</p> #}
-        </section>
-
-        <div class="horaire-container">
-          <div class="horaire-card">
-              <p>Date de l'évènement</p>
-              <p>{{ peRepo.startAt | date('Y/m/d') }}</p>
-          </div>
-          <div class="horaire-card">
-              <p>Horaire</p>
-              <p><span class="horaire-show">{{ peRepo.startAt | date('H:m') }}</span> 
-              <i class="fa-solid fa-arrow-right"></i> 
-              <span class="horaire-show">{{ peRepo.endAt | date('H:m') }}</span></p>
-          </div>
-        </div>
-
-        <section class="participant-section">
-          {# {% for event in events %} #}
-
-          <div>
-            <p>Participant <span class="dark-round">{{peRepo.InscritEvenement | length}}</span></p>
-{#            <a class="dark-round" href="{{ path('app_inscription_evenement_add', {'id': evenement.id}) }}">S'inscrire</a>#}
-
-          {% if app.user in peRepo.inscritEvenement %}
-              <a class="dark-round" href="{{ path('app_inscription_evenement_remove', {'id': evenement.id}) }}">Se désinscrire</a>
-          {% else %}
-              <a class="dark-round" href="{{ path('app_inscription_evenement_add', {'id': evenement.id}) }}">S'inscrire</a>
-          {% endif %}
-          </div>
-          {# {% endfor %} #}
-
-          {% for inscrit in peRepo.InscritEvenement %}
-            <ul>
-              <li>
-                <div class="futur-pp"></div>
-              </li>
-            </ul>
-          {% endfor %}
-
-          <section class="event-map">
-{#            <h3>Lieu de l'évènement</h3>#}
-{#            <img class="map-img" src="{{ asset('build/images/map.PNG') }}" alt="">#}
-          </section>
-        </section>
-
-        <h3>Commentaires</h3>
-
-    <div id="ajout-com">
-      {{form(formCommentaire)}}
-    </div>
-
-      {% for commentaire in evenement.commentaires %}
-        {% if commentaire.parent == null %}
-            <div class="user-publication">
-              <div class="futur-pp"></div>
-              <strong>Publié par : {{commentaire.user}} le {{ commentaire.createdAt | date('d/m/Y H:i')}}</strong>
-            </div>
-            <p class="commentaire-card">{{ commentaire.contenu }}</p>
-            <p><a href="#commentaire_contenu" data-reply data-id="{{commentaire.id}}">Répondre</a></p>
-            {# affichage réponse #}
-            {% for reponse in commentaire.reponse %}
-            <div class="user-publication reponse-card">
-              <div class="futur-pp"></div>
-              <strong>Réponse de : {{reponse.user}} le {{ reponse.createdAt | date('d/m/Y H:i')}}</strong>
-            </div>
-              <p class="reponse-commentaire">{{ reponse.contenu }}</p>
-            {% endfor %}
-            <hr>
-        {% endif %}
-      {% endfor %}
-
-        {% for tag in evenement.tagsEvenement %}
-          {{ tag.intitule }}
-        {% endfor %}
-      </div>
-
+  <div class="publication-wrapper-desktop">
+    {% include '_layout/_desktop/sideNav.html.twig' %}
   </div>
-</section>
+
+  {% include 'evenement/layout/event-card-show.html.twig' %}
+
+  <div class="publication-wrapper-mobile">
+    {% include '_layout/_mobileFooter.html.twig' %}
+  </div>
 
 {#  {% include '_layout/_desktop/tchat.html.twig' %}#}
 
@@ -147,13 +54,11 @@
       x[slideIndex-1].style.display = "block";  
     }
 
-    window.onload = () => {
 		document.querySelector(".card-title").value = "{{ evenement.intitule }}"
 		document.querySelectorAll("[data-reply]").forEach(element => {
 		element.addEventListener("click", function () {
 		document.querySelector("#commentaire_parentId").value = this.dataset.id})
 		})
-		}
 	</script>
 {% endblock %}
 

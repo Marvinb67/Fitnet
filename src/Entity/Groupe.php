@@ -12,6 +12,7 @@ use App\Entity\Trait\CreatedAtTrait;
 use App\Repository\GroupeRepository;
 use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: GroupeRepository::class)]
@@ -27,6 +28,13 @@ class Groupe
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le nom du groupe ne peut pas être vide')]
+    #[Assert\Length(
+        min: 5,
+        max: 100,
+        minMessage: 'Le titre doit faire au moins {{ limit }} caractères',
+        maxMessage: 'Le titre ne doit pas faire plus de {{ limit }} caractères'
+    )]
     private ?string $intitule = null;
 
     #[ORM\ManyToOne(inversedBy: 'groupes')]
@@ -37,7 +45,7 @@ class Groupe
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'mesGroupes')]
     private Collection $adherentsGroupe;
 
-    #[ORM\OneToMany(mappedBy: 'groupe', targetEntity: Publication::class)]
+    #[ORM\OneToMany(mappedBy: 'groupe', targetEntity: Publication::class, orphanRemoval: true)]
     private Collection $publications;
 
     #[ORM\Column(length: 255, nullable: true)]

@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Profil;
 use App\Form\ModifPassType;
 use App\Form\EditProfilType;
+use App\Form\ProfilFormType;
 use App\Service\SendMailService;
 use App\Repository\UserRepository;
 use App\Form\ResetPasswordFormType;
@@ -186,7 +188,7 @@ class SecurityController extends AbstractController
      * @param UserPasswordHasherInterface $passwordHasher
      * @return Response
      */
-    #[Route('/parametre/profil/{slug}{id}',  name: 'modif_pass', methods: ["GET","POST"])]
+    #[Route('/parametre/profil/{slug}_{id}',  name: 'modif_pass', methods: ["GET", "POST"], priority: 0)]
 
     public function modifPass(
         Request $request,
@@ -199,51 +201,92 @@ class SecurityController extends AbstractController
             $this->addFlash('danger', 'Vous n\'êtes pas connecté(e)!');
             return $this->redirectToRoute('app_login');
         }
+
+        // Formulaire du changement du profil optionnel de l'utilisateur
+        // Profil de l'utilisateur
+        $profil = $entityManager->getRepository(Profil::class)->findOneBy(['user' => $user]);
+        $formProfil = $this->createForm(ProfilFormType::class, $profil);
+        $formProfil->handleRequest($request);
         
-        // On s'assure que l'utilisateur connecté(e) modifier bien son propre compte
-        if ($this->getUser() === $user) {
-            // Formulaire du changement de mot de passe
-            $formPassChange = $this->createForm(ModifPassType::class);
-            $formPassChange->handleRequest($request);
+        // Formulaire du changement de mot de passe
+        $formPassChange = $this->createForm(ModifPassType::class);
+        $formPassChange->handleRequest($request);
 
-
-            if ($formPassChange->isSubmitted() && $formPassChange->isValid()) {
-                // get l'ancien mot de passe
-                $oldPassword = $request->get('modif_pass')['actuelPassword'];
-                // On vérifie l'ancien mot de passe
-                if ($passwordHasher->isPasswordValid($user, $oldPassword)) {
-                    // On enregistre le nouveau mot de passe en le hashant
-                    $user->setPassword(
-                        $passwordHasher->hashPassword(
-                            $user,
-                            $formPassChange->get('plainPassword')->getData()
-                        )
-                    );
-                    // enregistrement du nouveau mot de passe dans la bese de données
-                    $entityManager->flush();
-                    // Confirmation du changement du mot de passe
-                    $this->addFlash('success', 'Mot de passe changé avec succès');
-                    return $this->redirectToRoute('app_profil');
-                }
-            }
-
-            // Formulaire du changement du profil de l'utilisateur
-            $formProfilChange = $this->createForm(EditProfilType::class, $user);
-            $formProfilChange->handleRequest($request);
+        // Formulaire du changement du profil de l'utilisateur
+        $formProfilChange = $this->createForm(EditProfilType::class, $user);
+        $formProfilChange->handleRequest($request);
+        
+        // On s'assure que l'utilisateur connecté(e) modifie bien son propre compte
+        if ($this->getUser() !== $user) {
+            $this->addFlash('danger', 'Action non autorisé!');
+            return $this->redirectToRoute('app_profil');
+        }
             
-            if ($formProfilChange->isSubmitted() && $formProfilChange->isValid()){
-                $entityManager->persist($user);
-                $entityManager->flush();
-                // message de succee
-                $this->addFlash('message', 'Profile à jour. Merci');
-                // redirection vers le profile
-                return $this->redirectToRoute('app_profil');
+        if ($formProfil->isSubmitted() && $formProfil->isValid()) {
+            if (!$profil) {
+                $profil = new Profil();
+                $profil->setUser($user)
+                    ->setJob($formProfil->get('job')->getData())
+                    ->setBiographie($formProfil->get('biographie')->getData())
+                    ->setAge($formProfil->get('age')->getData());
             }
-
-            return $this->render('security/setting_change.html.twig', [
-                'modifPassForm' => $formPassChange->createView(),
-                'changeProfilForm' => $formProfilChange->createView(),
+            $entityManager->persist($profil);
+            $entityManager->flush();
+            // message de succee
+            $this->addFlash('message', 'Profile à jour. Merci');
+            // redirection vers le profile
+            return $this->redirectToRoute('modif_pass', [
+                'slug' => $user->getSlug(),
+                'id' => $user->getId()
             ]);
         }
+
+        if ($formPassChange->isSubmitted() && $formPassChange->isValid()) {
+            // get l'ancien mot de passe
+            $oldPassword = $request->get('modif_pass')['actuelPassword'];
+            // On vérifie l'ancien mot de passe
+            if ($passwordHasher->isPasswordValid($user, $oldPassword)) {
+                // On enregistre le nouveau mot de passe en le hashant
+                $user->setPassword(
+                    $passwordHasher->hashPassword(
+                        $user,
+                        $formPassChange->get('plainPassword')->getData()
+                    )
+                );
+                // enregistrement du nouveau mot de passe dans la base de données
+                $entityManager->flush();
+                // Confirmation du changement du mot de passe
+                $this->addFlash('success', 'Mot de passe changé avec succès');
+                return $this->redirectToRoute('app_logout');
+            }
+        }
+
+
+        if ($formProfilChange->isSubmitted() && $formProfilChange->isValid()) {
+
+            $image = $formProfilChange->get('image')->getData();
+            if ($image) {
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+                $image->move(
+                    $this->getParameter('medias_directory'),
+                    $fichier
+                );
+                $user->setImage($fichier);
+            }
+            $entityManager->flush();
+
+            // message de succee
+            $this->addFlash('message', 'Profile à jour. Merci');
+            // redirection vers le profile
+            return $this->redirectToRoute('modif_pass', [
+                'slug' => $user->getSlug(),
+                'id' => $user->getId()
+            ]);
+        }
+        return $this->render('security/setting_change.html.twig', [
+            'modifPassForm' => $formPassChange->createView(),
+            'changeProfilForm' => $formProfilChange->createView(),
+            'profilForm' => $formProfil->createView(),
+        ]);
     }
 }

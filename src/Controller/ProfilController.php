@@ -10,6 +10,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -41,9 +43,11 @@ class ProfilController extends AbstractController
         $data->setPage($request->get('page', 1));
             $users = $userRepository->findSearch($data);
 
+            $amis = [];
             foreach ($user->getAmis() as $ami) {
                 $amis[] = $ami;
             }
+            $suivis = [];
             foreach ($user->getFollowUsers() as $follow) {
                 $suivis[] = $follow;
             };
@@ -94,6 +98,9 @@ class ProfilController extends AbstractController
             'nom' => $user->getnom() . ' ' . $user->getprenom(),
             'image' => $user->getimage(),
             'slug' => $user->getSlug(),
+            'bio' => $user->getMyProfil()->getBiographie(),
+            'age' => $user->getMyProfil()->getAge(),
+            'job' => $user->getMyProfil()->getJob(),
         ];
 
         foreach ($user->getAmis() as $ami) {
@@ -112,32 +119,42 @@ class ProfilController extends AbstractController
                 'image' => $follow->getimage(),
             ];
         };
-        // foreach ($user->getFollowedByUsers() as $followedBy) {
-        //     $followedByUsers[] = [
-        //         'idFollowedBy' => $followedBy->getId(),
-        //         'slug' => $followedBy->getSlug(),
-        //         'nom' => $followedBy->getNom() . ' ' . $followedBy->getPrenom(),
-        //     ];
-        // };
+        
+        /* foreach ($user->getFollowedByUsers() as $followedBy) {
+            $followedByUsers[] = [
+                'idFollowedBy' => $followedBy->getId(),
+                'slug' => $followedBy->getSlug(),
+                'nom' => $followedBy->getNom() . ' ' . $followedBy->getPrenom(),
+            ];
+        };*/
 
+            // Les amis en commun avec l'utlisateur connecté
         $communAmis = array_intersect($user->getAmis()->toArray(), $connectedUser->getAmis()->toArray());
         foreach ($communAmis as $communAmi) {
             $amisCommun[] = $communAmi->getId();
         }
-
+           // Les suivis en commun avec l'utlisateur connecté
         $communFollows = array_intersect($user->getFollowUsers()->toArray(), $connectedUser->getFollowUsers()->toArray());
         foreach ($communFollows as $communFollow) {
             $followsCommun[] = $communFollow->getId();
         }
-
+        // Liste des amis de l'utlisateur connecté
         $amis = $connectedUser->getAmis()->toArray();
         foreach ($amis as $ami) {
             $amisIds[] = $ami->getId();
         }
+        // Liste des suivis de l'utlisateur connecté
         $follows = $connectedUser->getFollowUsers()->toArray();
         foreach ($follows as $follow) {
             $followersIds[] = $follow->getId();
         }
+        // Liste des publications de l'utilisateur consulté
+        $publicationsUser = $user->getPublications()->toArray();
+        // Liste des evenements de l'utilisateur consulté
+        $evenementsUser = $user->getEvenements()->toArray();
+        // Liste des groupes de l'utilisateur consulté
+        $groupesUser = $user->getGroupes()->toArray();
+
         return $this->render('profil/show.html.twig', [
             'userProfil' => $userProfil,
             'amisOfAmi' => $amisOfAmi,
@@ -147,6 +164,9 @@ class ProfilController extends AbstractController
             'communFollows' => $followsCommun ?? [],
             'amisIds' => $amisIds,
             'followersIds' => $followersIds,
+            'publicationsUser' => $publicationsUser,
+            'evenementsUser' => $evenementsUser,
+            'groupesUser' => $groupesUser,
         ]);
     }
 
@@ -240,5 +260,19 @@ class ProfilController extends AbstractController
         // Enregistrement du changement dans la base des données.
         $em->flush();
         return $this->redirectToRoute('app_profil');
+    }
+
+    #[Route('/profil/suppression', name: 'app_profil_suppression')]
+    #[Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER')")]
+    public function suppressionCompte(EntityManagerInterface $em)
+    {
+        $user = $this->getUser();
+        
+        $session = new Session();
+        $session->invalidate();
+
+        $em->remove($user);
+        $em->flush();
+        return $this->redirectToRoute('app_login');
     }
 }

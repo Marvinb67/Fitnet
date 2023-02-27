@@ -47,7 +47,7 @@ class Evenement
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'evenement', cascade: ['persist', 'remove'])]
     private Collection $tagsEvenement;
 
-    #[ORM\OneToMany(mappedBy: 'evenement', targetEntity: Commentaire::class)]
+    #[ORM\OneToMany(mappedBy: 'evenement', targetEntity: Commentaire::class, orphanRemoval: true)]
     private Collection $commentaires;
 
     public function __construct()

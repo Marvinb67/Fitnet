@@ -59,38 +59,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commentaire::class)]
     private Collection $commentaires;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Groupe::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Groupe::class, orphanRemoval: true)]
     private Collection $groupes;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Evenement::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Evenement::class, orphanRemoval: true)]
     private Collection $evenements;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ReactionPublication::class, orphanRemoval: true)]
     private Collection $reactionPublications;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Message::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Message::class, orphanRemoval: true)]
     private Collection $messages;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: MessageRecu::class, orphanRemoval: true)]
     private Collection $messageRecus;
 
-    #[ORM\ManyToMany(targetEntity: self::class)]
+    #[ORM\ManyToMany(targetEntity: self::class, orphanRemoval: true)]
     #[ORM\JoinTable(name: 'user_amis')]
     private Collection $amis;
 
-    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'followedByUsers')]
+    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'followedByUsers', orphanRemoval: true)]
     #[ORM\JoinTable(name: 'user_follows')]
     private Collection $followUsers;
 
-    #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'followUsers')]
+    #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'followUsers', orphanRemoval: true)]
     #[ORM\JoinTable(name: 'user_follows')]
     private Collection $followedByUsers;
 
     #[ORM\ManyToMany(targetEntity: ProgrammationEvenement::class, mappedBy: 'inscritEvenement')]
     private Collection $programmationEvenements;
 
-    #[ORM\ManyToMany(targetEntity: Groupe::class, mappedBy: 'adherentsGroupe')]
+    #[ORM\ManyToMany(targetEntity: Groupe::class, mappedBy: 'adherentsGroupe', orphanRemoval: true)]
     private Collection $mesGroupes;
+
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private ?Profil $myProfil = null;
 
     public function __toString()
     {
@@ -603,6 +606,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->mesGroupes->removeElement($mesGroupe)) {
             $mesGroupe->removeAdherentsGroupe($this);
         }
+
+        return $this;
+    }
+
+    public function getMyProfil(): ?Profil
+    {
+        return $this->myProfil;
+    }
+
+    public function setMyProfil(Profil $myProfil): self
+    {
+        // set the owning side of the relation if necessary
+        if ($myProfil->getUser() !== $this) {
+            $myProfil->setUser($this);
+        }
+
+        $this->myProfil = $myProfil;
 
         return $this;
     }

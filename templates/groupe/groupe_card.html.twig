@@ -1,0 +1,28 @@
+<div class="groupe-container">
+
+    <div class="publication-scroll-header">
+        <div id="filter-modal" class="filter-div">
+            <div class="modal-filtre-publication">
+                <li>Popularité</li>
+                <li>Ancienneté</li>
+                <li>Nouveauté</li>
+            </div>
+        </div>
+
+        <a class="dark-round" href="{{path('app_groupe_new')}}">Créer un groupe <i class="fa-solid fa-plus"></i></a>
+    </div>
+
+    {% for groupe in groupes %}
+        <div class="groupe-card">
+            {# <div class="groupe-image">
+                <img src="{{asset('/uploads/' ~ groupe.image)}}" alt="">
+            </div> #}
+            <p><a href="{{ path('app_groupe_show', {slug: groupe.slug, id: groupe.id}) }}">{{ groupe.intitule }}</a></p>
+            <p class="dark-round">
+                <a href="{{path('app_groupe_rejoindre', {id: groupe.id}) }}">Rejoindre ce groupe</a>
+                <i class="fa-solid fa-right-to-bracket"></i>
+            </p>
+        </div>
+    {% endfor %}
+    
+</div>

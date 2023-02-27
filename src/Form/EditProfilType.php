@@ -11,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class EditProfilType extends AbstractType
 {
@@ -62,7 +63,12 @@ class EditProfilType extends AbstractType
                     ])
                 ]
             ])
-        ;
+            ->add('submit', SubmitType::class, [
+                'label' => 'Valider',
+                'attr' => [
+                    'class' => 'btn btn-primary btn-lg mt-2 profile-button'
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

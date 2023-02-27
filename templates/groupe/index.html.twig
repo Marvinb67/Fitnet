@@ -4,40 +4,27 @@
 
 {% block container %}
 
-    {% include '_layout/_desktop/nav.html.twig' %}
-    <div class="header-margin"></div>
+    <div class="publication-wrapper-desktop">
+        {% include '_layout/_desktop/nav.html.twig' %}
+        <div class="header-margin"></div>
+    </div>
+
+    <div class="publication-wrapper-mobile">
+        {% include '_layout/_mobileNavBar.html.twig' %}
+        <div class="header-margin"></div>
+    </div>
 
     <main class="main-groupe wrapper-1200">
-        {% include '_layout/_desktop/sideNav.html.twig' %}
-        <div class="groupe-container">
-
-        <div class="publication-scroll-header">
-            <div id="filter-modal" class="filter-div">
-{#                <p>Filtrer<i class="fa-solid fa-caret-down"></i></p>#}
-                <div class="modal-filtre-publication">
-                    <li>Popularité</li>
-                    <li>Ancienneté</li>
-                    <li>Nouveauté</li>
-                </div>
-            </div>
-
-            <a class="dark-round" href="{{path('app_groupe_new')}}">Créer un groupe <i class="fa-solid fa-plus"></i></a>
+        <div class="publication-wrapper-desktop">
+            {% include '_layout/_desktop/sideNav.html.twig' %}
         </div>
-            {% for groupe in groupes %}
-                <div class="groupe-card">
-                    <div class="groupe-image">
-                        <img src="{{asset('/uploads/' ~ groupe.image)}}" alt="">
-                    </div>
-                    <p><a href="{{ path('app_groupe_show', {slug: groupe.slug, id: groupe.id}) }}">{{ groupe.intitule }}</a></p>
-                    <p class="dark-round">
-                        <a href="{{path('app_groupe_rejoindre', {id: groupe.id}) }}">Rejoindre ce groupe</a>
-                        <i class="fa-solid fa-right-to-bracket"></i>
-                    </p>
-                </div>
-            {% endfor %}
-        </div>
-{#        {% include '_layout/_desktop/tchat.html.twig' %}#}
+        {% include 'groupe/groupe_card.html.twig' %}
     </main>
+
+    <div class="publication-wrapper-mobile">
+        {% include '_layout/_mobileFooter.html.twig' %}
+    </div>
+
 
 {# <a href="{{path('app_groupe_new')}}" class="btn btn-primary">Créer un groupe</a> #}
 

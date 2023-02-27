@@ -1,1 +1,63 @@
-{% block title %}Mes Publications{% endblock %}
+<div class="add-content-profil-link publication-scroll-header"><a class="dark-round add-content-profil-link" href="{{path('app_publication_new')}}">Créer une publication<i class="fa-solid fa-plus"></i>
+</a></div>
+
+
+{% for publication in app.user.publications %}
+	<div class="publication-card">
+		<div class="user-publication">
+			<div class="user-publication-left-side">
+				<div class="infos-user-publication">
+					<p>{{ publication.user.nom }}
+						{{ publication.user.prenom }}</p>
+					<p>Posté le :
+						{{publication.createdAt | date('d/m/Y à H:i')}}</p>
+					{% if (publication.editedAt | date('d/m/Y à H:i') >
+                                    publication.createdAt | date('d/m/Y à H:i')) and (app.user) %}
+						<p>
+							Modifié le :
+							{{publication.editedAt | date('d/m/Y à H:i')
+                                        }}<small>
+								Par
+								{{ app.user.nom }}
+								{{ app.user.prenom }}</small>
+						</p>
+					{% endif %}
+				</div>
+			</div>
+			<div class="menu-publication">
+				<div class="modal-menu-publication" id="publication-modal">
+					<ul>
+						{% if (app.user) and (app.user.id is same as publication.user.id)  %}
+							<a href="#">Enregistrer</a>
+							<a class="edit-publication-btn" href="{{ path('app_publication_edit', { id: publication.id, slug: publication.slug }) }}">Modifier</a>
+							<a class="delete-publication-btn" href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer</a>
+						{% else %}
+							<a href="#">Enregistrer</a>
+						{% endif %}
+					</ul>
+				</div>
+				<i class="fas fa-ellipsis-v" data-modal="{{publication.id}}"></i>
+			</div>
+		</div>
+		<h2>
+			<a href="{{ path('app_publication_show', { id: publication.id, slug: publication.slug }) }}">{{ publication.titre }}</a>
+		</h2>
+		{% for key, img in publication.mediaPublication %}
+			{% if key == 0 %}
+				<a href="{{ path('app_show_media', { slug: img.slug }) }}">
+					<img class="card-img-top img-fluid" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{ img.titre }}"/></a>
+			{% endif %}
+		{% endfor %}
+		<div>{{ publication.contenu }}</div>
+		<div class="tag-div">
+			<div>
+				{% for tag in publication.tagsPublication %}
+					<a href="{{ path('app_publication', {tag: tag.intitule})}}">
+						<span class="badge badge-pill badge-info text-info">#{{ tag.intitule }}</span>
+					</a>
+				{% endfor %}
+			</div>
+			{% include '/publication/reaction.html.twig' %}
+		</div>
+	</div>
+{% endfor %}

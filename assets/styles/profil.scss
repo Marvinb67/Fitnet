@@ -1,5 +1,67 @@
 @import "variables";
 
+@media screen and (max-width: 1200px) {
+    .public-profil-container{
+        position: static !important;
+        width: 100% !important;
+        height: 100vh !important;
+    }
+
+    .public-profil-navv{
+        width: 100% !important;
+    }
+    
+    .public-profil-div{
+        flex-direction: column;
+    }
+
+    .bio-div{
+        padding: 0 0 0 1rem !important;
+    }
+
+    .public-profil-navv nav{
+        padding: 0 !important;
+    }
+
+    .mobile-header-profil{
+        display: flex;
+        padding: 1rem;
+        align-items: flex-end;
+    }
+
+    .ami-suivi-div{
+        width: 100% !important;
+    }
+
+    .public-profil-na{
+        padding: 1rem;
+    }
+
+    .public-profil-nav nav ul{
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .public-profil-navv li{
+        width: 120px !important;
+        text-align: center;
+    }
+
+    .modif-profil{
+        width: fit-content !important;
+    }
+
+    .modif-div{
+        width: 100% !important;
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+  }
 
 .profil-container{
     position: absolute;
@@ -10,21 +72,12 @@
 }
 
 .header-profil-section{
-    height: 120px;
-    width: 100%;
-    //position: relative;
-    background-color: #262626;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
-//.profil-dark-bar{
-//    height: 100%;
-//    width: 100%;
-//    position: absolute;
-//    bottom: 0;
-//}
 
 .photo-profil{
     width: 100px;
@@ -45,23 +98,6 @@
     border-radius: 100px;
 }
 
-//.button-profil-1{
-//    position: absolute;
-//    top: 20px;
-//    left: 160px;
-//}
-//
-//.button-profil-2{
-//    position: absolute;
-//    top: 20px;
-//    left: 330px;
-//}
-//
-//.button-profil-3{
-//    position: absolute;
-//    top: 20px;
-//    right: 50px;
-//}
 
 .icon{
     color: $primary_color;
@@ -88,11 +124,29 @@
     border-bottom: 1px solid $primary_color;
 }
 
-.public-profil-nav{
-    width: 300px;
-    height: 600px;
-    background-color: white;
+.public-profil-navv{
+    width: 250px;
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    top: 0;
+}
+
+.public-profil-navv nav{
+    color: #262626;
     padding: 1rem;
+}
+
+.public-profil-navv li{
+    background-color: #f5f5f5;
+    border-bottom: 1px solid $primary_color;
+    padding: 0.2rem 1rem;
+    // border-radius: 50px;
+    margin: 0.2rem 0;
+}
+
+.public-profil-navv a{
+    color: #262626;
+    font-weight: 700;
 }
 
 .public-profil-container{
@@ -101,16 +155,24 @@
     top: 0;
     left: 267px;
     height: 670px;
-    //padding: 1rem;
     background-color: #f5f5f5;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 20px;
+    padding: 0;
     overflow: hidden;
+}
+
+.public-profil-na{
+    overflow: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .public-profil-div{
     display: flex;
-    height: 400px;
+    height: 100%;
 }
 
 .lespageprofil {
@@ -121,12 +183,74 @@
     display: block;
 }
 
-#profils{
-    padding: 1rem;
+.nom-profil, .btn-profil{
+    transition: transform .2s; /* Animation */
 }
-
+.nom-profil:hover, .btn-profil:hover{
+    transform: scale(1.5); 
+}
 .suivi-section{
     display: flex;
     justify-content: space-between;
     width: 400px;
+}
+
+.nom-profil{
+    display: flex;
+    gap: 0.5rem;
+    color: #262626;
+}
+
+.bio-div{
+    // background-color: #262626;
+    padding: 0 1rem 1rem 1rem;
+    border-radius: 15px;
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+    color: #262626;
+    height: 100px;
+    overflow: auto;
+}
+
+ h6{
+    color: #262626;
+    padding: 0 1rem;
+}
+
+.ami-suivi-div{
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
+    margin: 5px;
+    align-items: center;
+    background-color: white;
+    padding: 0.5rem;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+}
+
+.img-profil{
+    width: 50px;
+    height: 50px;
+}
+
+.button-profil{
+    height: fit-content;
+    background-color: #f5f5f5;
+    margin: 5px 0.5rem;
+}
+
+.profil-dark-bar{
+    display: flex;
+    flex-direction: column;
+}
+
+.dark-round a{
+    color: white;
+}
+
+.modif-profil{
+    margin: 0 1rem;
+    height: fit-content;
 }
