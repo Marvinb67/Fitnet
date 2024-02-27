@@ -82,7 +82,12 @@
                     <h2>
                         <a href="{{ path('app_publication_show', { id: publication.id, slug: publication.slug }) }}">{{ publication.titre }}</a>
                     </h2>
-                    <div>{{ publication.contenu }}</div>
+                    <div>
+			{{ publication.contenu [:250] ~ '...'  }}
+			<a href="{{ path('app_publication_show', { id: publication.id, slug: publication.slug }) }}">
+				<span>Lire Plus</span>
+			</a>
+		    </div>
                     <div class="tag-div">
                         <div>
                             {% for tag in publication.tagsPublication %}
