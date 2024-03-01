@@ -1,0 +1,74 @@
+<section  class="position-relative">
+	{% if users is defined %}
+		{% for user in users %}
+			{% if app.user.id is same as(user.id) %}
+				<section class="header-profil-section">
+					<a href="{{ path('app_profil') }}">
+						<div>
+						{% if 'gravatar' in app.user.image %}
+						<img id="image_profil1" class="rounded-circle" src="{{ app.user.image }}" alt="{{ app.user.nom }} {{ app.user.prenom }}" width="100px"/>
+						{% else %}
+							<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ app.user.image) }}" alt="{{ app.user.nom }} {{ app.user.prenom }}" width="100px"/>
+							{% endif %}
+						</div>
+					</a>
+					<div class="nom-profil">
+						<h5>{{ user.nom }}</h5>
+						<h5>{{ user.prenom }}</h5>
+					</div>
+					
+				</section>
+			{% endif %}
+		{% endfor %}
+{#		<div class="profil-dark-bar"></div>#}
+	{% else %}
+
+		{% for user in userProfil %}
+			<section class="header-profil-section">
+
+				<a href="{{ path('app_user_detail', {slug: user.slug, id: user.id}) }}">
+					<div class="photo-profil">
+						{% if 'https://www.gravatar.com/' in user.image %}
+						<img id="image_profil1" class="rounded-circle" src="{{ user.image }}" alt="{{ user.nom }}" width="100px"/>
+						{% else %}
+						<img id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ user.image) }}" alt="{{ user.nom }}" width="100px"/>
+
+						{% endif %}
+					</div>
+				</a>
+
+				<div class="nom-profil">
+					<h5>{{ user.nom }}</h5>
+				</div>
+
+			</section>
+
+			<div class="profil-dark-bar">
+				{% if user.id in followersIds %}
+					<a class="button-profil button-profil-1" href="{{path('app_add_interaction', {interaction: 'ajout-follow', etat: 'false', id: user.id})}}">Ne plus Suivre
+						<i class="fa-solid fa-ban icon"></i>
+					</a>
+				{% else %}
+					<a class="button-profil button-profil-1" href="{{path('app_add_interaction', {interaction: 'ajout-follow', etat: 'true', id: user.id})}}">Suivre
+						<i class="fa-solid fa-plus icon"></i>
+					</a>
+				{% endif %}
+				{% if user.id in amisIds %}
+					<a class="button-profil button-profil-2" href="{{ path('app_add_interaction', {interaction: 'ajout-ami', etat: 'false', id: user.id}) }}">Retirer
+						<i class="fa-solid fa-user-minus icon"></i>
+					</a>
+				{% else %}
+					<a class="button-profil button-profil-2" href="{{ path('app_add_interaction', {interaction: 'ajout-ami', etat: 'true', id: user.id}) }}">Ajouter En Ami
+						<i class="fa-solid fa-user-plus icon"></i>
+					</a>
+				{% endif %}
+{#				<a class="button-profil button-profil-3" href="#">Message#}
+{#					<i class="fa-solid fa-paper-plane icon"></i>#}
+{#				</a>#}
+			</div>
+		{% endfor %}
+	{% endif %}
+</section>
+
+
+

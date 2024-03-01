@@ -1,0 +1,120 @@
+<main class="main-publication">
+	<div class="publication-wrapper">
+		<div class="publication-card">
+			<div class="user-publication ">
+				<div class="user-publication-show">
+					<div class="futur-pp"></div>
+					<div class="infos-user-publication">
+        				{% if publication.user is null %}
+                            <p>Utilisateur supprimé</p>
+                            {% else %}
+							<p>{{ publication.user.nom }}
+								{{ publication.user.prenom }}
+                            </p>
+                        {% endif %}
+						<p>Posté le :
+							{{publication.createdAt | date('d/m/Y à H:i')}}</p>
+						{% if (publication.editedAt | date('d/m/Y à H:i') >
+							publication.createdAt | date('d/m/Y à H:i')) and (app.user) %}
+							<p>
+								Modifié le :
+								{{publication.editedAt | date('d/m/Y à H:i')
+								}}<small>
+									Par
+									{{ app.user.nom }}
+									{{ app.user.prenom }}</small>
+							</p>
+						{% endif %}
+					</div>
+{#					<i class="fas fa-ellipsis-v"></i>#}
+				</div>
+			</div>
+
+			<h2>
+				<a class="card-title" href="{{ path('app_publication_show', { id: publication.id, slug: publication.slug }) }}">{{ publication.titre }}</a>
+			</h2>
+
+			<p>{{ publication.contenu }} </p>
+			{% for key, img in publication.mediaPublication %}
+				{% if key == 0 %}
+					<a href="{{ path('app_show_media', { slug: img.slug }) }}">
+						<img class="card-img-top img-fluid" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{ img.titre }}"/></a>
+				{% endif %}
+			{% endfor %}
+{#			<p>{{ publication.contenu }}</p>#}
+				{% for tag in publication.tagsPublication %}
+					<div>
+						<a href="{{ path('app_publication', {tag: tag.intitule})}}">
+							<span class="badge badge-pill badge-info text-info">#{{ tag.intitule }}</span>
+						</a>
+					</div>
+				{% endfor %}
+			{% include '/publication/reaction.html.twig' %}
+			{# <a href="{{ path('app_publication_edit', { id: publication.id, slug: publication.slug }) }}">Modifier la publication</a>
+						<a href="{{ path('app_publication_delete', { id: publication.id, slug: publication.slug }) }}">Supprimer la publication</a> #}
+			<h2>Commentaires</h2>
+
+			<div id="ajout-com">
+				{{form(formCommentaire)}}
+				</div>
+{#	<h3>Commentaires</h3>#}
+
+				{% for commentaire in publication.commentaires %}
+					{% if commentaire.parent == null %}
+						<div class="user-publication">
+							<div class="futur-pp"></div>
+							{% if commentaire.user is null %}
+								<strong>Publié par :
+									Utilisateur supprimé
+									le
+									{{ commentaire.createdAt | date('d/m/Y H:i')}}</strong>
+								<strong>Publié par :
+							{% else %}
+								{{commentaire.user}}
+								le
+								{{ commentaire.createdAt | date('d/m/Y H:i')}}</strong>
+							{% endif %}
+						</div>
+						<p class="commentaire-card">{{ commentaire.contenu }}</p>
+						<p>
+							<a href="#commentaire_contenu" data-reply data-id="{{commentaire.id}}">Répondre</a>
+						</p>
+						{# affichage réponse #}
+						{% for reponse in commentaire.reponse %}
+							<div class="user-publication reponse-card">
+								<div class="futur-pp"></div>
+								{% if reponse.user is not null %}
+								<strong>Réponse de :
+									{{reponse.user}}
+									le
+									{{ reponse.createdAt | date('d/m/Y H:i')}}
+								</strong>
+								{% else %}
+								<strong>Réponse de :
+									Utilisateur supprimé
+									le
+									{{ reponse.createdAt | date('d/m/Y H:i')}}
+								</strong>
+								{% endif %}
+							</div>
+							<p class="reponse-commentaire">{{ reponse.contenu }}</p>
+						{% endfor %}
+						<hr>
+					{% endif %}
+				{% endfor %}
+
+			</div>
+		</div>
+	</main>
+
+	{% block javascript %}
+		<script>
+document.querySelector(".card-title").value = "{{ publication.titre }}"
+document.querySelectorAll("[data-reply]").forEach(element => {
+element.addEventListener("click", function () {
+document.querySelector("#commentaire_parentId").value = this.dataset.id
+})
+})
+		</script>
+	{% endblock %}
+

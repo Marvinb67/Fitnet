@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des publications {% endblock %} 
+
+{% block container %}
+	<div class="wrapper-1200">
+		<div class="publication-wrapper-desktop">
+			{% include '_layout/_desktop/nav.html.twig' %}
+			<div class="header-margin"></div>
+		</div>
+
+		<div class="publication-wrapper-mobile">
+			{% include '_layout/_mobileNavBar.html.twig' %}
+			<div class="header-margin"></div>
+		</div>
+
+		<div class="publication-wrapper-desktop">
+			{% include '_layout/_desktop/sideNav.html.twig' %}
+		</div>
+
+		{% include '/publication/_cardList.html.twig' %}
+
+		{# <div class="publication-wrapper-desktop">
+			{% include '_layout/_desktop/tchat.html.twig' %}
+		</div> #}
+		
+		<div class="publication-wrapper-mobile">
+			{% include '_layout/_mobileFooter.html.twig' %}
+		</div>
+	<div>
+		{% endblock %}
+		{% block javascripts %}
+			{{ parent() }}
+			{{ encore_entry_script_tags('publication') }}
+		{% endblock %}

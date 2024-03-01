@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Evénements{% endblock %}
+
+{% block container %}
+
+<div class="publication-wrapper-desktop">
+  {% include '_layout/_desktop/nav.html.twig' %}
+  <div class="header-margin"></div>
+</div>
+
+<div class="publication-wrapper-mobile">
+  {% include '_layout/_mobileNavBar.html.twig' %}
+  <div class="header-margin"></div>
+</div>
+
+
+<main class="main-show-evenement wrapper-1200">
+
+
+  <div class="publication-wrapper-desktop">
+    {% include '_layout/_desktop/sideNav.html.twig' %}
+  </div>
+
+  {% include 'evenement/layout/event-card-show.html.twig' %}
+
+  <div class="publication-wrapper-mobile">
+    {% include '_layout/_mobileFooter.html.twig' %}
+  </div>
+
+{#  {% include '_layout/_desktop/tchat.html.twig' %}#}
+
+</main>
+		
+{% block javascript %}
+	<script>
+		var slideIndex = 1;
+    showDivs(slideIndex);
+
+    function plusDivs(n) {
+      showDivs(slideIndex += n);
+    }
+
+    console.log("bonjour")
+
+    function showDivs(n) {
+      var i;
+      var x = document.getElementsByClassName("mySlides");
+      if (n > x.length) {slideIndex = 1}
+      if (n < 1) {slideIndex = x.length}
+      for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";  
+      }
+      x[slideIndex-1].style.display = "block";  
+    }
+
+		document.querySelector(".card-title").value = "{{ evenement.intitule }}"
+		document.querySelectorAll("[data-reply]").forEach(element => {
+		element.addEventListener("click", function () {
+		document.querySelector("#commentaire_parentId").value = this.dataset.id})
+		})
+	</script>
+{% endblock %}
+
+{% endblock %}

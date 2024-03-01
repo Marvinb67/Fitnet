@@ -1,0 +1,27 @@
+<header class="header-desktop fixed-nav">
+    <nav class="nav-desktop">
+        <ul>
+            <a href="{{path('home')}}"><img class="logo-black" src="{{ asset('build/images/fitnet-logo.png') }}" alt="image logo"/></a>
+            <div>
+            {{ render(controller('App\\Controller\\HomeController::searchForm')) }}
+{#                <li><i class="fa-solid fa-bell"></i></li>#}
+                {% if app.user %}
+{#                {% for role in app.user.roles %}#}
+{#                    {% if role == "ROLE_SUPER_ADMIN" %}#}
+{#                    <li><a href="admin"><i class="fa fa-unlock-alt" aria-hidden="true"></i></a></li>#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
+                <li><a href="{{path('app_profil')}}">
+                
+					{% if 'https://www.gravatar.com/' in app.user.image %}
+					<img  id="image_profil1" class="rounded-circle" src="{{ app.user.image }}" alt="{{ app.user.nom }}" width="60px"/>
+					{% else %}
+					<img  id="image_profil1" class="rounded-circle" src="{{ asset('/uploads/' ~ app.user.image) }}" alt="{{ app.user.nom }}" width="60px"/>
+
+					{% endif %}
+                </a></li>
+                {% endif %}
+            </div>
+        </ul>
+    </nav>
+</header>

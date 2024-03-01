@@ -1,0 +1,12 @@
+<div class="ami-suivi-div mt-3">
+	<h5>Groupes</h5>
+</div>
+{% for groupe in groupesUser %}
+    <div class="ami-suivi-div">
+        <p><a href="{{ path('app_groupe_show', {slug: groupe.slug, id: groupe.id}) }}">{{ groupe.intitule }}</a></p>
+        <p class="dark-round">
+            <a href="{{path('app_groupe_rejoindre', {id: groupe.id}) }}">Rejoindre ce groupe</a>
+            <i class="fa-solid fa-right-to-bracket"></i>
+        </p>
+    </div>
+{% endfor %}

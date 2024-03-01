@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des publications
+{% endblock %}
+{% block container %}
+	{% include '_layout/_desktop/nav.html.twig' %}
+	<div class="header-margin"></div>
+
+	<main class="publication-new-main wrapper-1200">
+	
+	{% include '_layout/_desktop/sideNav.html.twig' %}
+
+		<div class="new-publication-container white-bloc">
+			<h3>Créer une nouvelle publication</h3>
+			{{form(formPublication)}}
+		</div>
+
+	{% include '_layout/_desktop/tchat.html.twig' %}
+
+	</main>
+{% endblock %}

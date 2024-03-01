@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Evénements{% endblock %}
+
+{% block container %}
+
+<div class="evenement-wrapper-desktop"> 
+    {% include '_layout/_desktop/nav.html.twig' %}
+    <div class="header-margin"></div>
+
+    <main class="main-evenement wrapper-1200">
+    {% include '_layout/_desktop/sideNav.html.twig' %}
+
+    {% include 'evenement/layout/event-card.html.twig' %}
+        
+{#    {% include '_layout/_desktop/tchat.html.twig' %}#}
+    </main>
+</div>
+
+<div class="evenement-wrapper-mobile">
+    {% include '_layout/_mobileNavBar.html.twig' %} 
+
+    {% include 'evenement/layout/event-card.html.twig' %}
+    
+    {% include '_layout/_mobileFooter.html.twig' %}
+</div>
+
+{% endblock %}
+
+
+

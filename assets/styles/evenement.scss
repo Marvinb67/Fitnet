@@ -1,0 +1,170 @@
+.evenement-wrapper-desktop{
+  display: none;
+}
+
+@media screen and (min-width: 1200px) {
+  .evenement-wrapper-mobile{
+    display: none;
+  }
+
+  .evenement-wrapper-desktop{
+    display: block;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .evenement-container{
+    position: static !important;
+  }
+  
+  .evenement-card{
+    width: 100% !important;
+  }
+  
+  .evenement-card{
+    flex-direction: column;
+  }
+  
+  .event-text{
+    width: 100% !important;
+  }
+  
+  .show-evenement-container{
+    position: static !important;
+    width: 100%;
+  }
+
+}
+
+.main-evenement{
+  display: flex;
+  justify-content: space-between;
+}
+
+.evenement-container{
+  position: absolute;
+  top: 0;
+  left: 250px;
+  margin: 0 1rem;
+}
+
+.event-picture{
+  width: 50%;
+  height: 270px;
+  background-color: #0d9488;
+}
+
+.evenement-card{
+  //background-image: url("assets/images/musculation.jpg");
+  background-color: white;
+  margin: 1rem 0;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  //padding: 1rem;
+  width: 665px;
+  display: flex;
+  overflow: hidden;
+}
+
+.evenement-title{
+  font-size: 1.2rem;
+}
+
+.event-slot{
+  border: 1px solid black;
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  border-radius: 5px;
+}
+
+.event-text{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+  width: 50%;
+  align-items: center;
+}
+
+// Partie show evenement 
+
+.main-show-evenement{
+  display: flex;
+}
+
+.show-evenement-container{
+  width: 665px;
+  position: absolute;
+  top: 0;
+  left: 250px;
+  margin: 1rem;
+}
+
+.user-container{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.event-reaction i{
+  font-size: 1.5rem;
+}
+
+.event-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.horaire-container{
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.event-section{
+  padding: 1rem;
+}
+
+.horaire-container div{
+  padding: 1rem;
+  background-color: aliceblue;
+  border-radius: 10px;
+  width: 100%;
+}
+
+.participant-section{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.participant-section ul{
+  display: flex;
+  gap: 0.5rem;
+}
+
+.participant-section div{
+  display: flex;
+  justify-content: space-between;
+}
+
+.event-content{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.map-img{
+  width: 100%;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+}
+
+.dark-round{
+  background-color: #262626;
+  color: white;
+  border-radius: 100px;
+  padding: 0.5rem 1rem;
+}

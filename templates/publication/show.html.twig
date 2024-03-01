@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block title %}Article : {{publication.titre}} {% endblock %}
+{% block container %}
+
+<div class="publication-wrapper-desktop">
+  {% include '_layout/_desktop/nav.html.twig' %}
+  <div class="header-margin"></div>
+</div>
+
+<div class="publication-wrapper-mobile">
+  {% include '_layout/_mobileNavBar.html.twig' %}
+  <div class="header-margin"></div>
+</div>
+
+	<main class="wrapper-1200">
+  		<div class="publication-wrapper-desktop">
+          {% include '_layout/_desktop/sideNav.html.twig' %}
+		  </div>
+
+      {# {% for img in publication.mediaPublication %}
+      <a href="{{ path('app_show_media', {'slug': img.slug}) }}">
+     <img class="card-img-top" src="{{ asset('/uploads/' ~ img.lien) }}" alt="{{img.titre}}"></a>
+      {% endfor %}
+    {% include 'publication/_card.html.twig' %}
+    {# <a class="btn btn-warning mt-1 ml-1" href="{{ path('app_publication_edit', {id: publication.id, slug: publication.slug}) }}">Modifier la publication</a> #}
+	  {# <a class="btn btn-danger mt-1 mr-1" href="{{ path('app_publication_delete', {id: publication.id, slug: publication.slug})}}">Supprimer la publication</a></div> #}
+
+    {% include 'publication/_card.html.twig' %}
+    <div class="publication-wrapper-mobile">
+			{% include '_layout/_mobileFooter.html.twig' %}
+		</div>
+  
+{#    {% include '_layout/_desktop/tchat.html.twig' %}#}
+  </main>
+
+
+{% endblock %}
+

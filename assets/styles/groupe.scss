@@ -1,0 +1,52 @@
+.groupe-container{
+    position: absolute;
+    width: 665px;
+    left: 267px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.groupe-card{
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 10px;
+    padding: 2rem 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.groupe-card .dark-round a{
+    color: white;
+}
+
+.groupe-card .dark-round{
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.groupe-show-container{
+    position: absolute;
+    width: 665px;
+    left: 267px;
+    // display: flex;
+    // flex-direction: column;
+    // gap: 0.5rem;
+}
+
+@media screen and (max-width: 1200px) {
+    .groupe-show-container{
+        position: static !important;
+    }
+    
+    .groupe-container{
+        position: static !important;
+        width: 100%;
+
+    }
+
+    .groupe-card{
+        margin: 5px;
+    }
+}

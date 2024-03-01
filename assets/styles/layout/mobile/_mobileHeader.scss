@@ -1,0 +1,22 @@
+.mobile-header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  color: white;
+  padding: 1rem 2rem 1rem 2rem;
+  background-color: #262626;
+  display: grid;
+}
+
+.header-margin{
+  margin-top: 150px;
+}
+
+.fixed-nav{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
